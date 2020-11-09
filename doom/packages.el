@@ -53,3 +53,9 @@
 
 (package! inf-iex
  :recipe (:host github :repo "DogLooksGood/inf-iex"))
+
+(package! nox
+ :recipe (:host github :repo "manateelazycat/nox"))
+
+(package! lsp-mode
+  :recipe (:host github :repo "emacs-lsp/lsp-mode"))
