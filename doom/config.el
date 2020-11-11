@@ -53,36 +53,40 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(use-package lsp-mode
-  :hook
-  ((rust-mode c-mode elixir-mode) . lsp-deferred)
-  :commands
-  (lsp lsp-deferred)
-  :custom
-  (lsp-completion-provider :capf)
-  (lsp-enable-file-watchers nil)
-  (lsp-keymap-prefix "C-l")
-  (lsp-enable-symbol-highlighting nil)
-  (lsp-lens-enable nil)
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-modeline-code-actions-enable nil)
-  (lsp-signature-auto-activate t)
-  (lsp-modeline-diagnostics-enable nil)
-  (lsp-signature-render-documentation nil)
-  (lsp-completion-show-detail nil)
-  (lsp-completion-show-kind t)
-  (lsp-clients-elixir-server-executable "/home/yucheng/projects/elixir-ls/release/language_server.sh"))
-
-;; (use-package eglot
-;;   :bind
-;;   (:map eglot-mode-map ("M-." . '+lsp-xfind-or-dumb-jump))
+;; (use-package lsp-mode
 ;;   :hook
-;;   ((rust-mode c-mode elixir-mode) . eglot-ensure)
+;;   ((rust-mode c-mode elixir-mode) . lsp-deferred)
+;;   :commands
+;;   (lsp lsp-deferred)
 ;;   :custom
-;;   (eglot-ignored-server-capabilites '(:documentHighlightProvider))
-;;   :config
-;;   (add-to-list 'eglot-server-programs '(elixir-mode "/home/yucheng/projects/elixir-ls/release/language_server.sh")))
+;;   (lsp-completion-provider :capf)
+;;   (lsp-enable-file-watchers nil)
+;;   (lsp-keymap-prefix "C-l")
+;;   (lsp-enable-symbol-highlighting nil)
+;;   (lsp-lens-enable nil)
+;;   (lsp-headerline-breadcrumb-enable nil)
+;;   (lsp-modeline-code-actions-enable nil)
+;;   (lsp-signature-auto-activate t)
+;;   (lsp-modeline-diagnostics-enable nil)
+;;   (lsp-signature-render-documentation nil)
+;;   (lsp-completion-show-detail nil)
+;;   (lsp-completion-show-kind t)
+;;   (lsp-clients-elixir-server-executable "/home/yucheng/projects/elixir-ls/release/language_server.sh"))
 
+(use-package eglot
+  :bind
+  (:map eglot-mode-map ("M-." . '+lsp-xfind-or-dumb-jump))
+  :hook
+  ((rust-mode c-mode elixir-mode) . eglot-ensure)
+  :custom
+  (eglot-ignored-server-capabilites '(:documentHighlightProvider))
+  :config
+  (add-to-list 'eglot-server-programs '(elixir-mode "/home/yucheng/projects/elixir-ls/release/language_server.sh")))
+
+(defun +copy-to-clipboard ()
+  (interactive)
+  (let ((s (buffer-substring-no-properties (region-beginning) (region-end))))
+    (async-shell-command  (format "echo %s | clip.exe" (prin1-to-string s)))))
 
 ;; (use-package nox
 ;;   :hook
