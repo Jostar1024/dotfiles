@@ -85,7 +85,9 @@
 
 (defun +copy-to-clipboard ()
   (interactive)
-  (let ((s (buffer-substring-no-properties (region-beginning) (region-end))))
+  (let ((s (buffer-substring-no-properties (region-beginning) (region-end)))
+        (display-buffer-alist '(("*Async Shell Command*"
+                               (actions . display-buffer-no-window)))))
     (async-shell-command  (format "echo %s | clip.exe" (prin1-to-string s)))))
 
 ;; (use-package nox
