@@ -59,3 +59,6 @@
 
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"))
+
+(package! ligature
+  :recipe (:host github :repo "mickeynp/ligature.el"))
