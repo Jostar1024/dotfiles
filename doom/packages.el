@@ -62,3 +62,6 @@
 
 (package! ligature
   :recipe (:host github :repo "mickeynp/ligature.el"))
+
+(package! rime
+  :recipe (:host github :repo "DogLooksGood/emacs-rime"))

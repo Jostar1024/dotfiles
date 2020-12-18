@@ -66,3 +66,22 @@
 (load! "config-lsp")
 (load! "config-wsl")
 (load! "config-ligature")
+
+(use-package! rime
+  :custom
+  (default-input-method "rime")
+  (rime-show-candidate 'posframe)
+  (rime-translate-keybindings '("C-`")))
+
+(let ((font-family "Fira Code")
+      (font-size 10))
+  (when (member font-family (font-family-list))
+    (set-face-attribute 'default nil :font (format "%s-%d" font-family font-size))))
+
+(let ((cn-font-family "Sarasa Mono SC"))
+  (when (member cn-font-family (font-family-list))
+    (setq-default face-font-rescale-alist `((,cn-font-family . 1)))
+    (dolist (charset '(kana han symbol cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font)
+                        charset
+                        (font-spec :family cn-font-family)))))
