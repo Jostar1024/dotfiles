@@ -65,3 +65,6 @@
 
 (package! rime
   :recipe (:host github :repo "DogLooksGood/emacs-rime"))
+
+(package! ob-elixir)
+(package! ob-javascript)

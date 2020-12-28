@@ -85,3 +85,6 @@
       (set-fontset-font (frame-parameter nil 'font)
                         charset
                         (font-spec :family cn-font-family)))))
+
+(use-package!
+    ob-elixir)
