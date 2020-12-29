@@ -67,3 +67,6 @@
   :recipe (:host github :repo "DogLooksGood/emacs-rime"))
 
 (package! ob-elixir)
+
+(package! screenshot
+  :recipe (:host github :repo "tecosaur/screenshot"))
