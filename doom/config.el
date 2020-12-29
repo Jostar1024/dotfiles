@@ -86,5 +86,4 @@
                         charset
                         (font-spec :family cn-font-family)))))
 
-(use-package!
-    ob-elixir)
+(use-package! ob-elixir)
