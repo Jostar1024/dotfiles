@@ -71,10 +71,10 @@
 (use-package! rime
   :custom
   (default-input-method "rime")
-  (rime-show-candidate 'posframe)
+  (rime-show-candidate 'minibuffer)
   (rime-translate-keybindings '("C-`")))
 
-(let ((font-family "Fira Code")
+(let ((font-family "Jetbrains Mono")
       (font-size 10))
   (when (member font-family (font-family-list))
     (set-face-attribute 'default nil :font (format "%s-%d" font-family font-size))))
