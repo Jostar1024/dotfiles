@@ -27,7 +27,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-zenburn)
 
 (setq doom-font (font-spec :family "Fira Code" :size 10)
       doom-variable-pitch-font (font-spec :family "sans" :size 9))
@@ -79,7 +79,7 @@
   (when (member font-family (font-family-list))
     (set-face-attribute 'default nil :font (format "%s-%d" font-family font-size))))
 
-(let ((cn-font-family "Sarasa Mono SC"))
+(let ((cn-font-family "WenQuanYi Micro Hei Mono"))
   (when (member cn-font-family (font-family-list))
     (setq-default face-font-rescale-alist `((,cn-font-family . 1)))
     (dolist (charset '(kana han symbol cjk-misc bopomofo))
