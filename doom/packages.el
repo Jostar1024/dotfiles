@@ -70,3 +70,17 @@
 
 (package! screenshot
   :recipe (:host github :repo "tecosaur/screenshot"))
+
+(package! exec-path-from-shell
+  :recipe (:host github :repo "purcell/exec-path-from-shell"))
+;;
+;; (package! org-html-themify
+;;   :recipe (:host github :repo "DogLooksGood/org-html-themify"))
+;;    :type git
+;;    :host github
+;;    :repo "DogLooksGood/org-html-themify"
+;;    :files ("*.el" "*.js" "*.css"))
+
+(unpin! org-mode)
+
+(package! telega)
