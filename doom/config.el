@@ -74,6 +74,9 @@
   (rime-show-candidate 'minibuffer)
   (rime-translate-keybindings '("C-`")))
 
+;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
+;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
+
 (let ((font-family "Jetbrains Mono")
       (font-size 10))
   (when (member font-family (font-family-list))
@@ -87,4 +90,45 @@
                         charset
                         (font-spec :family cn-font-family)))))
 
+(setq auto-save-default nil)
+
+(setq auto-save-interval 5000)
+
+(setq auto-save-timeout (* 10 60))
+
 (use-package! ob-elixir)
+(use-package! exec-path-from-shell)
+
+;; (use-package! org-roam
+;;   :custom
+;;   (org-format-latex-options (plist-put org-format-latex-options :scale 4.0)))
+
+;; (use-package org-html-themify
+;;   :straight
+;;   (org-html-themify
+;;    :type git
+;;    :host github
+;;    :repo "DogLooksGood/org-html-themify"
+;;    :files ("*.el" "*.js" "*.css"))
+;;   :hook (org-mode . org-html-themify-mode)
+;;   :custom
+;;   (org-html-themify-themes
+;;    '((dark . joker)
+;;      (light . storybook))))
+;;
+(use-package! telega
+  :general
+  (:keymaps 'telega-msg-button-map
+       "n" nil
+       "k" nil)
+  
+  :config
+  ;; (add-hook 'telega-chat-mode 'company-mode)
+  (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
+  :custom
+  (telega-use-images nil)
+  (telega-open-file-function 'org-open-file)
+  (telega-proxies
+   '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5")))))
+
+;; (map! :map telega-msg-button-map "k" nil)
