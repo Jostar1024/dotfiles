@@ -29,7 +29,7 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-zenburn)
 
-(setq doom-font (font-spec :family "Fira Code" :size 10)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 10)
       doom-variable-pitch-font (font-spec :family "sans" :size 9))
 
 ;; If you use `org' and don't want your org files in the default location below,
@@ -62,7 +62,7 @@
 (setq eldoc-idle-delay most-positive-fixnum)
 (global-set-key (kbd "C-c C-f") 'eldoc)
 
-(load! "config-company")
+;; (load! "config-company")
 (load! "config-elixir")
 (load! "config-lsp")
 (load! "config-wsl")
