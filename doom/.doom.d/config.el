@@ -91,9 +91,7 @@
                         (font-spec :family cn-font-family)))))
 
 (setq auto-save-default nil)
-
 (setq auto-save-interval 5000)
-
 (setq auto-save-timeout (* 10 60))
 
 (use-package! ob-elixir)
