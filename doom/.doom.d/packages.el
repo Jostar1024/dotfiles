@@ -54,9 +54,6 @@
 (package! inf-iex
  :recipe (:host github :repo "DogLooksGood/inf-iex"))
 
-(package! nox
- :recipe (:host github :repo "manateelazycat/nox"))
-
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"))
 
@@ -84,3 +81,6 @@
 (unpin! org-mode)
 
 (package! telega :pin "f87858583ca7c0e4328f3373aa57d715fd25bbb7")
+
+(package! restclient)
+(package! ob-restclient)
