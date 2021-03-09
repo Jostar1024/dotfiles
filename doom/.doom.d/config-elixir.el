@@ -14,7 +14,8 @@
   (provide 'smartparens-elixir)
   :mode
   (("\\.eex\\'" . web-mode)
-   ("\\.leex\\'" . web-mode))
+   ("\\.leex\\'" . web-mode)
+   ("\\.sface\\'" . web-mode))
   ;; :bind
   ;; (:map elixir-mode-map
   ;;  ("C-c C-f" . 'elixir-format))
