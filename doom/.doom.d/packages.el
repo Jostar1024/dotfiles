@@ -51,20 +51,17 @@
 
 (package! elixir-mode)
 
-(package! inf-iex
- :recipe (:host github :repo "DogLooksGood/inf-iex"))
-
-(package! nox
- :recipe (:host github :repo "manateelazycat/nox"))
-
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"))
 
-(package! ligature
-  :recipe (:host github :repo "mickeynp/ligature.el"))
+(package! inf-iex
+ :recipe (:host github :repo "DogLooksGood/inf-iex"))
 
 (package! rime
   :recipe (:host github :repo "DogLooksGood/emacs-rime"))
+
+(package! ligature
+  :recipe (:host github :repo "mickeynp/ligature.el"))
 
 (package! ob-elixir)
 

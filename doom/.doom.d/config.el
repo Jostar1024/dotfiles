@@ -117,9 +117,9 @@
 (use-package! telega
   :general
   (:keymaps 'telega-msg-button-map
-       "n" nil
-       "k" nil)
-  
+   "n" nil
+   "k" nil)
+
   :config
   ;; (add-hook 'telega-chat-mode 'company-mode)
   (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
@@ -130,3 +130,11 @@
    '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5")))))
 
 ;; (map! :map telega-msg-button-map "k" nil)
+
+(use-package! web-mode
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2)
+  (web-mode-style-padding 2)
+  (web-mode-script-padding 2))
