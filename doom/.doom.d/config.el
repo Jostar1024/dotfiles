@@ -117,9 +117,9 @@
 (use-package! telega
   :general
   (:keymaps 'telega-msg-button-map
-       "n" nil
-       "k" nil)
-  
+   "n" nil
+   "k" nil)
+
   :config
   ;; (add-hook 'telega-chat-mode 'company-mode)
   (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
@@ -130,3 +130,26 @@
    '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5")))))
 
 ;; (map! :map telega-msg-button-map "k" nil)
+(map! :leader
+      (:prefix ("d" . "smerge")
+       "n"  #'smerge-next
+       "u"  #'smerge-keep-upper
+       "l"  #'smerge-keep-lower
+       ))
+
+(use-package! polymode
+  :config
+  (define-hostmode poly-elixir-hostmode
+    :mode 'elixir-mode)
+
+  (define-innermode poly-elixir-template-innermode
+    :mode 'html-mode
+    :head-matcher "~H\"\"\"\n"
+    :tail-matcher "\"\"\"\n"
+    :head-mode 'host
+    :tail-mode 'host)
+
+  (define-polymode poly-elixir-mode
+    :hostmode 'poly-elixir-hostmode
+    :innermodes '(poly-elixir-template-innermode))
+  (setq poly-lock-allow-background-adjustment nil))

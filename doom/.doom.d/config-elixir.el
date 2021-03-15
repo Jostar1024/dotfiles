@@ -39,7 +39,8 @@
     (sp-local-pair "do " " end" :unless '(sp-in-comment-p sp-in-string-p))
     (sp-local-pair "fn " " end" :unless '(sp-in-comment-p sp-in-string-p)))
 
-  (modify-syntax-entry ?& "'" elixir-mode-syntax-table))
+  (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
+  (add-hook 'elixir-mode-hook 'poly-elixir-mode))
 
 (use-package! inf-iex
   :hook
