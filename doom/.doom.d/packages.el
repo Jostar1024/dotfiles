@@ -84,3 +84,4 @@
 
 (package! restclient)
 (package! ob-restclient)
+(package! polymode)
