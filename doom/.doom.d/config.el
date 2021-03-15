@@ -133,6 +133,7 @@
 (map! :leader
       (:prefix ("d" . "smerge")
        "n"  #'smerge-next
+       "a"  #'smerge-keep-all
        "u"  #'smerge-keep-upper
        "l"  #'smerge-keep-lower
        ))
