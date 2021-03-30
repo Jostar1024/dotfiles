@@ -3,6 +3,7 @@
 # key: hevent
 # condition: t
 # --
+@impl true
 def handle_event("$1", _params, socket) do
   $0
   {:noreply, socket}
