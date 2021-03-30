@@ -95,7 +95,6 @@
 (setq auto-save-timeout (* 10 60))
 
 (use-package! ob-elixir)
-(use-package! exec-path-from-shell)
 
 ;; (use-package! org-roam
 ;;   :custom
