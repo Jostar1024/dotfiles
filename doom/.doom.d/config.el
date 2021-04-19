@@ -29,8 +29,16 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-zenburn)
 
-(setq doom-font (font-spec :family "JetBrains Mono" :size 10)
-      doom-variable-pitch-font (font-spec :family "sans" :size 9))
+;; (setq doom-font (font-spec :family "JetBrains Mono" :size 10)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 9))
+
+(setq doom-font                (font-spec :family "JetBrains Mono" :size 32)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono")
+      doom-unicode-font        (font-spec :family "WenQuanYi Micro Hei Mono" :size 32)
+      doom-serif-font          (font-spec :family "WenQuanYi Micro Hei Mono" :size 32)
+      doom-big-font            (font-spec :family "JetBrains Mono" :size 32))
+
+(add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
