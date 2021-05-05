@@ -72,6 +72,7 @@
 
 ;; (load! "config-company")
 (load! "config-elixir")
+(load! "config-clojure")
 (load! "config-lsp")
 (load! "config-wsl")
 (load! "config-ligature")
