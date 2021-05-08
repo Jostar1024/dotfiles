@@ -18,7 +18,8 @@
   (lsp-signature-render-documentation nil)
   (lsp-completion-show-detail nil)
   (lsp-completion-show-kind t)
-  (lsp-clients-elixir-server-executable "/home/yucheng/projects/elixir-ls/release/language_server.sh"))
+  (lsp-elixir-server-command '("/home/yucheng/projects/elixir-ls/release/language_server.sh")))
+
 
 ;; (use-package eglot
 ;;   :bind
