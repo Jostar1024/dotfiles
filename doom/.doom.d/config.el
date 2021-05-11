@@ -174,3 +174,7 @@
 (use-package! evil-snipe
   :custom
   (evil-snipe-spillover-scope 'buffer))
+
+(use-package! dired
+  :custom
+  (dired-dwim-target t))
