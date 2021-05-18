@@ -132,7 +132,7 @@
   ;; (add-hook 'telega-chat-mode 'company-mode)
   (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
   :custom
-  (telega-use-images nil)
+  ;; (telega-use-images nil)
   (telega-open-file-function 'org-open-file)
   (telega-proxies
    '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5")))))
@@ -169,7 +169,9 @@
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2)
   (web-mode-style-padding 2)
-  (web-mode-script-padding 2))
+  (web-mode-script-padding 2)
+  (web-mode-enable-current-element-highlight t)
+  (web-mode-enable-current-column-highlight t))
 
 (use-package! evil-snipe
   :custom
