@@ -47,3 +47,37 @@
   (elixir-mode . inf-iex-minor-mode)
   :init
   (evil-set-initial-state 'inf-iex-tracer-mode 'motion))
+
+(define-key elixir-mode-map (kbd "C-c C-q") '+toggle-ex-leex)
+(define-key web-mode-map (kbd "C-c C-q") '+toggle-ex-leex)
+
+;; (defun +toggle-ex-leex ()
+;;   (interactive)
+;;   (cond
+;;    ((string-suffix-p ".ex" (buffer-file-name))
+;;     (find-file (string-replace ".ex" ".html.leex" (buffer-file-name))))
+;;    ((string-suffix-p ".html.leex" (buffer-file-name))
+;;     (let ((sym (thing-at-point 'symbol)))
+;;       (find-file (string-replace ".html.leex" ".ex" (buffer-file-name)))
+;;       (when sym
+;;         (re-search-forward (regexp-quote sym) nil t))
+;;       (recenter)))
+;;    (t
+;;     (error "File extension is neither .ex nor .html.leex"))))
+
+(defun +toggle-ex-leex ()
+  (interactive)
+  (cond
+   ((string-suffix-p ".ex" (buffer-file-name))
+    (find-file (string-replace ".ex" ".html.leex" (buffer-file-name))))
+   ((string-suffix-p ".html.leex" (buffer-file-name))
+    (let ((sym (thing-at-point 'symbol)))
+      (find-file (string-replace ".html.leex" ".ex" (buffer-file-name)))
+      (when sym
+        (let (pos)
+          (save-mark-and-excursion
+            (goto-char (point-min))
+            (setq pos (re-search-forward (format "\"%s\"" (regexp-quote sym)) nil t)))
+          (when pos (goto-char pos) (recenter))))))
+   (t
+    (error "File extension is neither .ex nor .html.leex"))))
