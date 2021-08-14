@@ -110,7 +110,7 @@ alias tn="tmux new -s"
 alias ta="tmux attach -t"
 
 # DYNAMIC COLOR SWITCHER FOR URXVT
-source $HOME/.dynamic-colors/completions/dynamic-colors.zsh
+# source $HOME/.dynamic-colors/completions/dynamic-colors.zsh
 
 # ASDF
 . $HOME/.asdf/asdf.sh
