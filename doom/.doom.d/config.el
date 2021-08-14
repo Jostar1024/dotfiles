@@ -38,7 +38,7 @@
       doom-serif-font          (font-spec :family "WenQuanYi Micro Hei Mono" :size 10)
       doom-big-font            (font-spec :family "JetBrains Mono" :size 10))
 
-(add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
+;; (add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
