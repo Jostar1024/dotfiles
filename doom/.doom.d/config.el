@@ -70,13 +70,18 @@
 (setq eldoc-idle-delay most-positive-fixnum)
 (global-set-key (kbd "C-c C-f") 'eldoc)
 
+(setq auto-save-default nil)
+(setq auto-save-interval 5000)
+(setq auto-save-timeout (* 10 60))
+
 ;; (load! "config-company")
 (load! "config-elixir")
 (load! "config-clojure")
 (load! "config-lsp")
-(load! "config-wsl")
+;; (load! "config-wsl")
 (load! "config-ligature")
 (load! "config-key-binding")
+(load! "config-org")
 
 (use-package! rime
   :custom
@@ -100,29 +105,6 @@
 ;;                         charset
 ;;                         (font-spec :family cn-font-family)))))
 
-(setq auto-save-default nil)
-(setq auto-save-interval 5000)
-(setq auto-save-timeout (* 10 60))
-
-(use-package! ob-elixir)
-
-;; (use-package! org-roam
-;;   :custom
-;;   (org-format-latex-options (plist-put org-format-latex-options :scale 4.0)))
-
-;; (use-package org-html-themify
-;;   :straight
-;;   (org-html-themify
-;;    :type git
-;;    :host github
-;;    :repo "DogLooksGood/org-html-themify"
-;;    :files ("*.el" "*.js" "*.css"))
-;;   :hook (org-mode . org-html-themify-mode)
-;;   :custom
-;;   (org-html-themify-themes
-;;    '((dark . joker)
-;;      (light . storybook))))
-;;
 (use-package! telega
   :general
   (:keymaps 'telega-msg-button-map
