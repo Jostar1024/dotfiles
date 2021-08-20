@@ -76,6 +76,7 @@
 (load! "config-lsp")
 (load! "config-wsl")
 (load! "config-ligature")
+(load! "config-key-binding")
 
 (use-package! rime
   :custom
@@ -86,18 +87,18 @@
 ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
 ;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
 
-(let ((font-family "Jetbrains Mono")
-      (font-size 10))
-  (when (member font-family (font-family-list))
-    (set-face-attribute 'default nil :font (format "%s-%d" font-family font-size))))
+;; (let ((font-family "Jetbrains Mono")
+;;       (font-size 10))
+;;   (when (member font-family (font-family-list))
+;;     (set-face-attribute 'default nil :font (format "%s-%d" font-family font-size))))
 
-(let ((cn-font-family "WenQuanYi Micro Hei Mono"))
-  (when (member cn-font-family (font-family-list))
-    (setq-default face-font-rescale-alist `((,cn-font-family . 1)))
-    (dolist (charset '(kana han symbol cjk-misc bopomofo))
-      (set-fontset-font (frame-parameter nil 'font)
-                        charset
-                        (font-spec :family cn-font-family)))))
+;; (let ((cn-font-family "WenQuanYi Micro Hei Mono"))
+;;   (when (member cn-font-family (font-family-list))
+;;     (setq-default face-font-rescale-alist `((,cn-font-family . 1)))
+;;     (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;       (set-fontset-font (frame-parameter nil 'font)
+;;                         charset
+;;                         (font-spec :family cn-font-family)))))
 
 (setq auto-save-default nil)
 (setq auto-save-interval 5000)
@@ -135,16 +136,8 @@
   ;; (telega-use-images nil)
   (telega-open-file-function 'org-open-file)
   (telega-proxies
-   '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5")))))
-
-;; (map! :map telega-msg-button-map "k" nil)
-(map! :leader
-      (:prefix ("d" . "smerge")
-       "n"  #'smerge-next
-       "a"  #'smerge-keep-all
-       "u"  #'smerge-keep-upper
-       "l"  #'smerge-keep-lower
-       ))
+   '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5"))))
+  )
 
 (use-package! polymode
   :config
