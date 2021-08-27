@@ -108,6 +108,7 @@ alias zsh_config="emacs -nw ~/.zshrc"
 alias ls="exa"
 alias tn="tmux new -s"
 alias ta="tmux attach -t"
+alias k="kubectl"
 
 # DYNAMIC COLOR SWITCHER FOR URXVT
 # source $HOME/.dynamic-colors/completions/dynamic-colors.zsh
@@ -127,3 +128,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f "/home/yucheng/.ghcup/env" ] && source "/home/yucheng/.ghcup/env" # ghcup-env
+
+# Kubernetes & its autocomplete
+export KUBECONFIG=~/.kube/config:$(ls -d ~/.kube/config.d/* | python -c 'import sys; print(":".join([l.strip() for l in sys.stdin]).strip())')
+export PATH="${PATH}:${HOME}/.krew/bin"
+
+source <(kubectl completion zsh)
+complete -F __start_kubectl k
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh

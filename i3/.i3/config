@@ -297,7 +297,7 @@ exec_always --no-startup-id fix_xcursor
 
 exec --no-startup-id fcitx5 -d
 
-exec xrandr --output DP2 --auto --right-of DP1
+# exec xrandr --output DP2 --auto --right-of DP1
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
