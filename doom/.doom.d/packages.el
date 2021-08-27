@@ -77,7 +77,7 @@
 
 (unpin! org-mode)
 
-(package! telega :pin "f87858583ca7c0e4328f3373aa57d715fd25bbb7")
+(package! telega :pin "26fee82fac70d55ade55381b475e865d99dde496")
 
 (package! restclient)
 (package! ob-restclient)
