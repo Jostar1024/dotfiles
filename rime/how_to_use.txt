@@ -1,0 +1,1 @@
+ln -s ~/.dotfiles/rime/default.custom.yaml ~/.local/share/fcitx5/rime/defualt.custom.yaml
