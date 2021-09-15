@@ -6,7 +6,7 @@
   :commands
   (lsp lsp-deferred)
   :custom
-  (lsp-completion-provider :capf)
+  ;; (lsp-completion-provider :capf)
   (lsp-enable-file-watchers nil)
   (lsp-keymap-prefix "C-l")
   (lsp-enable-symbol-highlighting nil)
@@ -16,9 +16,9 @@
   (lsp-signature-auto-activate t)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-signature-render-documentation nil)
-  (lsp-completion-show-detail nil)
-  (lsp-completion-show-kind t)
-  (lsp-elixir-server-command '("/home/yucheng/projects/elixir-ls/release/language_server.sh")))
+  ;; (lsp-completion-show-detail nil)
+  ;; (lsp-completion-show-kind t)
+  (lsp-elixir-server-command '("/home/yucheng/community/elixir-ls/release/language_server.sh")))
 
 
 ;; (use-package eglot

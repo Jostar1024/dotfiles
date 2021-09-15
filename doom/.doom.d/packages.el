@@ -75,7 +75,7 @@
 ;;    :repo "DogLooksGood/org-html-themify"
 ;;    :files ("*.el" "*.js" "*.css"))
 
-(unpin! org-mode)
+;; (unpin! org-mode)
 
 (package! telega :pin "26fee82fac70d55ade55381b475e865d99dde496")
 

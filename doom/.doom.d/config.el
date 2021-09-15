@@ -49,7 +49,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -117,8 +116,8 @@
   :custom
   ;; (telega-use-images nil)
   (telega-open-file-function 'org-open-file)
-  (telega-proxies
-   '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5"))))
+  ;; (telega-proxies
+  ;;  '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5"))))
   )
 
 (use-package! polymode
