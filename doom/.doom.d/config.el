@@ -32,11 +32,13 @@
 ;; (setq doom-font (font-spec :family "JetBrains Mono" :size 10)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 9))
 
-(setq doom-font                (font-spec :family "JetBrains Mono" :size 10)
-      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 10)
-      doom-unicode-font        (font-spec :family "WenQuanYi Micro Hei Mono" :size 10)
-      doom-serif-font          (font-spec :family "WenQuanYi Micro Hei Mono" :size 10)
-      doom-big-font            (font-spec :family "JetBrains Mono" :size 10))
+(setq +my-font-size 22)
+
+(setq doom-font                (font-spec :family "JetBrains Mono" :size +my-font-size)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size +my-font-size)
+      doom-unicode-font        (font-spec :family "WenQuanYi Micro Hei Mono" :size +my-font-size)
+      doom-serif-font          (font-spec :family "WenQuanYi Micro Hei Mono" :size +my-font-size)
+      doom-big-font            (font-spec :family "JetBrains Mono" :size +my-font-size))
 
 ;; (add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
 
