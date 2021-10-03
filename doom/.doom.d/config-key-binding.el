@@ -15,3 +15,8 @@
        "u"  #'smerge-keep-upper
        "l"  #'smerge-keep-lower
        ))
+
+(map! :after elixir-mode
+      :map elixir-mode-map
+      :leader
+      :n "c f" #'lsp-format-buffer)
