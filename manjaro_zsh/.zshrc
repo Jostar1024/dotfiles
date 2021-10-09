@@ -136,3 +136,10 @@ export PATH="${PATH}:${HOME}/.krew/bin"
 source <(kubectl completion zsh)
 complete -F __start_kubectl k
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+
+# -X leaves file contents on the screen when less exits.
+# -F makes less quit if the entire output can be displayed on one screen.
+# -R displays ANSI color escape sequences in "raw" form.
+# -S disables line wrapping. Side-scroll to see long lines.
+
+export LESS="-SRXF"
