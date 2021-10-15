@@ -5,7 +5,7 @@
      (:foreground "grey60"))
     (((class color) (background light))
      (:foreground "grey40")))
-    "Elixir dim face.")
+  "Elixir dim face.")
 
 (use-package! elixir-mode
   :init
@@ -40,7 +40,14 @@
     (sp-local-pair "fn " " end" :unless '(sp-in-comment-p sp-in-string-p)))
 
   (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
-  (add-hook 'elixir-mode-hook 'poly-elixir-mode))
+  (add-hook 'elixir-mode-hook 'poly-elixir-mode)
+  (map! :map elixir-mode-map
+        :leader
+        :n "c f" #'lsp-format-buffer
+        :n "m c" #'+elixir-test-current-file)
+  )
+
+
 
 (use-package! inf-iex
   :hook
@@ -82,3 +89,14 @@
 ;;    (t
 ;;     (error "File extension is neither .ex nor .html.leex"))))
 
+(require 'dash)
+
+(defun +elixir-test-current-file ()
+  (interactive)
+  (let* ((str-list             (split-string (projectile-project-root) "\/"))
+         (trimed-list          (-remove (lambda (x) (string= x "")) str-list))
+         (dropped              (length trimed-list))
+         (filename-list        (split-string (buffer-file-name) "\/"))
+         (filename-trimed-list (-remove (lambda (x) (string= x "")) filename-list))
+         (filename             (mapconcat 'identity (-drop (+ 1 dropped) filename-trimed-list) "\/")))
+    (inf-iex--tmux-send (concat "mix test " filename))))

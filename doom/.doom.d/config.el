@@ -35,8 +35,12 @@
 ;; (setq +my-cnfont-size 26)
 ;; (setq +my-ascii-size 22)
 
-(setq +my-cnfont-size 44)
-(setq +my-ascii-size 36)
+;; for thinkpad's screen
+;; (setq +my-cnfont-size 44)
+;; (setq +my-ascii-size 36)
+
+(setq +my-cnfont-size 38)
+(setq +my-ascii-size 32)
 
 (setq doom-font                (font-spec :family "JetBrains Mono" :size +my-ascii-size)
       doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size +my-ascii-size)
@@ -160,3 +164,4 @@
 (use-package! dired
   :custom
   (dired-dwim-target t))
+
