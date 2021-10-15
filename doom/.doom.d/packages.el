@@ -82,3 +82,8 @@
 (package! restclient)
 (package! ob-restclient)
 (package! polymode)
+(package! protobuf-mode)
+
+(package! map :pin "bb50dba")
+(package! cider :pin "0a9d0ef429e76ee36c34e116c4633c69cea96c67")
+;; (package! cider :pin "8b3dabeefa8a3352d7a30a9fd9027c05a4c4f6e2")
