@@ -5,7 +5,9 @@
   (clojure-toplevel-inside-comment-form t)
   :config
   (add-hook 'clojure-mode-hook 'paredit-mode)
-  (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point))
+  (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point)
+  (map! :localleader
+        "a" #'clojure-align))
 
 ;; (defun exec-sexp ()
 ;;   (interactive)
