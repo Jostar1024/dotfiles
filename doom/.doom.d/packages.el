@@ -64,6 +64,10 @@
   :recipe (:host github :repo "mickeynp/ligature.el"))
 
 (package! ob-elixir)
+(package! ob-restclient)
+(package! ob-racket)
+
+(package! restclient)
 
 (package! screenshot
   :recipe (:host github :repo "tecosaur/screenshot"))
@@ -75,15 +79,17 @@
 ;;    :repo "DogLooksGood/org-html-themify"
 ;;    :files ("*.el" "*.js" "*.css"))
 
-;; (unpin! org-mode)
-
 (package! telega :pin "26fee82fac70d55ade55381b475e865d99dde496")
 
-(package! restclient)
-(package! ob-restclient)
 (package! polymode)
 (package! protobuf-mode)
 
 (package! map :pin "bb50dba")
 (package! cider :pin "0a9d0ef429e76ee36c34e116c4633c69cea96c67")
-;; (package! cider :pin "8b3dabeefa8a3352d7a30a9fd9027c05a4c4f6e2")
+
+(package! gitconfig-mode
+  :recipe (:host github :repo "magit/git-modes"
+           :files ("gitconfig-mode.el")))
+(package! gitignore-mode
+  :recipe (:host github :repo "magit/git-modes"
+           :files ("gitignore-mode.el")))

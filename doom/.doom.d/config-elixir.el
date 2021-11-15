@@ -41,10 +41,14 @@
 
   (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
   (add-hook 'elixir-mode-hook 'poly-elixir-mode)
-  (map! :map elixir-mode-map
-        :leader
-        :n "c f" #'lsp-format-buffer
-        :n "m c" #'+elixir-test-current-file)
+  (map! :after elixir-mode
+        :map elixir-mode-map
+        :localleader
+        :n "f" #'elixir-format
+        :n "t" #'+elixir-test-current-file
+        :n "d" #'lsp-ui-doc-glance
+        :n "c c" #'inf-iex-eval
+        :n "c v" #'inf-iex-toggle-send-target)
   )
 
 

@@ -6,8 +6,9 @@
   :config
   (add-hook 'clojure-mode-hook 'paredit-mode)
   (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point)
-  (map! :localleader
-        "a" #'clojure-align))
+  (map! :map clojure-mode-map
+        :localleader
+        :n "a" #'clojure-align))
 
 ;; (defun exec-sexp ()
 ;;   (interactive)
