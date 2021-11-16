@@ -143,3 +143,5 @@ complete -F __start_kubectl k
 # -S disables line wrapping. Side-scroll to see long lines.
 
 export LESS="-SRXF"
+
+[[ ! -r /home/yucheng/.opam/opam-init/init.zsh ]] || source /home/yucheng/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
