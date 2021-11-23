@@ -32,13 +32,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar +gtd-inbox-file "~/org/gtd/inbox.org")
+(defvar +gtd-work-file "~/org/gtd/work.org")
 (defvar +gtd-main-file "~/org/gtd/gtd.org")
 (defvar +gtd-someday-file "~/org/gtd/someday.org")
 (defvar +gtd-tickler-file "~/org/gtd/tickler.org")
 
 (after! org
 
-  (setq org-agenda-files `(,+gtd-inbox-file ,+gtd-main-file ,+gtd-tickler-file))
+  (setq org-agenda-files `(,+gtd-inbox-file ,+gtd-main-file ,+gtd-tickler-file ,+gtd-work-file))
 
   (setq org-agenda-custom-commands
         '(("o" "At the office" tags-todo "@office"
@@ -48,6 +49,7 @@
            ((org-agenda-overriding-header "Home")))))
 
   (setq org-refile-targets '((+gtd-main-file :maxlevel . 3)
+                             (+gtd-work-file :maxlevel . 2)
                              (+gtd-someday-file :level . 1)
                              (+gtd-tickler-file :maxlevel . 2)))
 
