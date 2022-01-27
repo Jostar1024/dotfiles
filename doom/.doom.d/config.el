@@ -166,9 +166,17 @@
   (dired-dwim-target t))
 
 (use-package! projectile
-  :init
+  :config
   (setq projectile-project-root-files #'( ".projectile" ))
   (setq projectile-project-root-files-functions #'(projectile-root-top-down
                                              projectile-root-top-down-recurring
                                              projectile-root-bottom-up
                                              projectile-root-local)))
+
+(use-package! org-tree-slide
+  :config
+  (map! :after org-tree-slide
+        :map org-tree-slide-mode-map
+        :localleader
+        :n "j" #'org-tree-slide-move-next-tree
+        ))

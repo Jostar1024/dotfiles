@@ -102,5 +102,22 @@
          (dropped              (length trimed-list))
          (filename-list        (split-string (buffer-file-name) "\/"))
          (filename-trimed-list (-remove (lambda (x) (string= x "")) filename-list))
-         (filename             (mapconcat 'identity (-drop (+ 1 dropped) filename-trimed-list) "\/")))
+         (filename             (mapconcat 'identity (-drop dropped filename-trimed-list) "\/")))
     (inf-iex--tmux-send (concat "mix test " filename))))
+
+(defun +copy-file-name ()
+  (interactive)
+  (kill-new (buffer-file-name))
+  )
+;; elixir should have a cider-doc
+;; (defun cider-doc (&optional arg)
+;;   "Open Clojure documentation in a popup buffer.
+
+;; Prompts for the symbol to use, or uses the symbol at point, depending on
+;; the value of `cider-prompt-for-symbol'.  With prefix arg ARG, does the
+;; opposite of what that option dictates."
+;;   (interactive "P")
+;;   (cider-ensure-connected)
+;;   (funcall (cider-prompt-for-symbol-function arg)
+;;            "Doc for"
+;;            #'cider-doc-lookup))
