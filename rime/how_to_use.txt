@@ -1,1 +1,3 @@
 ln -s ~/.dotfiles/rime/default.custom.yaml ~/.local/share/fcitx5/rime/defualt.custom.yaml
+or
+sudo cp ~/.dotfiles/rime/default.yaml /usr/share/rime-data/
