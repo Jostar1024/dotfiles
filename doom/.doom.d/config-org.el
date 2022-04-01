@@ -129,3 +129,7 @@
 ;;   (if org-latex-auto-toggle
 ;;       (add-hook 'post-command-hook '+org-post-command-hook nil t)
 ;;     (remove-hook 'post-command-hook '+org-post-command-hook t)))
+
+(use-package! org-journal
+  :config
+  (setq org-journal-file-type 'weekly))

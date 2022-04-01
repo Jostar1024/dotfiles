@@ -44,8 +44,8 @@
 
 (setq doom-font                (font-spec :family "JetBrains Mono" :size +my-ascii-size)
       doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size +my-ascii-size)
-      doom-unicode-font        (font-spec :family "WenQuanYi Micro Hei Mono" :size +my-cnfont-size)
-      doom-serif-font          (font-spec :family "WenQuanYi Micro Hei Mono" :size +my-cnfont-size)
+      doom-unicode-font        (font-spec :family "LXGW Wenkai Mono" :size +my-cnfont-size)
+      doom-serif-font          (font-spec :family "LXGW Wenkai Mono" :size +my-cnfont-size)
       doom-big-font            (font-spec :family "JetBrains Mono" :size +my-ascii-size))
 
 ;; (add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
@@ -173,10 +173,10 @@
                                              projectile-root-bottom-up
                                              projectile-root-local)))
 
-(use-package! org-tree-slide
-  :config
-  (map! :after org-tree-slide
-        :map org-tree-slide-mode-map
-        :localleader
-        :n "j" #'org-tree-slide-move-next-tree
-        ))
+;; (use-package! org-tree-slide
+;;   :config
+;;   (map! :after org-tree-slide
+;;         :map org-tree-slide-mode-map
+;;         :localleader
+;;         :n "j" #'org-tree-slide-move-next-tree
+;;         ))

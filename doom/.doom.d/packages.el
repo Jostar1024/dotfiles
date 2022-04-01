@@ -93,3 +93,8 @@
 (package! gitignore-mode
   :recipe (:host github :repo "magit/git-modes"
            :files ("gitignore-mode.el")))
+
+(package! zig-mode
+  :recipe (:host github :repo "ziglang/zig-mode"))
+
+(package! org-drill)
