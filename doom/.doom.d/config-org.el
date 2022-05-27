@@ -38,7 +38,7 @@
 (defvar +gtd-tickler-file "~/org/gtd/tickler.org")
 
 (after! org
-
+  (setq org-log-done 'time)
   (setq org-agenda-files `(,+gtd-inbox-file ,+gtd-main-file ,+gtd-tickler-file ,+gtd-work-file))
 
   (setq org-agenda-custom-commands
@@ -113,8 +113,8 @@
 
       (when-let ((ovs (overlays-at (point))))
         (when (->> ovs
-                (--map (overlay-get it 'org-overlay-type))
-                (--filter (equal it 'org-latex-overlay)))
+                   (--map (overlay-get it 'org-overlay-type))
+                   (--filter (equal it 'org-latex-overlay)))
           (org-latex-preview)
           (setq +org-last-in-latex t)))
 
@@ -133,3 +133,17 @@
 (use-package! org-journal
   :config
   (setq org-journal-file-type 'weekly))
+
+(defun +org-file-to-github-link ()
+  (interactive)
+  (let* ((filename-list        (split-string (buffer-file-name) "/"))
+         (project-and-filename (-drop-while (lambda (x)
+                                              (not (string= x "tubi")))
+                                            filename-list))
+         (project              (cadr project-and-filename))
+         (filename             (mapconcat 'identity  (cddr project-and-filename) "/"))
+         (line-num-str         (number-to-string (line-number-at-pos)))
+         (url                  (mapconcat 'identity (list "www.github.com/adrise" project "blob/master" filename) "/"))
+         (url-with-ln          (concat url "#L" line-num-str)))
+    (kill-new url-with-ln)
+    (message url-with-ln)))
