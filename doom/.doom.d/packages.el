@@ -79,22 +79,18 @@
 ;;    :repo "DogLooksGood/org-html-themify"
 ;;    :files ("*.el" "*.js" "*.css"))
 
-(package! telega :pin "26fee82fac70d55ade55381b475e865d99dde496")
+(package! telega :pin "2474aaf0c9cba06670d3db46b5fe47ce3c6fb97a")
 
 (package! polymode)
 (package! protobuf-mode)
 
 (package! map :pin "bb50dba")
-(package! cider :pin "0a9d0ef429e76ee36c34e116c4633c69cea96c67")
+;; (package! cider :pin "0a9d0ef429e76ee36c34e116c4633c69cea96c67")
 
 (package! gitconfig-mode
   :recipe (:host github :repo "magit/git-modes"
            :files ("gitconfig-mode.el")))
-(package! gitignore-mode
-  :recipe (:host github :repo "magit/git-modes"
-           :files ("gitignore-mode.el")))
-
-(package! zig-mode
-  :recipe (:host github :repo "ziglang/zig-mode"))
 
 (package! org-drill)
+
+(package! tla-mode)

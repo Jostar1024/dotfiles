@@ -101,19 +101,6 @@
 ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
 ;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
 
-;; (let ((font-family "Jetbrains Mono")
-;;       (font-size 10))
-;;   (when (member font-family (font-family-list))
-;;     (set-face-attribute 'default nil :font (format "%s-%d" font-family font-size))))
-
-;; (let ((cn-font-family "WenQuanYi Micro Hei Mono"))
-;;   (when (member cn-font-family (font-family-list))
-;;     (setq-default face-font-rescale-alist `((,cn-font-family . 1)))
-;;     (dolist (charset '(kana han symbol cjk-misc bopomofo))
-;;       (set-fontset-font (frame-parameter nil 'font)
-;;                         charset
-;;                         (font-spec :family cn-font-family)))))
-
 (use-package! telega
   :general
   (:keymaps 'telega-msg-button-map
@@ -129,23 +116,6 @@
   ;; (telega-proxies
   ;;  '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5"))))
   )
-
-(use-package! polymode
-  :config
-  (define-hostmode poly-elixir-hostmode
-    :mode 'elixir-mode)
-
-  (define-innermode poly-elixir-template-innermode
-    :mode 'html-mode
-    :head-matcher "~H\"\"\"\n"
-    :tail-matcher "\"\"\"\n"
-    :head-mode 'host
-    :tail-mode 'host)
-
-  (define-polymode poly-elixir-mode
-    :hostmode 'poly-elixir-hostmode
-    :innermodes '(poly-elixir-template-innermode))
-  (setq poly-lock-allow-background-adjustment nil))
 
 (use-package! web-mode
   :custom
@@ -172,11 +142,15 @@
                                              projectile-root-top-down-recurring
                                              projectile-root-bottom-up
                                              projectile-root-local)))
-
-;; (use-package! org-tree-slide
+;; (use-package! zig-mode
+;;   :hook ((zig-mode . lsp-deferred))
+;;   :custom (zig-format-on-save nil)
 ;;   :config
-;;   (map! :after org-tree-slide
-;;         :map org-tree-slide-mode-map
-;;         :localleader
-;;         :n "j" #'org-tree-slide-move-next-tree
-;;         ))
+;;   (after! lsp-mode
+;;     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+;;     (lsp-register-client
+;;       (make-lsp-client
+;;         :new-connection (lsp-stdio-connection "/usr/bin/zls")
+;;         :major-modes '(zig-mode)
+;;         :server-id 'zls))))
+(map! :i "<f9>" 'insert-parentheses)

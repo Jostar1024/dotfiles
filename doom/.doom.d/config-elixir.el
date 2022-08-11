@@ -12,13 +12,7 @@
   ;; Disable default smartparens config. There are too many pairs; we only want
   ;; a subset of them (defined below).
   (provide 'smartparens-elixir)
-  :mode
-  (("\\.eex\\'" . web-mode)
-   ("\\.leex\\'" . web-mode)
-   ("\\.sface\\'" . web-mode))
-  ;; :bind
-  ;; (:map elixir-mode-map
-  ;;  ("C-c C-f" . 'elixir-format))
+
   :config
   (font-lock-add-keywords 'elixir-mode
                           '(("\\([_a-zA-Z0-9!?]+\\):" 1 'default)
@@ -30,6 +24,7 @@
                             ("\\_<nil\\_>" . font-lock-constant-face)
                             ("\\_<_[a-zA-Z0-9]*\\_>" . '+elixir-dim-face)))
 
+  (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
   ;; ...and only complete the basics
   (sp-with-modes 'elixir-mode
     (sp-local-pair "do" "end"
@@ -38,9 +33,6 @@
                    :post-handlers '("||\n[i]"))
     (sp-local-pair "do " " end" :unless '(sp-in-comment-p sp-in-string-p))
     (sp-local-pair "fn " " end" :unless '(sp-in-comment-p sp-in-string-p)))
-
-  (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
-  (add-hook 'elixir-mode-hook 'poly-elixir-mode)
   (map! :after elixir-mode
         :map elixir-mode-map
         :localleader
@@ -50,8 +42,6 @@
         :n "c c" #'inf-iex-eval
         :n "c v" #'inf-iex-toggle-send-target)
   )
-
-
 
 (use-package! inf-iex
   :hook
