@@ -50,9 +50,12 @@
 ;(unpin! t)
 
 (package! elixir-mode)
+(package! exunit)
 
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"))
+
+(package! lsp-origami)
 
 (package! inf-iex
  :recipe (:host github :repo "DogLooksGood/inf-iex"))
@@ -94,3 +97,7 @@
 (package! org-drill)
 
 (package! tla-mode)
+
+(package! tree-sitter)
+(package! tree-sitter-langs)
+(package! evil-textobj-tree-sitter)

@@ -12,7 +12,8 @@
   ;; Disable default smartparens config. There are too many pairs; we only want
   ;; a subset of them (defined below).
   (provide 'smartparens-elixir)
-
+  :hook
+  (elixir-mode . paredit-mode)
   :config
   (font-lock-add-keywords 'elixir-mode
                           '(("\\([_a-zA-Z0-9!?]+\\):" 1 'default)
@@ -111,3 +112,22 @@
 ;;   (funcall (cider-prompt-for-symbol-function arg)
 ;;            "Doc for"
 ;;            #'cider-doc-lookup))
+
+(use-package! exunit
+  :hook (elixir-mode . exunit-mode)
+  :init
+  (map! :after elixir-mode
+        :localleader
+        :map elixir-mode-map
+        "m" #'exunit-transient)
+
+  (map! :after elixir-mode
+        :localleader
+        :map elixir-mode-map
+        :prefix ("t" . "test")
+        "a" #'exunit-verify-all
+        "r" #'exunit-rerun
+        "v" #'exunit-verify
+        "T" #'exunit-toggle-file-and-test
+        "t" #'exunit-toggle-file-and-test-other-window
+        "s" #'exunit-verify-single))
