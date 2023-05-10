@@ -12,6 +12,16 @@
         :localleader
         :n "a" #'clojure-align))
 
+(use-package! cider
+  :config
+  (cider-register-cljs-repl-type 'nbb "(+ 1 2 3)")
+  (defun mm/cider-connected-hook ()
+    (when (eq 'nbb cider-cljs-repl-type)
+      (setq-local cider-show-error-buffer nil)
+      (cider-set-repl-type 'cljs)))
+  (add-hook 'cider-connected-hook #'mm/cider-connected-hook))
+
+
 ;; (defun exec-sexp ()
 ;;   (interactive)
 ;;   (execute-kbd-macro (read-kbd-macro "C-M-x")))
