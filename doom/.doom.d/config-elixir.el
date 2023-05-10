@@ -32,6 +32,7 @@
                    :post-handlers '("||\n[i]"))
     (sp-local-pair "do " " end" :unless '(sp-in-comment-p sp-in-string-p))
     (sp-local-pair "fn " " end" :unless '(sp-in-comment-p sp-in-string-p)))
+  (evil-define-key 'normal elixir-mode-map (kbd "RET") 'inf-iex-eval)
   (map! :after elixir-mode
         :map elixir-mode-map
         :localleader
