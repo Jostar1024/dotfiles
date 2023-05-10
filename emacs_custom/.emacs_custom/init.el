@@ -39,6 +39,6 @@
   :hook
   ((emacs-lisp-mode . paredit-mode)))
 
-(use-package org-mode)
+(use-package org)
 (use-package magit)
 ;;; init.el ends here
