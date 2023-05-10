@@ -95,6 +95,7 @@
            :files ("gitconfig-mode.el")))
 
 (package! org-drill)
+(package! org-appear :pin "ffbd742267ff81ba8433177fac5d7fe22b6d68a9")
 
 (package! tla-mode)
 
