@@ -102,7 +102,10 @@
    '("Y" . meow-sync-grab)
    '("z" . meow-pop-selection)
    '("'" . repeat)
-   '("<escape>" . mode-line-other-buffer)))
+   '("<escape>" . mode-line-other-buffer)
+
+   '("SPC ," . switch-to-buffer)
+   '("SPC f" . counsel-find-file)))
 
 
 (use-package meow
