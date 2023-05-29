@@ -105,7 +105,9 @@
    '("<escape>" . mode-line-other-buffer)
 
    '("SPC ," . switch-to-buffer)
-   '("SPC f" . counsel-find-file)))
+   '("SPC f" . counsel-find-file)
+   '("SPC g" . magit-status)
+   '("SPC s" . search-forward)))
 
 
 (use-package meow
