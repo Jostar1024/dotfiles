@@ -17,27 +17,6 @@
 
 (use-package no-littering)
 
-(use-package corfu
-  :straight (corfu :files (:defaults "extensions/*"))
-  :custom
-  (corfu-cycle nil)			;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)			;; Enable auto completion
-  (corfu-auto-delay 0)
-  (corfu-auto-prefix 2)
-
-  (corfu-separator ?\s)			;; Orderless field separator
-  (corfu-quit-at-boundary t)		;; Never quit at completion boundary
-  (corfu-quit-no-match t)		;; Never quit, even if there is no match
-  (corfu-preview-current 'insert)	;; Disable current candidate preview
-  (corfu-preselect 'prompt)		;; Preselect the prompt
-  (corfu-on-exact-match nil)		;; Configure handling of exact matches
-  (corfu-scroll-margin 5)		;; se scroll margin
-
-  :init
-  (global-corfu-mode)
-  (corfu-popupinfo-mode)
-  ) 
-
 (use-package orderless
   :init
   ;; Configure a custom style dispatcher (see the Consult wiki)
@@ -46,6 +25,29 @@
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
+
+(use-package corfu
+  :after orderless
+  :straight (corfu :files (:defaults "extensions/*"))
+  :custom
+  (corfu-cycle nil)			;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)			;; Enable auto completion
+  (corfu-auto-delay 0)
+  (corfu-auto-prefix 2)
+  (corfu-popupinfo-delay 0.2)
+  
+  (corfu-separator ?\s)			;; Orderless field separator
+  (corfu-quit-at-boundary nil)		;; Never quit at completion boundary
+  (corfu-quit-no-match t)		
+  (corfu-preview-current nil)	;; Disable current candidate preview
+  (corfu-preselect 'first)		;; Preselect the prompt
+  (corfu-on-exact-match nil)		;; Configure handling of exact matches
+  (corfu-scroll-margin 5)		;; set scroll margin
+    
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  )
 
 (use-package kind-icon
   :after corfu
@@ -85,6 +87,5 @@
 
   (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
   )
-
 
 (provide 'init-completion)
