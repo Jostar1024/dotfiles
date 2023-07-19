@@ -40,7 +40,12 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    '("/" . meow-keypad-describe-key)
-   '("?" . meow-cheatsheet))
+   '("?" . meow-cheatsheet)
+   '("," . switch-to-buffer)
+   '("f" . counsel-find-file)
+   '("g" . magit-status)
+   '("s" . search-forward)
+   )
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
@@ -104,10 +109,11 @@
    '("'" . repeat)
    '("<escape>" . mode-line-other-buffer)
 
-   '("SPC ," . switch-to-buffer)
-   '("SPC f" . counsel-find-file)
-   '("SPC g" . magit-status)
-   '("SPC s" . search-forward)))
+   ;; '("SPC ," . switch-to-buffer)
+   ;; '("SPC f" . counsel-find-file)
+   ;; '("SPC g" . magit-status)
+   ;; '("SPC s" . search-forward)
+   ))
 
 
 (use-package meow
