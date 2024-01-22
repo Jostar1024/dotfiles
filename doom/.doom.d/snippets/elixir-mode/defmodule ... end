@@ -1,0 +1,6 @@
+# key: dm
+# name: defmodule ... end
+# --
+defmodule ${1:`(mapconcat 'capitalize (split-string  (file-name-nondirectory (directory-file-name (file-name-directory buffer-file-name))) "_") "")`}.${2:`(mapconcat 'capitalize (split-string (file-name-base) "_") "")`} do
+  $0
+end
