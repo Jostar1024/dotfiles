@@ -91,6 +91,7 @@
 (load! "config-ligature")
 (load! "config-key-binding")
 (load! "config-org")
+(load! "config-tree-sitter")
 
 (use-package! rime
   :custom
@@ -104,8 +105,8 @@
 (use-package! telega
   :general
   (:keymaps 'telega-msg-button-map
-   "n" nil
-   "k" nil)
+            "n" nil
+            "k" nil)
 
   :config
   ;; (add-hook 'telega-chat-mode 'company-mode)
@@ -139,9 +140,9 @@
   :config
   (setq projectile-project-root-files #'( ".projectile" ))
   (setq projectile-project-root-files-functions #'(projectile-root-top-down
-                                             projectile-root-top-down-recurring
-                                             projectile-root-bottom-up
-                                             projectile-root-local)))
+                                                   projectile-root-top-down-recurring
+                                                   projectile-root-bottom-up
+                                                   projectile-root-local)))
 ;; (use-package! zig-mode
 ;;   :hook ((zig-mode . lsp-deferred))
 ;;   :custom (zig-format-on-save nil)
@@ -154,3 +155,15 @@
 ;;         :major-modes '(zig-mode)
 ;;         :server-id 'zls))))
 (map! :i "<f9>" 'insert-parentheses)
+
+(use-package! rime
+  :config
+  (setq rime-disable-predicates
+        '(rime-predicate-evil-mode-p
+          rime-predicate-space-after-cc-p
+          rime-predicate-after-alphabet-char-p
+          rime-predicate-prog-in-code-p)))
+
+
+(set-formatter! 'sql '("pg_format") :modes '(sql-mode))
+(set-formatter! 'protobuf '("clang-format" "-") :modes '(protobuf-mode))

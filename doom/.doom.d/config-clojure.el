@@ -10,16 +10,24 @@
   (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point)
   (map! :map clojure-mode-map
         :localleader
-        :n "a" #'clojure-align))
+        :n "a" #'clojure-align
+        ))
 
 (use-package! cider
   :config
-  (cider-register-cljs-repl-type 'nbb "(+ 1 2 3)")
+  (cider-register-cljs-repl-type 'mynbb "(+ 1 2 3)")
   (defun mm/cider-connected-hook ()
     (when (eq 'nbb cider-cljs-repl-type)
       (setq-local cider-show-error-buffer nil)
       (cider-set-repl-type 'cljs)))
-  (add-hook 'cider-connected-hook #'mm/cider-connected-hook))
+  (defun custom-eval-user-go ()
+    (interactive)
+    (save-buffer)
+    (cider-interactive-eval (format "(integrant.repl/reset)" (cider-last-sexp))))
+  (add-hook 'cider-connected-hook #'mm/cider-connected-hook)
+  (map! :map cider-mode-map
+        :localleader
+        :n "k" #'custom-eval-user-go))
 
 
 ;; (defun exec-sexp ()

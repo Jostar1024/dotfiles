@@ -68,7 +68,6 @@
 
 (package! ob-elixir)
 (package! ob-restclient)
-(package! ob-racket)
 
 (package! restclient)
 
@@ -82,9 +81,8 @@
 ;;    :repo "DogLooksGood/org-html-themify"
 ;;    :files ("*.el" "*.js" "*.css"))
 
-(package! telega :pin "2474aaf0c9cba06670d3db46b5fe47ce3c6fb97a")
+(package! telega :pin "ac3634e2e7efe9c29c4311196e0ed67085d58f11")
 
-(package! polymode)
 (package! protobuf-mode)
 
 (package! map :pin "bb50dba")
@@ -94,11 +92,11 @@
   :recipe (:host github :repo "magit/git-modes"
            :files ("gitconfig-mode.el")))
 
-(package! org-drill)
 (package! org-appear :pin "ffbd742267ff81ba8433177fac5d7fe22b6d68a9")
-
-(package! tla-mode)
 
 (package! tree-sitter)
 (package! tree-sitter-langs)
 (package! evil-textobj-tree-sitter)
+(package! sqlite3)
+
+(package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))

@@ -5,6 +5,8 @@
 
 (use-package! evil-textobj-tree-sitter :ensure t)
 
+(require 'tree-sitter)
+
 (defun tree-sitter-mark-bigger-node ()
   (interactive)
   (let* ((p (point))
@@ -23,5 +25,6 @@
     (set-mark node-end)
     (goto-char node-beg)))
 
-(after! er/expand-region (setq er/try-expand-list (append er/try-expand-list
-                                                          '(tree-sitter-mark-bigger-node))))
+;; (after! er/expand-region (add-to-list 'er/try-expand-list 'tree-sitter-mark-bigger-node))
+
+(after! er/expand-region (setq er/try-expand-list (append er/try-expand-list '(tree-sitter-mark-bigger-node))))
