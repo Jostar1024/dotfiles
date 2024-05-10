@@ -167,3 +167,14 @@
 
 (set-formatter! 'sql '("pg_format") :modes '(sql-mode))
 (set-formatter! 'protobuf '("clang-format" "-") :modes '(protobuf-mode))
+
+(use-package! prolog
+  :config
+  (setq prolog-system 'swi
+        prolog-program-switches '((swi ("-G128M" "-T128M" "-L128M" "-O"))
+                                  (t nil))
+        prolog-electric-if-then-else-flag t)
+  )
+
+(after! nix-mode
+  (set-formatter! 'alejandra '("alejandra" "--quiet") :modes '(nix-mode)))

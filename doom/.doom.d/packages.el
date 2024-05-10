@@ -100,3 +100,4 @@
 (package! sqlite3)
 
 (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
+(package! ediprolog)

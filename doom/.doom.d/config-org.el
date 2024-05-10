@@ -3,7 +3,7 @@
 ;; (use-package! org-roam
 ;;   :custom
 ;;   (org-format-latex-options (plist-put org-format-latex-options :scale 4.0)))
-
+;; (org-format-latex-options (plist-put org-format-latex-options :scale 6.0))
 ;; (use-package org-html-themify
 ;;   :straight
 ;;   (org-html-themify

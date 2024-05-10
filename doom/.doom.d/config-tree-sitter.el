@@ -27,4 +27,4 @@
 
 ;; (after! er/expand-region (add-to-list 'er/try-expand-list 'tree-sitter-mark-bigger-node))
 
-(after! er/expand-region (setq er/try-expand-list (append er/try-expand-list '(tree-sitter-mark-bigger-node))))
+(after! er/expand-region (setq er/try-expand-list (append er/try-expand-list #'(tree-sitter-mark-bigger-node))))
