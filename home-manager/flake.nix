@@ -21,18 +21,12 @@
     darwin,
     ...
   }: {
-    darwinConfigurations = {
-      "K27W4P74XQ" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.yuchengcao = import [./home/darwin.nix ./home/common.nix];
-          }
-        ];
-      };
+    homeConfigurations."yuchengcao" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+      modules = [
+        ./home/darwin.nix
+        ./home/common.nix
+      ];
     };
 
     homeConfigurations."yucheng" = home-manager.lib.homeManagerConfiguration {
