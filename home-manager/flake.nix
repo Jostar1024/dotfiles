@@ -21,21 +21,20 @@
     darwin,
     ...
   }: {
-    darwinConfigurations = {
-      armMac = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        modules = [
-          home-manager.darwinModules.default
-          ./arm-mac.nix
-        ];
-        specialArgs = {inherit inputs;};
-      };
+    homeConfigurations."yuchengcao" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+      modules = [
+        ./home/darwin.nix
+        ./home/common.nix
+      ];
     };
 
     homeConfigurations."yucheng" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      modules = [./linux.nix];
+      modules = [
+        ./home/linux.nix
+        ./home/common.nix
+      ];
     };
   };
 }
