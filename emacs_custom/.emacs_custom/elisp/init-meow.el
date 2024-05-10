@@ -44,7 +44,8 @@
    '("," . switch-to-buffer)
    '("f" . counsel-find-file)
    '("g" . magit-status)
-   '("s" . search-forward)
+   '("s" . swiper)
+   '("SPC" . project-find-file)
    )
   (meow-normal-define-key
    '("0" . meow-expand-0)
@@ -80,9 +81,10 @@
    '("i" . meow-insert)
    '("I" . meow-open-above)
    '("j" . meow-next)
-   '("J" . meow-next-expand)
+   ;; '("J" . meow-next-expand)
    '("k" . meow-prev)
-   '("K" . meow-prev-expand)
+   ;; '("K" . meow-prev-expand)
+   '("K" . lsp-describe-thing-at-point)
    '("l" . meow-right)
    '("L" . meow-right-expand)
    '("m" . meow-join)
@@ -123,9 +125,10 @@
   :config
   (meow-setup)
   (meow-global-mode 1)
+  :custom
+  (meow-use-clipboard t)
+  (meow-keypad-leader-dispatch "C-c")
   )
-
-(setq meow-use-clipboard t)
 
 (provide 'init-meow)
 ;;; init-meow.el ends here

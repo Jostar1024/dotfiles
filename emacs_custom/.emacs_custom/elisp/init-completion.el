@@ -1,4 +1,4 @@
-;;; init-completion.el --- init of emacs -*- lexical-binding: t; -*-
+;; init-completion.el --- init of emacs -*- lexical-binding: t; -*-
 
 ;; A few more useful configurations...
 (use-package emacs
@@ -13,7 +13,9 @@
 
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete))
+  (setq tab-always-indent 'complete)
+  :custom
+  (help-window-select t "Switch to help buffers automatically"))
 
 (use-package no-littering)
 
@@ -37,13 +39,13 @@
   (corfu-popupinfo-delay 0.2)
   
   (corfu-separator ?\s)			;; Orderless field separator
-  (corfu-quit-at-boundary nil)		;; Never quit at completion boundary
+  (corfu-quit-at-boundary t)		;; Never quit at completion boundary
   (corfu-quit-no-match t)		
   (corfu-preview-current nil)	;; Disable current candidate preview
   (corfu-preselect 'first)		;; Preselect the prompt
   (corfu-on-exact-match nil)		;; Configure handling of exact matches
   (corfu-scroll-margin 5)		;; set scroll margin
-    
+  
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode)
@@ -73,19 +75,5 @@
   ;; since I have a light theme and dark theme I switch between. This has no
   ;; function unless you use something similar
   (add-hook 'kb/themes-hooks #'(lambda () (interactive) (kind-icon-reset-cache))))
-(use-package elixir-mode
-  :config
-  (font-lock-add-keywords 'elixir-mode
-                          '(("\\([_a-zA-Z0-9!?]+\\):" 1 'default)
-                            (":[_a-zA-Z0-9\"!?]+" . font-lock-constant-face)
-                            ("defmacro \\([a-zA-Z0-9!?_]+\\)" 1 font-lock-function-name-face)
-                            ("\\_<@[_a-zA-Z0-9!?]+\\_>" . 'default)
-                            ("\\_<true\\_>" . font-lock-constant-face)
-                            ("\\_<false\\_>" . font-lock-constant-face)
-                            ("\\_<nil\\_>" . font-lock-constant-face)
-                            ("\\_<_[a-zA-Z0-9]*\\_>" . '+elixir-dim-face)))
-
-  (modify-syntax-entry ?& "'" elixir-mode-syntax-table)
-  )
 
 (provide 'init-completion)
