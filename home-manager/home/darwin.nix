@@ -23,6 +23,11 @@
     enableZshIntegration = true;
   };
 
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -36,7 +41,15 @@
     };
     initExtra = "
       export PATH=$PATH:~/.config/emacs/bin
+      export KERL_BUILD_DOCS=yes
+      export KERL_INSTALL_MANPAGES=yes
+      export KERL_INSTALL_HTMLDOCS=yes
+
       source ~/.zshrc
+
+      eval \"$(starship init zsh)\"
+      . \"$HOME/.nix-profile/share/asdf-vm/asdf.sh\"
+      . \"$HOME/.nix-profile/share/bash-completion/completions/asdf.bash\"
     ";
     profileExtra = "
       eval \"$(/opt/homebrew/bin/brew shellenv)\"

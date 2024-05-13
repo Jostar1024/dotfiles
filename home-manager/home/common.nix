@@ -9,10 +9,12 @@
     allowUnfreePredicate = (_: true);
   };
   home.packages = with pkgs; [
+    # utils
     stow
     curl
     wget
     neofetch
+    starship
 
     # programming
     asdf-vm
@@ -31,7 +33,14 @@
     racket
     pandoc
     haskellPackages.lsp
+    haskellPackages.hoogle
     haskellPackages.cabal-install
+    # erlang deps
+    fop
+    jdk21
+    wxGTK32
+    unixODBC
+    openssl
 
     # utils
     ripgrep
