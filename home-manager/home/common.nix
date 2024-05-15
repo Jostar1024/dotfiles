@@ -6,7 +6,7 @@
 }: {
   nixpkgs.config = {
     allowUnfree = true;
-    allowUnfreePredicate = (_: true);
+    allowUnfreePredicate = _: true;
   };
   home.packages = with pkgs; [
     # utils
@@ -15,8 +15,13 @@
     wget
     neofetch
     starship
+    bat
+    pgcli
+    visidata
 
     # programming
+    alejandra
+    nil
     asdf-vm
     elixir-ls
     terraform
@@ -35,6 +40,8 @@
     haskellPackages.lsp
     haskellPackages.hoogle
     haskellPackages.cabal-install
+
+    podman-compose
     # erlang deps
     fop
     jdk21
@@ -51,14 +58,13 @@
     yq-go
     eza
     comma
-    
+
     # libs
     librime
     fontconfig
     coreutils
-    aspell
-
-    # softwares    
+    (aspellWithDicts (dicts: with dicts; [en en-computers en-science fr]))
+    # softwares
     alacritty
     syncthing
     keepassxc
