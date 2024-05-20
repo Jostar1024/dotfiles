@@ -41,12 +41,14 @@
 
 (setq +my-cnfont-size 20)
 (setq +my-ascii-size 16)
+(setq +my-ascii-font "Jetbrains Mono")
+(setq +my-cnfont "LXGW Wenkai Mono")
 
-(setq doom-font                (font-spec :family "JetBrains Mono" :size +my-ascii-size)
-      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size +my-ascii-size)
-      doom-symbol-font        (font-spec :family "LXGW Wenkai Mono" :size +my-cnfont-size)
-      doom-serif-font          (font-spec :family "LXGW Wenkai Mono" :size +my-cnfont-size)
-      doom-big-font            (font-spec :family "JetBrains Mono" :size +my-ascii-size))
+(setq doom-font                (font-spec :family +my-ascii-font :size +my-ascii-size)
+      doom-variable-pitch-font (font-spec :family +my-ascii-font :size +my-ascii-size)
+      doom-symbol-font         (font-spec :family +my-cnfont :size +my-cnfont-size)
+      doom-serif-font          (font-spec :family +my-cnfont :size +my-cnfont-size)
+      doom-big-font            (font-spec :family +my-ascii-font :size +my-ascii-size))
 
 ;; (add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
 
