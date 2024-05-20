@@ -9,6 +9,9 @@
     allowUnfreePredicate = _: true;
   };
   home.packages = with pkgs; [
+    # ai
+    ollama
+
     # utils
     stow
     curl
@@ -17,6 +20,9 @@
     starship
     bat
     pgcli
+    htop
+    tree
+    flyctl
     visidata
 
     # programming
