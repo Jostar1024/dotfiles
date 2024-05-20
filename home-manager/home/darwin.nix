@@ -13,6 +13,14 @@
     darwin.iproute2mac
   ];
 
+  programs.less = {
+    enable = true;
+    keys = "
+      h left-scroll
+      l right-scroll
+    ";
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
