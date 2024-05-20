@@ -77,6 +77,7 @@
 
     # fonts
     jetbrains-mono
+    cascadia-code
     lxgw-wenkai
   ];
   programs.home-manager.enable = true;

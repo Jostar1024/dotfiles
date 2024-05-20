@@ -11,6 +11,7 @@
     emacs
     iterm2
     darwin.iproute2mac
+    rectangle
   ];
 
   programs.less = {
