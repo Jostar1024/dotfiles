@@ -94,6 +94,7 @@
 (load! "config-key-binding")
 (load! "config-org")
 (load! "config-tree-sitter")
+(load! "config-prolog")
 
 (use-package! rime
   :custom
