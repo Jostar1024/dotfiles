@@ -81,8 +81,6 @@
 ;;    :repo "DogLooksGood/org-html-themify"
 ;;    :files ("*.el" "*.js" "*.css"))
 
-(package! telega :pin "ac3634e2e7efe9c29c4311196e0ed67085d58f11")
-
 (package! protobuf-mode)
 
 (package! map :pin "bb50dba")

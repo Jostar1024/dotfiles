@@ -102,22 +102,6 @@
 ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
 ;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
 
-(use-package! telega
-  :general
-  (:keymaps 'telega-msg-button-map
-            "n" nil
-            "k" nil)
-
-  :config
-  ;; (add-hook 'telega-chat-mode 'company-mode)
-  (setcdr (assq t org-file-apps-gnu) 'browse-url-xdg-open)
-  :custom
-  ;; (telega-use-images nil)
-  (telega-open-file-function 'org-open-file)
-  ;; (telega-proxies
-  ;;  '((:server "localhost" :port 7891 :enable t :type (:@type "proxyTypeSocks5"))))
-  )
-
 (use-package! web-mode
   :custom
   (web-mode-markup-indent-offset 2)
