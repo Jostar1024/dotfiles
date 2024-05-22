@@ -12,6 +12,7 @@
     iterm2
     darwin.iproute2mac
     rectangle
+    raycast
   ];
 
   programs.less = {
