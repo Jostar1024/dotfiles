@@ -5,7 +5,10 @@
   pkgs-stable,
   ...
 }: {
-  imports = [../programs/tmux.nix];
+  imports = [
+    ../programs/tmux.nix
+    ../programs/zsh.nix
+  ];
 
   nixpkgs.config = {
     allowUnfree = true;
