@@ -2,7 +2,7 @@
 
 (use-package lsp-mode
   :hook
-  ((rust-mode c-mode elixir-mode) . lsp-deferred)
+  ((rust-mode c-mode elixir-mode nix-mode) . lsp-deferred)
   :commands
   (lsp lsp-deferred)
   :custom
