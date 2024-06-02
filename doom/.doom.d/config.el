@@ -50,8 +50,6 @@
       doom-serif-font          (font-spec :family +my-cnfont :size +my-cnfont-size)
       doom-big-font            (font-spec :family +my-ascii-font :size +my-ascii-size))
 
-;; (add-to-list 'doom-unicode-extra-fonts "WenQuanYi Micro Hei Mono" t)
-
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org")
