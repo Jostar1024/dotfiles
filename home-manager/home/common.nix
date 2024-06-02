@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-stable,
   ...
 }: {
   imports = [../programs/tmux.nix];
@@ -10,77 +11,82 @@
     allowUnfree = true;
     allowUnfreePredicate = _: true;
   };
-  home.packages = with pkgs; [
-    # ai
-    ollama
 
-    # utils
-    stow
-    curl
-    wget
-    neofetch
-    starship
-    bat
-    pgcli
-    htop
-    tree
-    flyctl
-    visidata
+  home.packages =
+    [pkgs-stable.emacs-lsp-booster]
+    ++ (with pkgs; [
+      # ai
+      ollama
 
-    # programming
-    alejandra
-    nil
-    asdf-vm
-    elixir-ls
-    terraform
-    clj-kondo
-    cljfmt
-    stylelint
-    nodePackages.js-beautify
-    shellcheck
-    rustup
-    rustc
-    dockfmt
-    shfmt
-    nixfmt
-    racket
-    pandoc
-    haskellPackages.lsp
-    haskellPackages.hoogle
-    haskellPackages.cabal-install
+      # utils
+      stow
+      curl
+      wget
+      neofetch
+      starship
+      bat
+      pgcli
+      htop
+      tree
+      flyctl
+      visidata
+      tealdeer
 
-    podman-compose
-    # erlang deps
-    fop
-    jdk21
-    wxGTK32
-    unixODBC
-    openssl
+      # programming
+      alejandra
+      nil
+      asdf-vm
+      elixir-ls
+      terraform
+      clj-kondo
+      cljfmt
+      stylelint
+      nodePackages.js-beautify
+      nodePackages.prettier
+      shellcheck
+      rustup
+      rustc
+      dockfmt
+      shfmt
+      nixfmt
+      racket
+      pandoc
+      haskellPackages.lsp
+      haskellPackages.hoogle
+      haskellPackages.cabal-install
 
-    # utils
-    ripgrep
-    findutils
-    fd
-    fzf
-    jq
-    yq-go
-    eza
-    comma
+      podman-compose
+      # erlang deps
+      fop
+      jdk21
+      wxGTK32
+      unixODBC
+      openssl
 
-    # libs
-    librime
-    fontconfig
-    coreutils
-    (aspellWithDicts (dicts: with dicts; [en en-computers en-science fr]))
-    # softwares
-    alacritty
-    syncthing
-    keepassxc
+      # utils
+      ripgrep
+      findutils
+      fd
+      fzf
+      jq
+      yq-go
+      eza
+      comma
 
-    # fonts
-    jetbrains-mono
-    cascadia-code
-    lxgw-wenkai
-  ];
+      # libs
+      librime
+      fontconfig
+      coreutils
+      (aspellWithDicts (dicts: with dicts; [en en-computers en-science fr]))
+      # softwares
+      alacritty
+      syncthing
+      keepassxc
+
+      # fonts
+      jetbrains-mono
+      cascadia-code
+      lxgw-wenkai
+    ]);
   programs.home-manager.enable = true;
 }
