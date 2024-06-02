@@ -13,6 +13,7 @@
     darwin.iproute2mac
     rectangle
     raycast
+    stats
   ];
 
   programs.less = {
