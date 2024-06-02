@@ -73,7 +73,4 @@
     ";
     dotDir = ".config/zsh";
   };
-  programs.tmux = {
-    enable = true;
-  };
 }

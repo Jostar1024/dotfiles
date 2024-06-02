@@ -4,6 +4,8 @@
   pkgs,
   ...
 }: {
+  imports = [../programs/tmux.nix];
+
   nixpkgs.config = {
     allowUnfree = true;
     allowUnfreePredicate = _: true;
