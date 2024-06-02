@@ -1,5 +1,11 @@
 ;;; ../.dotfiles/doom/.doom.d/config-org.el -*- lexical-binding: t; -*-
 
+(use-package! org
+  :init
+  (map! :after org
+        :map org-mode-map
+        :n "TAB" #'org-cycle)
+  )
 ;; (use-package! org-roam
 ;;   :custom
 ;;   (org-format-latex-options (plist-put org-format-latex-options :scale 4.0)))
