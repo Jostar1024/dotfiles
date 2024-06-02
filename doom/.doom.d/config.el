@@ -100,7 +100,14 @@
   :custom
   (default-input-method "rime")
   (rime-show-candidate 'minibuffer)
-  (rime-translate-keybindings '("C-`")))
+
+  (rime-librime-root "~/.nix-profile")
+  (when (eq system-type 'darwin)
+    (rime-share-data-dir "~/Library/Rime"))
+
+  (map! :map rime-mode-map
+        "C-`" #'rime-send-keybinding)
+  )
 
 ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
 ;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
