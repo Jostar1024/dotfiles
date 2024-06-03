@@ -53,7 +53,7 @@
     autocd = true;
     oh-my-zsh = {
       enable = true;
-      plugins = ["git" "fzf" "direnv" "sudo"];
+      plugins = ["git" "sudo"];
     };
   };
 }
