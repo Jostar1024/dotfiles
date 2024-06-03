@@ -38,7 +38,6 @@
       # -S disables line wrapping. Side-scroll to see long lines.
       export LESS="-SRXF"
       export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-      export HISTCONTROL=ignoredups
 
       source ~/.zshrc
 
