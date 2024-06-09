@@ -27,6 +27,7 @@
       ta = "tmux attach -t";
       k = "kubectl";
       cat = "bat --style=plain --pager=never";
+      fonts = "fc-list | awk -F: '{print $2}' | sort | uniq";
     };
     initExtra = ''
       # export LANG=en_US.UTF-8
