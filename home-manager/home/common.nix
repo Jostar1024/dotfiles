@@ -8,6 +8,7 @@
   imports = [
     ../programs/tmux.nix
     ../programs/zsh.nix
+    ../programs/alacritty.nix
   ];
 
   nixpkgs.config = {
