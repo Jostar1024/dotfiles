@@ -8,6 +8,7 @@
   imports = [
     ../programs/tmux.nix
     ../programs/zsh.nix
+    ../programs/starship.nix
     ../programs/alacritty.nix
   ];
 
@@ -17,7 +18,9 @@
   };
 
   home.packages =
-    [pkgs-stable.emacs-lsp-booster]
+    (with pkgs-stable; [
+      emacs-lsp-booster
+    ])
     ++ (with pkgs; [
       # ai
       ollama
@@ -27,7 +30,6 @@
       curl
       wget
       neofetch
-      starship
       bat
       pgcli
       htop
@@ -35,6 +37,14 @@
       flyctl
       visidata
       tealdeer
+      ripgrep
+      findutils
+      fd
+      fzf
+      jq
+      yq-go
+      eza
+      comma
 
       # programming
       alejandra
@@ -66,16 +76,6 @@
       wxGTK32
       unixODBC
       openssl
-
-      # utils
-      ripgrep
-      findutils
-      fd
-      fzf
-      jq
-      yq-go
-      eza
-      comma
 
       # libs
       librime
