@@ -89,6 +89,8 @@
       # fonts
       jetbrains-mono
       cascadia-code
+      fira-code
+      (pkgs.nerdfonts.override {fonts = ["FiraCode" "CascadiaCode" "JetBrainsMono"];})
       lxgw-wenkai
     ]);
   programs.home-manager.enable = true;
