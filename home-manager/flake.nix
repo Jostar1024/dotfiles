@@ -12,18 +12,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    darwin = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs @ {
     nixpkgs,
     nixpkgs-stable,
     home-manager,
-    darwin,
     ...
   }: let
     pkgs-stable-func = system: nixpkgs-stable.legacyPackages."${system}";
