@@ -62,7 +62,7 @@
       rustc
       dockfmt
       shfmt
-      nixfmt
+      nixfmt-classic
       racket
       pandoc
       haskellPackages.lsp
