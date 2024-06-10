@@ -45,6 +45,7 @@
       yq-go
       eza
       comma
+      zellij
 
       # programming
       alejandra
