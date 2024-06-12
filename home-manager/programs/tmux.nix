@@ -3,23 +3,44 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  thumbsCopy =
+    if pkgs.lib.strings.hasSuffix "darwin" pkgs.system
+    then "set -g @thumbs-command 'echo -n {} | pbcopy'"
+    else "";
+in {
   programs.tmux = {
     enable = true;
     keyMode = "vi";
     historyLimit = 30000;
     customPaneNavigationAndResize = true;
     terminal = "screen-256color";
-    plugins = with pkgs; [
-      tmuxPlugins.sensible
-      tmuxPlugins.yank
-      tmuxPlugins.catppuccin
+    plugins = with pkgs.tmuxPlugins; [
+      sensible
+      yank
+      catppuccin
+      tmux-thumbs
+      fuzzback
     ];
     prefix = "C-s";
     mouse = true;
     extraConfig = ''
       unbind r
       bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "tmux.conf reloaded."
+
+      # https://www.reddit.com/r/tmux/comments/sv6skh/clickable_urls/
+      bind-key i run-shell -b "tmux capture-pane -J -p | grep -oE '(https?):\/\/.*[^>]' | fzf-tmux -d20 --multi --bind alt-a:select-all,alt-d:deselect-all | xargs open"
+
+      set -g @fuzzback-popup 1
+      set -g @fuzzback-hide-preview 1
+      set -g @fuzzback-popup-size '90%'
+
+      ${thumbsCopy}
+
+      # remain in copy mode
+      set -g @yank_action 'copy-pipe'
+      set -g @yank_with_mouse on
+
       set-option -g status-position top
 
       # catppuccin config 3 from:
