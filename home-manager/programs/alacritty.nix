@@ -34,7 +34,7 @@ in {
         size = 14;
         normal = {
           family = font;
-          style = "Regular";
+          style = "Retina";
         };
         bold = {
           family = font;
