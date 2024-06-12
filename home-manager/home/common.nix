@@ -46,6 +46,8 @@
       eza
       comma
       zellij
+      nix-search-cli
+      manix
 
       # programming
       alejandra
