@@ -5,6 +5,10 @@
   ...
 }: let
   font = "FiraCode Nerd Font Mono";
+  decoration =
+    if pkgs.lib.strings.hasSuffix "darwin" pkgs.system
+    then "buttonless"
+    else "none";
 in {
   programs.alacritty = {
     enable = true;
@@ -17,7 +21,7 @@ in {
       window = {
         padding.x = 14;
         padding.y = 14;
-        decorations = "none";
+        decorations = decoration;
         opacity = 0.97;
         dimensions = {
           lines = 80;
