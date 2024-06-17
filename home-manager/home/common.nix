@@ -10,6 +10,7 @@
     ../programs/zsh.nix
     ../programs/starship.nix
     ../programs/alacritty.nix
+    ../programs/git.nix
   ];
 
   nixpkgs.config = {
