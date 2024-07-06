@@ -14,6 +14,7 @@
     rectangle
     raycast
     stats
+    arc-browser
   ];
 
   programs.less = {

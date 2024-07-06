@@ -49,6 +49,8 @@
       zellij
       nix-search-cli
       manix
+      deploy-rs
+      just
 
       # programming
       alejandra
@@ -73,6 +75,8 @@
       haskellPackages.hoogle
       haskellPackages.cabal-install
 
+      clojure
+      leiningen
       podman-compose
       # erlang deps
       fop
