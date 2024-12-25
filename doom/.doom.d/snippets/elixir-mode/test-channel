@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: test channel
+# key: cha
+# --
+, %{channel: channel}
