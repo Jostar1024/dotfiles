@@ -79,6 +79,9 @@
 (setq eldoc-idle-delay most-positive-fixnum)
 (global-set-key (kbd "C-c C-f") 'eldoc)
 
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'none))
+
 (setq auto-save-default nil)
 (setq auto-save-interval 5000)
 (setq auto-save-timeout (* 10 60))
@@ -91,17 +94,18 @@
 (load! "config-ligature")
 (load! "config-key-binding")
 (load! "config-org")
-(load! "config-tree-sitter")
 (load! "config-prolog")
+(load! "config-janet")
 
 (use-package! rime
+  :config
+  (when (eq system-type 'darwin)
+    (setq rime-share-data-dir "~/Library/Rime"))
+
   :custom
   (default-input-method "rime")
   (rime-show-candidate 'minibuffer)
-
   (rime-librime-root "~/.nix-profile")
-  (when (eq system-type 'darwin)
-    (rime-share-data-dir "~/Library/Rime"))
 
   (map! :map rime-mode-map
         "C-`" #'rime-send-keybinding)
@@ -167,6 +171,37 @@
                                   (t nil))
         prolog-electric-if-then-else-flag t)
   )
+
+(use-package! gptel
+  :config
+  (setq gptel-model   'deepseek-chat
+        gptel-backend
+        (gptel-make-openai "DeepSeek"
+          :host "api.deepseek.com"
+          :endpoint "/chat/completions"
+          :stream t
+          :key (getenv "DEEPSEEK_APIKEY")
+          :models '(deepseek-chat deepseek-coder)))
+  (map! :leader
+        (:prefix ("a" . "gptel - AI")
+         :desc "GPTel buffer" :n "a" #'gptel
+         :desc "GPTel Send" :n "s" #'gptel-send
+         :desc "GPTel Menu" :n "S" #'gptel-menu
+         :desc "GPTel Abort" :n "b" #'gptel-abort)))
+
+(use-package! smartparens
+  :config
+  (map! :map smartparens-mode-map
+        :leader (:prefix ("l" . "Lisps")
+                 :nvie "f" #'sp-slurp-hybrid-sexp
+                 ;; :nvie "b" #'sp-backward-sexp
+                 ;; :nvim "u" #'sp-unwrap-sexp
+                 ;; :nie "k" #'sp-kill-sexp
+                 ;; :nie "s" #'sp-split-sexp
+                 ;; :nie "(" #'sp-wrap-round
+                 ;; :nie "[" #'sp-wrap-square
+                 ;; :nie "{" #'sp-wrap-curly
+                 )))
 
 (after! nix-mode
   (set-formatter! 'alejandra '("alejandra" "--quiet") :modes '(nix-mode)))

@@ -2,7 +2,7 @@
 
 (use-package lsp-mode
   :hook
-  ((rust-mode c-mode elixir-mode nix-mode) . lsp-deferred)
+  ((elixir-ts-mode nix-mode) . lsp-deferred)
   :commands
   (lsp lsp-deferred)
   :custom
@@ -58,6 +58,7 @@
         lsp-ui-doc-max-height 13
         lsp-ui-doc-max-width 150
         ))
+
 ;; (use-package eglot
 ;;   :bind
 ;;   (:map eglot-mode-map ("M-." . '+lsp-xfind-or-dumb-jump))
@@ -68,14 +69,3 @@
 ;;   :config
 ;;   (add-to-list 'eglot-server-programs '(elixir-mode "/home/yucheng/projects/elixir-ls/release/language_server.sh")))
 
-;; (use-package nox
-;;   :hook
-;;   ((rust-mode c-mode elixir-mode) . nox-ensure)
-;;   :bind
-;;   (:map nox-mode-map
-;;    ("M-f" . nox-show-doc)
-;;    ("M-h" . nox-show-signature))
-;;   :custom-face
-;;   (highlight . (((t (:background "red")))))
-;;   :config
-;;   (add-to-list 'nox-server-programs '(elixir-mode "/home/yucheng/projects/elixir-ls/release/language_server.sh")))
