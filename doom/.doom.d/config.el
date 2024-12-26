@@ -139,19 +139,6 @@
                                                    projectile-root-top-down-recurring
                                                    projectile-root-bottom-up
                                                    projectile-root-local)))
-;; (use-package! zig-mode
-;;   :hook ((zig-mode . lsp-deferred))
-;;   :custom (zig-format-on-save nil)
-;;   :config
-;;   (after! lsp-mode
-;;     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
-;;     (lsp-register-client
-;;       (make-lsp-client
-;;         :new-connection (lsp-stdio-connection "/usr/bin/zls")
-;;         :major-modes '(zig-mode)
-;;         :server-id 'zls))))
-(map! :i "<f9>" 'insert-parentheses)
-
 (use-package! rime
   :config
   (setq rime-disable-predicates
@@ -161,6 +148,8 @@
           rime-predicate-prog-in-code-p)))
 
 
+(after! nix-mode
+  (set-formatter! 'alejandra '("alejandra" "--quiet") :modes '(nix-mode)))
 (set-formatter! 'sql '("pg_format") :modes '(sql-mode))
 (set-formatter! 'protobuf '("clang-format" "-") :modes '(protobuf-mode))
 
@@ -182,12 +171,11 @@
           :stream t
           :key (getenv "DEEPSEEK_APIKEY")
           :models '(deepseek-chat deepseek-coder)))
-  (map! :leader
-        (:prefix ("a" . "gptel - AI")
-         :desc "GPTel buffer" :n "a" #'gptel
-         :desc "GPTel Send" :n "s" #'gptel-send
-         :desc "GPTel Menu" :n "S" #'gptel-menu
-         :desc "GPTel Abort" :n "b" #'gptel-abort)))
+  (map! :leader (:prefix ("r" . "GPTel - AI")
+                 :n "a" #'gptel :desc "GPTel buffer"
+                 :n "s" #'gptel-send :desc "GPTel Send"
+                 :n "S" #'gptel-menu :desc "GPTel Menu"
+                 :n "b" #'gptel-abort :desc "GPTel Abort" )))
 
 (use-package! smartparens
   :config
@@ -202,6 +190,3 @@
                  ;; :nie "[" #'sp-wrap-square
                  ;; :nie "{" #'sp-wrap-curly
                  )))
-
-(after! nix-mode
-  (set-formatter! 'alejandra '("alejandra" "--quiet") :modes '(nix-mode)))
