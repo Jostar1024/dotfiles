@@ -96,6 +96,7 @@
 (load! "config-org")
 (load! "config-prolog")
 (load! "config-janet")
+(load! "config-treesit")
 
 (use-package! rime
   :config
