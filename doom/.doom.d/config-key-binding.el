@@ -1,7 +1,10 @@
 ;;; ../.dotfiles/doom/.doom.d/config-key-binding.el -*- lexical-binding: t; -*-
 
-(map! :nv
-      "m" #'er/expand-region)
+(map! (:after evil
+              :m "M" nil))
+(map! :nm
+      "m" #'expreg-expand
+      "M" #'expreg-contract)
 
 (map! :leader
       :desc "Capture something"
@@ -13,11 +16,11 @@
 
 (map! :leader
       (:prefix ("d" . "smerge")
-       "n"  #'smerge-next
-       "a"  #'smerge-keep-all
-       "u"  #'smerge-keep-upper
-       "l"  #'smerge-keep-lower
-       ))
+               "n"  #'smerge-next
+               "a"  #'smerge-keep-all
+               "u"  #'smerge-keep-upper
+               "l"  #'smerge-keep-lower
+               ))
 
 ;; (map! :after elixir-mode
 ;;       :map elixir-mode-map

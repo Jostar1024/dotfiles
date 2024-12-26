@@ -76,6 +76,10 @@
   :recipe (:host github :repo "emacs-tree-sitter/treesit-langs")
   :pin "2594bd9fe8e640c7431f152cf789ad67b58e0be3")
 
+(package! expreg
+  :recipe (:host github :repo "casouri/expreg")
+  :pin "9950c07ec90293964baa33603f4a80e764b0a847")
+
 (package! sqlite3)
 
 (package! ediprolog)
