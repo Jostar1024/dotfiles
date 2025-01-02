@@ -1,10 +1,11 @@
 ;;; ../.dotfiles/doom/.doom.d/config-key-binding.el -*- lexical-binding: t; -*-
 
 (map! (:after evil
-              :m "M" nil))
-(map! :nm
-      "m" #'expreg-expand
-      "M" #'expreg-contract)
+       :m "M" nil))
+
+(map! :nm "m" #'expreg-expand)
+(map! :m "M" #'expreg-contract)
+
 
 (map! :leader
       :desc "Capture something"
