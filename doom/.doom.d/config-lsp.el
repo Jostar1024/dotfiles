@@ -7,17 +7,14 @@
   (lsp lsp-deferred)
   :custom
   ;; (lsp-completion-provider :capf)
-  (lsp-enable-file-watchers nil)
-  (lsp-keymap-prefix "C-l")
-  (lsp-enable-symbol-highlighting nil)
+  ;; (lsp-enable-file-watchers nil)
+  ;; (lsp-enable-symbol-highlighting nil)
   (lsp-lens-enable nil)
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-modeline-code-actions-enable nil)
+  ;; (lsp-headerline-breadcrumb-enable nil)
+  ;; (lsp-modeline-code-actions-enable nil)
   (lsp-signature-auto-activate nil)
-  (lsp-modeline-diagnostics-enable nil)
-  (lsp-signature-render-documentation nil)
-  ;; (lsp-completion-show-detail nil)
-  ;; (lsp-completion-show-kind t)
+  ;; (lsp-modeline-diagnostics-enable nil)
+  ;; (lsp-signature-render-documentation nil)
   (lsp-elixir-server-command '("elixir-ls"))
   :config
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
@@ -44,20 +41,6 @@
         orig-result)))
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   )
-
-
-(use-package! lsp-ui
-  :hook
-  (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-doc-enable t
-        lsp-ui-doc-position 'top
-        lsp-ui-doc-include-signature t
-        lsp-ui-doc-show-with-cursor nil
-        lsp-ui-doc-delay 0
-        lsp-ui-doc-max-height 13
-        lsp-ui-doc-max-width 150
-        ))
 
 ;; (use-package eglot
 ;;   :bind
