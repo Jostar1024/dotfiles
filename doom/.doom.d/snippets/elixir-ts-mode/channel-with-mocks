@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: channel with mocks
+# key: cham
+# --
+, %{channel_with_mocks: channel_with_mocks, content_impl: content_impl, titan_impl: titan_impl, content_owner_impl: content_owner_impl}
