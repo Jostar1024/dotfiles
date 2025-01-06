@@ -30,3 +30,7 @@
                    (seq-filter (lambda (node) (eq (car node) 'do_block)))
                    (mapcar #'cdr)
                    (mapc #'treesit-fold-close)))))
+
+(use-package! treesit-fold
+  :hook
+  ((elixir-ts-mode) . treesit-fold-mode))
