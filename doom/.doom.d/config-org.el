@@ -4,7 +4,8 @@
   :init
   (map! :after org
         :map org-mode-map
-        :n "TAB" #'org-cycle)
+        :n "TAB" #'org-cycle
+        :ni "m j" #'org-cycle-list-bullet)
   )
 ;; (use-package! org-roam
 ;;   :custom
