@@ -1,0 +1,4 @@
+# key: qqq
+# name: iopp-pipeline
+# --
+|> tap(& IO.puts("&1 #{IO.ANSI.format([:default_background, :yellow, inspect(&1, pretty: true)])}"))

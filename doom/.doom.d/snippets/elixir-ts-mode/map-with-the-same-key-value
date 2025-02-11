@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: map-with-the-same-key-value
+# key: mapv
+# --
+%{$1: $1}$0
