@@ -134,12 +134,17 @@
   (dired-dwim-target t))
 
 (use-package! projectile
-  :config
-  (setq projectile-project-root-files #'( ".projectile" ))
-  (setq projectile-project-root-files-functions #'(projectile-root-top-down
-                                                   projectile-root-top-down-recurring
-                                                   projectile-root-bottom-up
-                                                   projectile-root-local)))
+  :custom
+  ;; manually run `projectile-discover-projects-in-search-path` to search the projects inside the following directory
+  (projectile-project-search-path '(("~/projects" . 1)
+                                    ("~/tubi" . 1)
+                                    ("~/community/" . 1)
+                                    ("~/expr" . 1)))
+  (projectile-project-root-files #'( ".projectile" ))
+  (projectile-project-root-functions #'(projectile-root-top-down
+                                        projectile-root-top-down-recurring
+                                        projectile-root-bottom-up
+                                        projectile-root-local)))
 (use-package! rime
   :config
   (setq rime-disable-predicates
