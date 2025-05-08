@@ -60,6 +60,9 @@
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"))
 
+(package! lsp-treemacs
+  :recipe (:host github :repo "emacs-lsp/lsp-treemacs"))
+
 (package! rime
   :recipe (:host github :repo "DogLooksGood/emacs-rime"))
 
@@ -88,9 +91,8 @@
 
 (package! ediprolog)
 
-;; AI
-(package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
-(package! gptel)
+(package! gptel
+  :pin "975c3e64eb834b939e0d61dfc39fed8395afcc45")
 
 ;; Janet
 (package! janet-ts-mode
@@ -103,3 +105,7 @@
 
 ;; tramp version 2.7.1
 (package! tramp :pin "b738565c3cb2d304e8ea33595b0cee0e717e75b6")
+
+(package! mermaid-mode
+  :recipe (:host github :repo "abrochard/mermaid-mode")
+  )
