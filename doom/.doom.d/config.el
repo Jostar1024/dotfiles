@@ -196,3 +196,5 @@
                  ;; :nie "[" #'sp-wrap-square
                  ;; :nie "{" #'sp-wrap-curly
                  )))
+
+(use-package! lsp-treemacs)
