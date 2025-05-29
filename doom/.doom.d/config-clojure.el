@@ -14,6 +14,9 @@
         ))
 
 (use-package! cider
+  :custom
+  ;; NOTE: to see the doc from Java, e.g. StringBuilder, InputStream
+  (cider-enrich-classpath t)
   :config
   (cider-register-cljs-repl-type 'mynbb "(+ 1 2 3)")
   (defun mm/cider-connected-hook ()

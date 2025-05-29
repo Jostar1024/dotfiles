@@ -140,11 +140,15 @@
                                     ("~/tubi" . 1)
                                     ("~/community/" . 1)
                                     ("~/expr" . 1)))
-  (projectile-project-root-files #'( ".projectile" ))
+  (projectile-auto-discover t)
   (projectile-project-root-functions #'(projectile-root-top-down
                                         projectile-root-top-down-recurring
                                         projectile-root-bottom-up
                                         projectile-root-local)))
+(after! projectile
+  (add-to-list 'projectile-project-root-files ".projectile")
+  (add-to-list 'projectile-project-root-files "mix.exs"))
+
 (use-package! rime
   :config
   (setq rime-disable-predicates
@@ -169,14 +173,23 @@
 
 (use-package! gptel
   :config
-  (setq gptel-model   'deepseek-chat
-        gptel-backend
-        (gptel-make-openai "DeepSeek"
-          :host "api.deepseek.com"
-          :endpoint "/chat/completions"
-          :stream t
-          :key (getenv "DEEPSEEK_APIKEY")
-          :models '(deepseek-chat deepseek-coder)))
+  (gptel-make-deepseek "DeepSeek"
+    :stream t
+    :key (getenv "DEEPSEEK_APIKEY"))
+  (gptel-make-openai "SiliconFlow"
+    :host "api.siliconflow.cn"
+    :endpoint "/v1/chat/completions"
+    :stream t
+    :key (getenv "SILICONFLOW_APIKEY")
+    :models '(deepseek-ai/DeepSeek-R1 deepseek-ai/DeepSeek-V3
+              Pro/deepseek-ai/DeepSeek-R1 Pro/deepseek-ai/DeepSeek-V3
+              ))
+  ;; TODO: test it
+  (gptel-make-openai "OhMyGPT"
+    :host "cn2us02.opapi.win"
+    :endpoint "/v1/chat/completions"
+    :stream t
+    :key (getenv "OPENAI_APIKEY"))
   (map! :leader (:prefix ("r" . "GPTel - AI")
                  :n "a" #'gptel :desc "GPTel buffer"
                  :n "s" #'gptel-send :desc "GPTel Send"

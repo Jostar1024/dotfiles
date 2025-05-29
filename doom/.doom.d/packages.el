@@ -91,8 +91,7 @@
 
 (package! ediprolog)
 
-(package! gptel
-  :pin "975c3e64eb834b939e0d61dfc39fed8395afcc45")
+(package! gptel :recipe (:nonrecursive t))
 
 ;; Janet
 (package! janet-ts-mode
