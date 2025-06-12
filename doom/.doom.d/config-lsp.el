@@ -16,6 +16,7 @@
   ;; (lsp-modeline-diagnostics-enable nil)
   ;; (lsp-signature-render-documentation nil)
   (lsp-elixir-server-command '("elixir-ls"))
+  (lsp-elixir-fetch-deps 't)
   :config
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
     "Try to parse bytecode instead of json."
@@ -41,6 +42,11 @@
         orig-result)))
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   )
+(use-package! lsp-ui
+  :custom
+  (lsp-ui-imenu-auto-refresh 't)
+  :hook
+  (lsp-ui-imenu-buffer-mode . lsp-ui-mode))
 
 ;; (use-package eglot
 ;;   :bind

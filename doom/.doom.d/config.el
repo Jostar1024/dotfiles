@@ -201,9 +201,9 @@
   (map! :map smartparens-mode-map
         :leader (:prefix ("l" . "Lisps")
                  :nvie "f" #'sp-slurp-hybrid-sexp
+                 :nie "k" #'sp-kill-sexp
                  ;; :nvie "b" #'sp-backward-sexp
                  ;; :nvim "u" #'sp-unwrap-sexp
-                 ;; :nie "k" #'sp-kill-sexp
                  ;; :nie "s" #'sp-split-sexp
                  ;; :nie "(" #'sp-wrap-round
                  ;; :nie "[" #'sp-wrap-square
