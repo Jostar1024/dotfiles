@@ -106,5 +106,6 @@
 (package! tramp :pin "b738565c3cb2d304e8ea33595b0cee0e717e75b6")
 
 (package! mermaid-mode
-  :recipe (:host github :repo "abrochard/mermaid-mode")
-  )
+  :recipe (:host github :repo "abrochard/mermaid-mode"))
+
+(package! keyfreq)

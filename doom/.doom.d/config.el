@@ -102,15 +102,13 @@
   :config
   (when (eq system-type 'darwin)
     (setq rime-share-data-dir "~/Library/Rime"))
+  (map! :map rime-mode-map
+        "C-`" #'rime-send-keybinding)
 
   :custom
   (default-input-method "rime")
   (rime-show-candidate 'minibuffer)
-  (rime-librime-root "~/.nix-profile")
-
-  (map! :map rime-mode-map
-        "C-`" #'rime-send-keybinding)
-  )
+  (rime-librime-root "~/.nix-profile"))
 
 ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
 ;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
@@ -211,3 +209,24 @@
                  )))
 
 (use-package! lsp-treemacs)
+
+(use-package! keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+  (setq keyfreq-excluded-commands '(self-insert-command
+                                    forward-char
+                                    backward-char
+                                    previous-line
+                                    next-line)))
+(use-package! magit
+  :custom
+  ;; NOTE: elixir's mix format in pre-commit hook contains terminal's ANSI colors.
+  ;; use this to pretty print
+  (magit-process-apply-ansi-colors 't))
+
+(use-package! minibuffer
+  :config
+  (map! :map minibuffer-mode-map
+        "C-p" #'previous-history-element
+        "C-n" #'next-history-element))

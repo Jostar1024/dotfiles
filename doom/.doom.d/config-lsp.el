@@ -7,15 +7,17 @@
   (lsp lsp-deferred)
   :custom
   ;; (lsp-completion-provider :capf)
-  ;; (lsp-enable-file-watchers nil)
-  ;; (lsp-enable-symbol-highlighting nil)
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-symbol-highlighting nil)
   (lsp-lens-enable nil)
   ;; (lsp-headerline-breadcrumb-enable nil)
   ;; (lsp-modeline-code-actions-enable nil)
-  (lsp-signature-auto-activate nil)
+  ;; (lsp-signature-auto-activate nil)
+  (lsp-signature-render-documentation nil)
   ;; (lsp-modeline-diagnostics-enable nil)
   ;; (lsp-signature-render-documentation nil)
-  (lsp-elixir-server-command '("elixir-ls"))
+  ;; (lsp-elixir-server-command '("elixir-ls"))
+  (lsp-elixir-server-command '("~/community/elixir-ls/release/language_server.sh"))
   (lsp-elixir-fetch-deps 't)
   :config
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
@@ -42,6 +44,7 @@
         orig-result)))
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   )
+
 (use-package! lsp-ui
   :custom
   (lsp-ui-imenu-auto-refresh 't)

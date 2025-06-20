@@ -39,7 +39,8 @@
         :n "f" #'elixir-format
         :n "d" #'lsp-ui-doc-glance
         :n "c c" #'inf-iex-eval
-        :n "c v" #'inf-iex-toggle-send-target)
+        :n "c v" #'inf-iex-toggle-send-target
+        :n "i" #'lsp-ui-imenu)
   )
 
 (use-package! inf-iex
