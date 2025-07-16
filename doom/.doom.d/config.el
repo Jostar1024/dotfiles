@@ -225,8 +225,3 @@
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
 
-(use-package! minibuffer
-  :config
-  (map! :map minibuffer-mode-map
-        "C-p" #'previous-history-element
-        "C-n" #'next-history-element))
