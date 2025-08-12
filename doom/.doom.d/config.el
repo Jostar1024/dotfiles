@@ -188,9 +188,9 @@
     :endpoint "/v1/chat/completions"
     :stream t
     :key (getenv "OPENAI_APIKEY"))
-  (map! :leader (:prefix ("r" . "GPTel - AI")
+  (map! :leader (:prefix ("e" . "GPTel - AI")
                  :n "a" #'gptel :desc "GPTel buffer"
-                 :n "s" #'gptel-send :desc "GPTel Send"
+                 :n "e" #'gptel-send :desc "GPTel Send"
                  :n "S" #'gptel-menu :desc "GPTel Menu"
                  :n "b" #'gptel-abort :desc "GPTel Abort" )))
 
@@ -224,4 +224,3 @@
   ;; NOTE: elixir's mix format in pre-commit hook contains terminal's ANSI colors.
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
-

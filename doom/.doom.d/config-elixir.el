@@ -33,10 +33,19 @@
     (sp-local-pair "do " " end" :unless '(sp-in-comment-p sp-in-string-p))
     (sp-local-pair "fn " " end" :unless '(sp-in-comment-p sp-in-string-p)))
   (evil-define-key '(normal visual) elixir-ts-mode-map (kbd "RET") 'inf-iex-eval)
+  ;; (defun +drop-db ()
+  ;;   (interactive)
+  ;;   (let*
+  ;;       (env (read-from-minibuffer "Environment: " "dev"))
+  ;;     (projectile-run-async-shell-command-in-root "mix ecto.drop && mix ecto.create && mix ecto.migrate")))
+  (defun +update-deps ()
+    (interactive)
+    (projectile-run-async-shell-command-in-root "mix deps.get"))
   (map! :after elixir-ts-mode
         :map elixir-ts-mode-map
         :localleader
         :n "f" #'elixir-format
+        :n "g" #'+update-deps
         :n "d" #'lsp-ui-doc-glance
         :n "c c" #'inf-iex-eval
         :n "c v" #'inf-iex-toggle-send-target

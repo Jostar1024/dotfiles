@@ -75,6 +75,9 @@
 (package! org-appear :pin "ffbd742267ff81ba8433177fac5d7fe22b6d68a9")
 (package! restclient)
 
+(package! grpclient
+  :pin "2104a89f81ccfefd7a3adb434336bf0887e513f6"
+  :recipe (:host github :repo "Prikaz98/grpclient.el"))
 (package! treesit-langs
   :recipe (:host github :repo "emacs-tree-sitter/treesit-langs")
   :pin "2594bd9fe8e640c7431f152cf789ad67b58e0be3")
