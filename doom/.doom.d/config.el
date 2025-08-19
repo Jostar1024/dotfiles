@@ -80,7 +80,9 @@
 (global-set-key (kbd "C-c C-f") 'eldoc)
 
 (when (eq system-type 'darwin)
-  (setq mac-option-modifier 'none))
+  (setq-default mac-option-modifier 'none
+                mac-command-modifier 'meta)
+  (bind-key "M-v" #'clipboard-yank))
 
 (setq auto-save-default nil)
 (setq auto-save-interval 5000)
@@ -224,3 +226,5 @@
   ;; NOTE: elixir's mix format in pre-commit hook contains terminal's ANSI colors.
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
+
+(use-package! cursor-agent)
