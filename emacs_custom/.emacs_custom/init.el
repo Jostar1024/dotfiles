@@ -50,6 +50,7 @@
   ((emacs-lisp-mode . paredit-mode)))
 
 (use-package org)
+
 (use-package magit
   :straight (magit :type git :host github :repo "magit/magit" :branch "v3.1.0")
   :init
