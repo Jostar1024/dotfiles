@@ -42,7 +42,7 @@
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
    '("," . switch-to-buffer)
-   '("f" . counsel-find-file)
+   ;; '("f" . counsel-find-file)
    '("g" . magit-status)
    '("s" . swiper)
    '("SPC" . project-find-file)
