@@ -116,3 +116,7 @@
 
 (package! cursor-agent :recipe
   (:local-repo "~/projects/cursor-agent"))
+
+(package! claude-code
+  :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
+           :files ("*.el" (:exclude "images/*"))))

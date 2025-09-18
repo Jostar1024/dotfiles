@@ -228,3 +228,11 @@
   (magit-process-apply-ansi-colors 't))
 
 (use-package! cursor-agent)
+
+(use-package! claude-code
+  :custom
+  (claude-code-program "gemini")
+  (claude-code-terminal-backend #'eat)
+  :config
+  (map! :leader (:prefix ("r" . "Claude - AI")
+                 :n "r" #'claude-code-transient :desc "Transient Menu")))
