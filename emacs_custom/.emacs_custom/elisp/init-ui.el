@@ -40,8 +40,8 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-=") 'global-text-scale-adjust)
+;; (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-q") 'start-kbd-macro)
 (global-set-key (kbd "C-e") 'end-kbd-macro)
 

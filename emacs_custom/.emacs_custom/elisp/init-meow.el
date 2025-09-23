@@ -46,6 +46,7 @@
    '("g" . magit-status)
    '("s" . swiper)
    '("SPC" . project-find-file)
+   '("RET" . bookmark-jump)
    )
   (meow-normal-define-key
    '("0" . meow-expand-0)
