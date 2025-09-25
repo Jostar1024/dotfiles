@@ -1,5 +1,32 @@
 ;;; init-minibuffer.el --- init of emacs -*- lexical-binding: t; -*-
 
+(use-package vertico
+  ;; Special recipe to load extensions conveniently
+  :straight (vertico :files (:defaults "extensions/*")
+                     :includes (vertico-indexed
+                                vertico-flat
+                                vertico-grid
+                                vertico-mouse
+                                vertico-quick
+                                vertico-buffer
+                                vertico-repeat ;; return to the state of the last Vertico minibuffer usage
+                                vertico-reverse
+                                vertico-directory
+                                vertico-multiform
+                                vertico-unobtrusive
+                                ))
+  :hook (minibuffer-setup . vertico-repeat-save)
+  :custom
+  (vertico-scroll-margin 10) ;; Different scroll margin
+  (vertico-count 20)	     ;; Show more candidates
+  (vertico-resize nil)	     ;; Grow and shrink the Vertico minibuffer
+  (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+
+  :init
+  (vertico-mode)
+  :bind (:map minibuffer-local-map
+	      ("<backspace>" . vertico-directory-delete-char)))
+
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
@@ -16,28 +43,6 @@
   ;; the mode gets enabled right away. Note that this forces loading the
   ;; package.
   (marginalia-mode))
-
-(use-package vertico
-  ;; Special recipe to load extensions conveniently
-  :straight (vertico :files (:defaults "extensions/*")
-                     :includes (vertico-indexed
-                                vertico-flat
-                                vertico-grid
-                                vertico-mouse
-                                vertico-quick
-                                vertico-buffer
-                                vertico-repeat
-                                vertico-reverse
-                                vertico-directory
-                                vertico-multiform
-                                vertico-unobtrusive
-                                ))
-  :custom
-  (vertico-count 13)                    ; Number of candidates to display
-  (vertico-resize t)
-  (vertico-cycle nil) ; Go from last to first candidate and first to last (cycle)?
-  :init
-  (vertico-mode))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist

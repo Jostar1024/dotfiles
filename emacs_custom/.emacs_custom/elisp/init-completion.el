@@ -91,44 +91,6 @@
   ;; function unless you use something similar
   (add-hook 'kb/themes-hooks #'(lambda () (interactive) (kind-icon-reset-cache))))
 
-;; Enable Vertico.
-(use-package vertico
-  :straight (vertico :files (:defaults "extensions/*")
-		     :includes (vertico-multiform
-				vertico-repeat ;; return to the state of the last Vertico minibuffer usage
-				vertico-directory))
-  :hook (minibuffer-setup . vertico-repeat-save)
-  :config
-  ;; Prefix the current candidate with “» ”. From
-  ;; https://github.com/minad/vertico/wiki#prefix-current-candidate-with-arrow
-  (advice-add #'vertico--format-candidate :around
-              (lambda (orig cand prefix suffix index _start)
-		(setq cand (funcall orig cand prefix suffix index _start))
-		(concat
-		 (if (= vertico--index index)
-
-                     "  ")
-		 cand)))
-  :custom
-  (vertico-scroll-margin 0) ;; Different scroll margin
-  (vertico-count 20) ;; Show more candidates
-  (vertico-resize nil) ;; Grow and shrink the Vertico minibuffer
-  (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
-  :init
-  (vertico-mode)
-  )
-
-(use-package savehist
-  :init
-  (savehist-mode))
-
-(use-package marginalia
-  :custom
-  (marginalia-max-relative-age 0)
-  (marginalia-align 'right)
-  :init
-  (marginalia-mode))
-
 (use-package all-the-icons-completion
   :after (marginalia all-the-icons)
   :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
