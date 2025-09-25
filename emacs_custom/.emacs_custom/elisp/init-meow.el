@@ -41,11 +41,10 @@
    '("0" . meow-digit-argument)
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
-   '("," . switch-to-buffer)
-   ;; '("f" . counsel-find-file)
-   '("g" . magit-status)
-   '("s" . swiper)
-   '("SPC" . project-find-file)
+   '("," . consult-buffer)
+   '("f" . find-file)
+   '("s" . consult-line)
+   '("SPC" . projectile-find-file)
    '("RET" . bookmark-jump)
    )
   (meow-normal-define-key
@@ -111,11 +110,6 @@
    '("z" . meow-pop-selection)
    '("'" . repeat)
    '("<escape>" . mode-line-other-buffer)
-
-   ;; '("SPC ," . switch-to-buffer)
-   ;; '("SPC f" . counsel-find-file)
-   ;; '("SPC g" . magit-status)
-   ;; '("SPC s" . search-forward)
    ))
 
 
@@ -126,6 +120,8 @@
   :config
   (meow-setup)
   (meow-global-mode 1)
+  (global-set-key (kbd "C-M-g") 'magit-status)
+  
   :custom
   (meow-use-clipboard t)
   (meow-keypad-leader-dispatch "C-c")
