@@ -14,7 +14,7 @@
 ;; This file is not part of GNU Emacs.
 ;;
 ;;; Commentary:
-;;
+
 ;;  UI adjustments
 ;;
 ;;; Code:
@@ -28,7 +28,7 @@
 (set-fringe-mode 5)         ; Give some breathing room
 
 ;; fonts
-(set-face-attribute 'default nil :font "Jetbrains Mono" :height 100)
+(set-face-attribute 'default nil :font "Jetbrains Mono" :height 160)
 
 ;; line number mode
 (global-display-line-numbers-mode t)

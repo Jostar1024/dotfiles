@@ -23,8 +23,6 @@
   :straight (nerd-icons :type git
 			:host github
 			:repo "rainstormstudio/nerd-icons.el")
-  :custom
-  (nerd-icons-font-family "JetBrains Mono Bold Italic Nerd Font Complete Mono")
   )
 
 (use-package doom-modeline
