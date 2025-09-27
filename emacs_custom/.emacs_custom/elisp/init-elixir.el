@@ -23,8 +23,7 @@
   :custom
   (lsp-completion-provider :none) ;; we use Corfu!
   
-  (lsp-elixir-server-command '("/home/yucheng/community/elixir-ls/release/language_server.sh"))
-
+  (lsp-elixir-server-command '("~/community/elixir-ls/release/language_server.sh"))
   :config
   (lsp-register-client
    (make-lsp-client
