@@ -41,10 +41,12 @@
    '("0" . meow-digit-argument)
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
-   '("," . consult-buffer)
+   ;; NOTE: use C-x b instead
+   ;; '("," . consult-buffer)
    '("f" . find-file)
    '("s" . consult-line)
-   '("SPC" . projectile-find-file)
+   ;; NOTE: use C-c p f instead
+   ;; '("SPC" . projectile-find-file)
    '("RET" . bookmark-jump)
    )
   (meow-normal-define-key

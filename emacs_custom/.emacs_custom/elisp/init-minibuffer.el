@@ -74,6 +74,8 @@
   ;;       #'command-completion-default-include-p)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+  :custom
+  (blink-cursor-mode nil))
 
 (provide 'init-minibuffer)

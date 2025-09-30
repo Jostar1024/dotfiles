@@ -16,6 +16,7 @@
 (require 'init-projectile)
 (require 'init-elixir)
 (require 'init-prolog)
+(require 'init-clojure)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -23,9 +24,16 @@
   :init
   (yas-global-mode))
 
-(use-package paredit
-  :hook
-  ((emacs-lisp-mode . paredit-mode)))
+(use-package smartparens
+  :ensure t
+  :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+  :config
+  ;; load default config
+  (require 'smartparens-config)
+  (smartparens-global-strict-mode +1)
+  :bind
+  (:map smartparens-mode-map
+	("]" . #'sp-up-sexp)))
 
 (use-package eros
   :ensure t
@@ -52,7 +60,10 @@
   (setq-default mac-option-modifier 'none
                 mac-command-modifier 'meta)
   )
-(use-package exec-path-from-shell)
+
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package treesit-langs
   :straight (treesit-langs :type git :host github :repo "emacs-tree-sitter/treesit-langs")

@@ -29,6 +29,7 @@
   ;; Do not allow the cursor in the minibuffer prompt
   (minibuffer-prompt-properties
    '(read-only t cursor-intangible t face minibuffer-prompt))
+  :bind (("M-g TAB" . nil))
   )
 
 (use-package no-littering)
@@ -53,14 +54,13 @@
   (corfu-auto-prefix 2)
   (corfu-popupinfo-delay 0.2)
   
-  (corfu-separator ?\s)	       ;; Orderless field separator
-  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary
+  (corfu-separator ?-)	       ;; Orderless field separator
+  (corfu-quit-at-boundary t) ;; Never quit at completion boundary
   (corfu-quit-no-match nil)		
   (corfu-preview-current nil) ;; Disable current candidate preview
   (corfu-preselect 'first)    ;; Preselect the prompt
   (corfu-on-exact-match nil)  ;; Configure handling of exact matches
   (corfu-scroll-margin 5)     ;; set scroll margin
-  
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode)
