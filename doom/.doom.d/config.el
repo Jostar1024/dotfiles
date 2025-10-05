@@ -202,6 +202,7 @@
         :leader (:prefix ("l" . "Lisps")
                  :nvie "f" #'sp-slurp-hybrid-sexp
                  :nie "k" #'sp-kill-sexp
+                 :nvie "r" #'sp-raise-sexp
                  ;; :nvie "b" #'sp-backward-sexp
                  ;; :nvim "u" #'sp-unwrap-sexp
                  ;; :nie "s" #'sp-split-sexp
