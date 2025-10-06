@@ -211,8 +211,6 @@
                  ;; :nie "{" #'sp-wrap-curly
                  )))
 
-(use-package! lsp-treemacs)
-
 (use-package! keyfreq
   :config
   (keyfreq-mode 1)

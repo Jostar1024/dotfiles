@@ -4,7 +4,7 @@
        :m "M" nil))
 
 (map! :nm "m" #'expreg-expand)
-(map! :m "M" #'expreg-contract)
+;; (map! :m "M" #'expreg-contract)
 
 
 (map! :leader
