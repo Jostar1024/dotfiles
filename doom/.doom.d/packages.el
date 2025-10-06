@@ -60,9 +60,6 @@
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"))
 
-(package! lsp-treemacs
-  :recipe (:host github :repo "emacs-lsp/lsp-treemacs"))
-
 (package! rime
   :recipe (:host github :repo "DogLooksGood/emacs-rime"))
 
@@ -113,9 +110,6 @@
 (package! eat
   :recipe (:host codeberg :repo "akib/emacs-eat")
   :pin "c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99")
-
-(package! cursor-agent :recipe
-  (:local-repo "~/projects/cursor-agent"))
 
 (package! claude-code
   :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1

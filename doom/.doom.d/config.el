@@ -226,8 +226,6 @@
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
 
-(use-package! cursor-agent)
-
 (use-package! claude-code
   :custom
   (claude-code-program "gemini")
