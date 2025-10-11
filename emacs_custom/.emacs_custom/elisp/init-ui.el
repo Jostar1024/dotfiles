@@ -30,6 +30,10 @@
 ;; fonts
 (set-face-attribute 'default nil :font "Jetbrains Mono" :height 160)
 
+;; set chinese font
+;; https://elliot00.com/posts/emacs-font-detail
+;; (set-fontset-font t 'unicode (font-spec :family "Maple Mono NF CN"))
+
 ;; line number mode
 (global-display-line-numbers-mode t)
 
