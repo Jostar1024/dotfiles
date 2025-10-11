@@ -54,12 +54,12 @@
   (corfu-auto-prefix 2)
   (corfu-popupinfo-delay 0.2)
   
-  (corfu-separator ?-)	       ;; Orderless field separator
-  (corfu-quit-at-boundary t) ;; Never quit at completion boundary
-  (corfu-quit-no-match nil)		
+  (corfu-separator ?\s)	      ;; Orderless field separator
+  (corfu-quit-at-boundary nil)  ;; quit at completion boundary
   (corfu-preview-current nil) ;; Disable current candidate preview
   (corfu-preselect 'first)    ;; Preselect the prompt
-  (corfu-on-exact-match nil)  ;; Configure handling of exact matches
+  (corfu-quit-no-match t)		
+  (corfu-on-exact-match 'quit) 
   (corfu-scroll-margin 5)     ;; set scroll margin
   :init
   (global-corfu-mode)
