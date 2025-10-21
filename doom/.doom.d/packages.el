@@ -114,3 +114,6 @@
 (package! claude-code
   :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
            :files ("*.el" (:exclude "images/*"))))
+
+(package! stimmung-themes
+  :recipe (:host github :repo "motform/stimmung-themes" :branch "master" :depth 1))

@@ -228,8 +228,12 @@
 
 (use-package! claude-code
   :custom
-  (claude-code-program "gemini")
+  ;; (claude-code-program "gemini")
+  ;; (claude-code-program "codex")
+  (claude-code-program "claude")
   (claude-code-terminal-backend #'eat)
   :config
   (map! :leader (:prefix ("r" . "Claude - AI")
                  :n "r" #'claude-code-transient :desc "Transient Menu")))
+
+(use-package! stimmung-themes)

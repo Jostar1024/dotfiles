@@ -1,28 +1,54 @@
 ;;; ../dotfiles/doom/config-elixir.el -*- lexical-binding: t; -*-
 
-(defface +elixir-dim-face
-  '((((class color) (background dark))
-     (:foreground "grey60"))
-    (((class color) (background light))
-     (:foreground "grey40")))
-  "Elixir dim face.")
-
-
 (use-package! elixir-ts-mode
   :init
   ;; Disable default smartparens config. There are too many pairs; we only want
   ;; a subset of them (defined below).
   (provide 'smartparens-elixir)
+  :hook (elixir-ts-mode . my/elixir-ts-map-keys-as-default)
   :config
-  (font-lock-add-keywords 'elixir-ts-mode
-                          '(("\\([_a-zA-Z0-9!?]+\\):" 1 'default)
-                            (":[_a-zA-Z0-9\"!?]+" . font-lock-constant-face)
-                            ("defmacro \\([a-zA-Z0-9!?_]+\\)" 1 font-lock-function-name-face)
-                            ("\\_<@[_a-zA-Z0-9!?]+\\_>" . 'default)
-                            ("\\_<true\\_>" . font-lock-constant-face)
-                            ("\\_<false\\_>" . font-lock-constant-face)
-                            ("\\_<nil\\_>" . font-lock-constant-face)
-                            ("\\_<_[a-zA-Z0-9]*\\_>" . '+elixir-dim-face)))
+  (defun my/elixir-ts-map-keys-as-default ()
+    (when (treesit-ready-p 'elixir)
+      (setq-local treesit-font-lock-feature-list
+                  (let ((base (copy-sequence treesit-font-lock-feature-list)))
+                    (setf (nth 0 base)
+                          (append (nth 0 base)
+                                  '(my/map-key-default my/map-key-default-2 my/keyword-key-default)))
+                    base))
+
+      (setq-local treesit-font-lock-level (max 4 (or treesit-font-lock-level 4)))
+
+      (setq-local treesit-font-lock-settings
+                  (append treesit-font-lock-settings
+                          (treesit-font-lock-rules
+                           ;; 1) 关键词语法：%{a: b, c: d}
+                           :language 'elixir
+                           :feature 'my/map-key-default
+                           :override t
+                           '((map
+                              (map_content
+                               (keywords (pair key: (keyword) @default)))))
+
+                           ;; 2) => 语法：%{:a => :b, "c" => :d}
+                           ;;    只把左侧 key 的 atom 设为 default，不影响右侧
+                           :language 'elixir
+                           :feature 'my/map-key-default-2
+                           :override t
+                           '((map
+                              (map_content
+                               (binary_operator
+                                left: (atom) @default
+                                operator: "=>"
+                                right: (_)))))
+
+                           :language 'elixir
+                           :feature 'my/keyword-key-default
+                           :override t
+                           '((keywords (pair key: (keyword) @default)
+                              )))))
+      (treesit-font-lock-recompute-features)
+      (font-lock-flush)))
+
 
   ;; ...and only complete the basics
   (sp-with-modes 'elixir-ts-mode
