@@ -27,7 +27,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-zenburn)
+(setq doom-theme 'stimmung-themes-light)
 
 ;; (setq doom-font (font-spec :family "JetBrains Mono" :size 10)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 9))
@@ -173,6 +173,18 @@
 
 (use-package! gptel
   :config
+  (setq gptel-directives
+        '((default
+           . "You are a large language model living in Emacs and a helpful assistant. Respond concisely.")
+          (programming
+           . "You are a large language model and a careful programmer.
+        Write code that is simple and direct. Use the programming language directly.
+        If you need to change code outside current file, comment it with the prefix TODO:.
+        Provide code and only code as output without any additional text, prompt or note.")
+          (writing
+           . "You are a large language model and a writing assistant. Respond concisely.")
+          (chat
+           . "You are a large language model and a conversation partner. Respond concisely.")))
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (getenv "DEEPSEEK_APIKEY"))
@@ -233,7 +245,10 @@
   (claude-code-program "claude")
   (claude-code-terminal-backend #'eat)
   :config
-  (map! :leader (:prefix ("r" . "Claude - AI")
-                 :n "r" #'claude-code-transient :desc "Transient Menu")))
+  ;; (map! :leader (:prefix ("r" . "Claude - AI")
+  ;;                :n "r" #'claude-code-transient :desc "Transient Menu"))
+  (map! :leader
+        :n "r" #'claude-code-transient
+        :desc "Claude - AI"))
 
 (use-package! stimmung-themes)
