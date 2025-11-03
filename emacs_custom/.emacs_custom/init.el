@@ -3,9 +3,6 @@
 ;;;
 ;;; Code:
 
-(load-theme 'modus-vivendi)
-;; (load-theme 'modus-operandi)
-
 (require 'init-ui)
 (require 'init-straight)
 (require 'init-meow)
@@ -19,6 +16,11 @@
 (require 'init-clojure)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
+;; (load-theme 'modus-vivendi)
+;; (load-theme 'modus-operandi)
+;; (load-theme 'alabaster)
 
 (use-package yasnippet
   :init
@@ -97,3 +99,18 @@
 
 ;;; init.el ends here
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("31b558bf20e8ddf359bc2e6d6ade1bf74fad7c15f2659f2ab5a807217ad07a40"
+     "cd9778f62494aa11b5d300d9c573d7639738e186d95357f041f6c62c7cdeccee"
+     default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
