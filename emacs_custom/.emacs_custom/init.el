@@ -97,6 +97,10 @@
   :init
   (dashboard-setup-startup-hook))
 
+(use-package embark)
+
+(use-package embark-consult)
+
 ;;; init.el ends here
 
 (custom-set-variables
