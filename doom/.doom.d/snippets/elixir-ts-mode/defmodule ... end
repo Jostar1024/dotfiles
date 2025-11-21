@@ -1,6 +1,16 @@
 # key: dm
 # name: defmodule ... end
 # --
-defmodule ${1:`(mapconcat 'capitalize (split-string  (file-name-nondirectory (directory-file-name (file-name-directory buffer-file-name))) "_") "")`}.${2:`(mapconcat 'capitalize (split-string (file-name-base) "_") "")`} do
+defmodule ${1:`(let* ((file-names (split-string (file-name-sans-extension buffer-file-name) "/"))
+       (file-names-starts-with-lib-or-test (cdr (seq-drop-while (lambda (x) (not (or (string= "lib" x)
+                                                                                (string= "test" x)))) file-names)))
+       (final-capitalized-names (mapcar (lambda (x) (thread-first
+                                                 x
+                                                 (split-string "_")
+                                                 (thread-last (mapcar 'capitalize))
+                                                 (string-join ""))) file-names-starts-with-lib-or-test))
+       )
+
+  (string-join (seq-uniq final-capitalized-names) "."))`} do
   $0
 end
