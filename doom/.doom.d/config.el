@@ -80,9 +80,20 @@
 (global-set-key (kbd "C-c C-f") 'eldoc)
 
 (when (eq system-type 'darwin)
-  (setq-default mac-option-modifier 'none
+  (setq-default mac-option-modifier 'super
                 mac-command-modifier 'meta)
-  (bind-key "M-v" #'clipboard-yank))
+  ;; (bind-key "M-v" #'clipboard-yank)
+  ;; NOTE: To not have conflict with Mac's Aerospace.
+  (evil-define-key 'normal evil-normal-state-map
+    (kbd "s-1") nil
+    (kbd "s-2") nil
+    (kbd "s-3") nil
+    (kbd "s-4") nil
+    (kbd "s-5") nil
+    (kbd "s-6") nil
+    (kbd "s-7") nil
+    (kbd "s-8") nil
+    (kbd "s-9") nil))
 
 (setq auto-save-default nil)
 (setq auto-save-interval 5000)
@@ -188,24 +199,29 @@
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (getenv "DEEPSEEK_APIKEY"))
-  (gptel-make-openai "SiliconFlow"
-    :host "api.siliconflow.cn"
-    :endpoint "/v1/chat/completions"
-    :stream t
-    :key (getenv "SILICONFLOW_APIKEY")
-    :models '(deepseek-ai/DeepSeek-R1 deepseek-ai/DeepSeek-V3
-              Pro/deepseek-ai/DeepSeek-R1 Pro/deepseek-ai/DeepSeek-V3
-              ))
+  ;; (gptel-make-openai "SiliconFlow"
+  ;;   :host "api.siliconflow.cn"
+  ;;   :endpoint "/v1/chat/completions"
+  ;;   :stream t
+  ;;   :key (getenv "SILICONFLOW_APIKEY")
+  ;;   :models '(deepseek-ai/DeepSeek-R1 deepseek-ai/DeepSeek-V3
+  ;;             Pro/deepseek-ai/DeepSeek-R1 Pro/deepseek-ai/DeepSeek-V3
+  ;;             ))
   ;; TODO: test it
-  (gptel-make-openai "OhMyGPT"
-    :host "cn2us02.opapi.win"
-    :endpoint "/v1/chat/completions"
+  ;; (gptel-make-openai "OhMyGPT"
+  ;;   :host "cn2us02.opapi.win"
+  ;;   :endpoint "/v1/chat/completions"
+  ;;   :stream t
+  ;;   :key (getenv "OPENAI_APIKEY"))
+  (gptel-make-openai "tubi-open-ai"
     :stream t
-    :key (getenv "OPENAI_APIKEY"))
+    :key (getenv "TUBI_OPENAI_APIKEY")
+    :models '(gpt-5.1 gpt-5 gpt-5-mini gpt-5-nano gpt-4o o3 o3-mini))
+  ;; (setq gptel-backend (gptel-get-backend "tubi-open-ai"))
   (map! :leader (:prefix ("e" . "GPTel - AI")
                  :n "a" #'gptel :desc "GPTel buffer"
                  :n "e" #'gptel-send :desc "GPTel Send"
-                 :n "S" #'gptel-menu :desc "GPTel Menu"
+                 :n "s" #'gptel-menu :desc "GPTel Menu"
                  :n "b" #'gptel-abort :desc "GPTel Abort" )))
 
 (use-package! smartparens
