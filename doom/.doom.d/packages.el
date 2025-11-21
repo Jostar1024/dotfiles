@@ -70,7 +70,10 @@
 (package! ob-elixir)
 (package! ob-restclient)
 (package! org-appear :pin "ffbd742267ff81ba8433177fac5d7fe22b6d68a9")
-(package! restclient)
+
+;; NOTE: original author has archived the repo
+(package! restclient
+  :recipe (:host github :repo "emacsorphanage/restclient"))
 
 (package! grpclient
   :pin "2104a89f81ccfefd7a3adb434336bf0887e513f6"
