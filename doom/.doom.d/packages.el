@@ -116,7 +116,8 @@
 
 (package! claude-code
   :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
-           :files ("*.el" (:exclude "images/*"))))
+           :files ("*.el" (:exclude "images/*")))
+  :pin "becece683bcf60f7b150a87a30ef14885dcf8ce3")
 
 (package! stimmung-themes
   :recipe (:host github :repo "motform/stimmung-themes" :branch "master" :depth 1))
