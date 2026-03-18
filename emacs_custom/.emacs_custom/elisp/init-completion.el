@@ -195,7 +195,45 @@
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
   (setq consult-narrow-key "<") ;; "C-+"
-
+  (setq consult-async-split-style nil)
+  ;; Keep Consult's required output flags and extend the search to hidden files.
+  ;; - --null
+  ;;   Prints a NUL byte after each file path. Consult relies on this to parse results robustly, especially
+  ;;   when file names contain punctuation.
+  ;; - --line-buffered
+  ;;   Flushes each match immediately instead of buffering more output first. This makes minibuffer results
+  ;;   update incrementally as you type.
+  ;; - --color=never
+  ;;   Disables ANSI color codes. Without this, escape sequences could pollute or break Consult’s parser/
+  ;;   highlighting.
+  ;; - --max-columns=1000
+  ;;   If a matching line is longer than 1000 bytes, ripgrep won’t print the full line. This avoids huge/
+  ;;   minified lines slowing the UI.
+  ;; - --path-separator /
+  ;;   Forces / in printed paths. On macOS this is already normal, but it keeps output format predictable
+  ;;   across platforms.
+  ;; - --smart-case
+  ;;   Makes searches case-insensitive when your pattern is all lowercase, and case-sensitive once you type
+  ;;   any uppercase letter.
+  ;; - --no-heading
+  ;;   Disables grouped “file heading” output. Consult wants one match per line, not blocks grouped under a
+  ;;   filename header.
+  ;; - --with-filename
+  ;;   Always prints the file path with each match. Consult needs that so candidates can jump to the right
+  ;;   file.
+  ;; - --line-number
+  ;;   Prints 1-based line numbers. Consult uses them to jump to the exact line.
+  ;; - --search-zip
+  ;;   Lets ripgrep search inside compressed files too. Not required for your Emacs config, but it is part
+  ;;   of Consult’s default.
+  ;; - --hidden
+  ;;   Includes hidden files and hidden directories in the search. This matters for your setup
+  ;;   because .emacs_custom is hidden.
+  ;; - -g !.git
+  ;;   Adds a glob rule excluding .git paths. This matters because --hidden would otherwise include .git
+  ;;   too.
+  (setq consult-ripgrep-args
+        "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden -g !.git")
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
