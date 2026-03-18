@@ -114,10 +114,20 @@
   :recipe (:host codeberg :repo "akib/emacs-eat")
   :pin "c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99")
 
+(package! vterm)
+
 (package! claude-code
   :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
            :files ("*.el" (:exclude "images/*")))
-  :pin "becece683bcf60f7b150a87a30ef14885dcf8ce3")
+  :pin "4a9914bd4161eb43f489820f9174c62390e5adc8")
 
 (package! stimmung-themes
   :recipe (:host github :repo "motform/stimmung-themes" :branch "master" :depth 1))
+
+(package! grip-mode
+  :recipe (:host github :repo "seagle0128/grip-mode" :branch "main" :depth 1)
+  :pin "26bdadf604b34e5a6b9628f3476bf7f5e88d2c3d")
+
+(package! pi-coding-agent
+  :recipe (:host github :repo "dnouri/pi-coding-agent" :branch "main" :depth 1)
+  :pin "e6d43f2d936a1fd860ce9439e19b1e07e668c37d")
