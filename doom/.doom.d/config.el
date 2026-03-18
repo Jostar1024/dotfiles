@@ -110,6 +110,8 @@
 (load! "config-prolog")
 (load! "config-janet")
 (load! "config-treesit")
+(load! "config-markdown")
+(load! "config-pi-agent")
 
 (use-package! rime
   :config
@@ -259,7 +261,9 @@
   ;; (claude-code-program "gemini")
   ;; (claude-code-program "codex")
   (claude-code-program "claude")
-  (claude-code-terminal-backend #'eat)
+  (claude-code-terminal-backend #'vterm)
+  :custom-face
+  (claude-code-repl-face ((t (:family "JuliaMono"))))
   :config
   ;; (map! :leader (:prefix ("r" . "Claude - AI")
   ;;                :n "r" #'claude-code-transient :desc "Transient Menu"))

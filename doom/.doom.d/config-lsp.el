@@ -17,9 +17,11 @@
   ;; (lsp-modeline-diagnostics-enable nil)
   ;; (lsp-signature-render-documentation nil)
   ;; (lsp-elixir-server-command '("elixir-ls"))
-  (lsp-elixir-server-command '("~/community/elixir-ls/release/language_server.sh"))
+  (lsp-elixir-server-command '(,(expand-file-name "~/community/elixir-ls/release/language_server.sh")))
   (lsp-elixir-fetch-deps 't)
   :config
+  ;; (setq lsp-elixir-server-command
+  ;;       (list (expand-file-name "~/community/elixir-ls/release/language_server.sh")))
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
     "Try to parse bytecode instead of json."
     (or
@@ -46,10 +48,10 @@
   )
 
 (use-package! lsp-ui
-  :custom
-  (lsp-ui-imenu-auto-refresh 't)
-  :hook
-  (lsp-ui-imenu-buffer-mode . lsp-ui-mode))
+	      :custom
+	      (lsp-ui-imenu-auto-refresh 't)
+	      :hook
+	      (lsp-ui-imenu-buffer-mode . lsp-ui-mode))
 
 ;; (use-package eglot
 ;;   :bind
