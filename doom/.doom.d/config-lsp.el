@@ -17,7 +17,7 @@
   ;; (lsp-modeline-diagnostics-enable nil)
   ;; (lsp-signature-render-documentation nil)
   ;; (lsp-elixir-server-command '("elixir-ls"))
-  (lsp-elixir-server-command '(,(expand-file-name "~/community/elixir-ls/release/language_server.sh")))
+  (lsp-elixir-server-command `(,(expand-file-name "~/community/elixir-ls/release/language_server.sh")))
   (lsp-elixir-fetch-deps 't)
   :config
   ;; (setq lsp-elixir-server-command
