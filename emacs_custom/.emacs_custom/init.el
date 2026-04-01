@@ -17,30 +17,10 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
-;; (load-theme 'modus-vivendi)
-;; (load-theme 'modus-load)
-;; (operandi-theme 'alabaster)
-
-(use-package emacs
-  :custom
-  (blink-cursor-mode nil)
-
-  ;; NOTE: for vertico
-  ;; Enable recursive minibuffers
-  ;; Support opening new minibuffers from inside existing minibuffers.
-  (enable-recursive-minibuffers t)
-  ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
-  ;; to switch display modes.
-  (context-menu-mode t)
-  ;; Hide commands in M-x which do not work in the current mode.  Vertico
-  ;; commands are hidden in normal buffers. This setting is useful beyond
-  ;; Vertico.
-  (read-extended-command-predicate #'command-completion-default-include-p)
-  ;; Do not allow the cursor in the minibuffer prompt
-  (minibuffer-prompt-properties
-   '(read-only t cursor-intangible t face minibuffer-prompt))
-  )
+;; (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
+(load-theme 'modus-vivendi)
+;; (load-theme 'modus-operandi)
+;; (load-theme 'alabaster)
 
 (use-package yasnippet
   :init
@@ -73,7 +53,7 @@
   :bind (:map magit-mode-map
 	      ("x" . magit-discard)
 	      ("p" . magit-push))
-  ) 
+  )
 (use-package apheleia
   :init
   (apheleia-global-mode +1))
@@ -120,21 +100,3 @@
 (use-package embark)
 
 (use-package embark-consult)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("31b558bf20e8ddf359bc2e6d6ade1bf74fad7c15f2659f2ab5a807217ad07a40"
-     "cd9778f62494aa11b5d300d9c573d7639738e186d95357f041f6c62c7cdeccee"
-     default)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;;; init.el ends here
