@@ -6,10 +6,18 @@
   (+workspace/switch-to "pi"))
 
 (defun my/pi-new-session (name)
-  "Create a new named pi-coding-agent session in the 'pi' workspace."
-  (interactive "sSession name: ")
+  "Create a new named pi-coding-agent session in the 'pi' workspace.
+With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
+  (interactive
+   (list (read-string "Session name: ")))
   (my/pi-workspace)
-  (pi-coding-agent name))
+  (let ((process-environment
+         (if current-prefix-arg
+             (cons (format "PI_CODING_AGENT_DIR=%s"
+                           (read-directory-name "PI_CODING_AGENT_DIR: " "~/.pi-personal"))
+                   process-environment)
+           process-environment)))
+    (pi-coding-agent name)))
 
 (defun my/pi-switch-session ()
   "Switch to another pi-coding-agent session by name."

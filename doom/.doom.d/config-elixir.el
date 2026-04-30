@@ -1,5 +1,15 @@
 ;;; ../dotfiles/doom/config-elixir.el -*- lexical-binding: t; -*-
 
+(after! quickrun
+  (quickrun-add-command "elixir"
+    `((:command . "mix")
+      (:exec . ,(lambda ()
+                  (setq quickrun-option-default-directory (doom-project-root))
+                  "%c run %d/%s"))
+      (:tempfile . nil)
+      (:description . "Run Elixir script with mix run"))
+    :default "elixir"))
+
 (use-package! elixir-ts-mode
   :init
   ;; Disable default smartparens config. There are too many pairs; we only want
