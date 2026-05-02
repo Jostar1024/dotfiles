@@ -103,7 +103,6 @@
 (load! "config-elixir")
 (load! "config-clojure")
 (load! "config-lsp")
-;; (load! "config-wsl")
 (load! "config-ligature")
 (load! "config-key-binding")
 (load! "config-org")
@@ -112,6 +111,7 @@
 (load! "config-treesit")
 (load! "config-markdown")
 (load! "config-pi-agent")
+(load! "config-dart")
 
 (use-package! rime
   :config
