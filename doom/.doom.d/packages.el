@@ -121,5 +121,5 @@
 
 (package! pi-coding-agent
   :recipe (:host github :repo "dnouri/pi-coding-agent" :branch "main" :depth 1)
-  :pin "ce067c80306616cc7c3bdf38f4c32c1a1d276e57")
+  :pin "907735488afa62ea708015a5f0f4494251800420")
 
