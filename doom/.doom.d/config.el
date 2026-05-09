@@ -256,19 +256,19 @@
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
 
-(use-package! claude-code
-  :custom
-  ;; (claude-code-program "gemini")
-  ;; (claude-code-program "codex")
-  (claude-code-program "claude")
-  (claude-code-terminal-backend #'vterm)
-  :custom-face
-  (claude-code-repl-face ((t (:family "JuliaMono"))))
-  :config
-  ;; (map! :leader (:prefix ("r" . "Claude - AI")
-  ;;                :n "r" #'claude-code-transient :desc "Transient Menu"))
-  (map! :leader
-        :n "r" #'claude-code-transient
-        :desc "Claude - AI"))
+;; (use-package! claude-code
+;;   :custom
+;;   ;; (claude-code-program "gemini")
+;;   ;; (claude-code-program "codex")
+;;   (claude-code-program "claude")
+;;   (claude-code-terminal-backend #'vterm)
+;;   :custom-face
+;;   (claude-code-repl-face ((t (:family "JuliaMono"))))
+;;   :config
+;;   ;; (map! :leader (:prefix ("r" . "Claude - AI")
+;;   ;;                :n "r" #'claude-code-transient :desc "Transient Menu"))
+;;   (map! :leader
+;;         :n "r" #'claude-code-transient
+;;         :desc "Claude - AI"))
 
 (use-package! stimmung-themes)

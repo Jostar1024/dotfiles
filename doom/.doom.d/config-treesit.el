@@ -34,3 +34,17 @@
 (use-package! treesit-fold
   :hook
   ((elixir-ts-mode) . treesit-fold-mode))
+
+(use-package! treesit-langs
+  :config
+  (setq major-mode-remap-alist
+        '((python-mode      . python-ts-mode)
+          (c-mode           . c-ts-mode)
+          (js-mode          . js-ts-mode)
+          (typescript-mode  . typescript-ts-mode)
+          (css-mode         . css-ts-mode)
+          (json-mode        . json-ts-mode)
+          (yaml-mode        . yaml-ts-mode)
+          (bash-mode        . bash-ts-mode)
+          (rust-mode        . rust-ts-mode)
+          (elixir-mode      . elixir-ts-mode))))

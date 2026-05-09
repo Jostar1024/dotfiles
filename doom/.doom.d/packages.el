@@ -48,9 +48,8 @@
 ;; (unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
+ 
 
-(package! elixir-mode)
-(package! elixir-ts-mode)
 (package! exunit)
 (package! inf-iex
   :recipe (:host github :repo "DogLooksGood/inf-iex"))
@@ -78,9 +77,10 @@
 (package! grpclient
   :pin "2104a89f81ccfefd7a3adb434336bf0887e513f6"
   :recipe (:host github :repo "Prikaz98/grpclient.el"))
+
 (package! treesit-langs
   :recipe (:host github :repo "emacs-tree-sitter/treesit-langs")
-  :pin "2594bd9fe8e640c7431f152cf789ad67b58e0be3")
+  :pin "2fb474a0e3342776adba9116ce2a3d6989f046f7")
 
 (package! treesit-fold
   :recipe (:host github :repo "emacs-tree-sitter/treesit-fold")
@@ -103,8 +103,6 @@
 (package! ajrepl
   :recipe (:host github :repo "sogaiu/ajrepl" :files ("*.el" "ajrepl")))
 
-(package! transpose-frame)
-
 (package! mermaid-mode
   :recipe (:host github :repo "abrochard/mermaid-mode"))
 
@@ -113,13 +111,6 @@
 (package! eat
   :recipe (:host codeberg :repo "akib/emacs-eat")
   :pin "c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99")
-
-(package! vterm)
-
-(package! claude-code
-  :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
-           :files ("*.el" (:exclude "images/*")))
-  :pin "4a9914bd4161eb43f489820f9174c62390e5adc8")
 
 (package! stimmung-themes
   :recipe (:host github :repo "motform/stimmung-themes" :branch "master" :depth 1))

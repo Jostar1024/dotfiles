@@ -1,15 +1,15 @@
 ;;; ../.dotfiles/doom/.doom.d/config-janet.el -*- lexical-binding: t; -*-
 ;;;
-(setq treesit-language-source-alist
-      (if (eq 'windows-nt system-type)
-          '((janet-simple
-             . ("https://github.com/sogaiu/tree-sitter-janet-simple"
-                nil nil "gcc.exe")))
-        '((janet-simple
-           . ("https://github.com/sogaiu/tree-sitter-janet-simple")))))
+;; (setq treesit-language-source-alist
+;;       (if (eq 'windows-nt system-type)
+;;           '((janet-simple
+;;              . ("https://github.com/sogaiu/tree-sitter-janet-simple"
+;;                 nil nil "gcc.exe")))
+;;         '((janet-simple
+;;            . ("https://github.com/sogaiu/tree-sitter-janet-simple")))))
 
-(when (not (treesit-language-available-p 'janet-simple))
-  (treesit-install-language-grammar 'janet-simple))
+;; (when (not (treesit-language-available-p 'janet-simple))
+;;   (treesit-install-language-grammar 'janet-simple))
 
 (use-package! ajrepl
   :after janet-ts-mode
