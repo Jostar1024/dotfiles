@@ -13,6 +13,11 @@
         :n "a" #'clojure-align
         ))
 
+(after! clojure-ts-mode
+  (set-keymap-parent clojure-ts-mode-map clojure-mode-map)
+  (add-hook 'clojure-ts-mode-hook 'paredit-mode)
+  (evil-define-key 'normal clojure-ts-mode-map (kbd "RET") 'cider-eval-defun-at-point))
+
 (use-package! cider
   :custom
   ;; NOTE: to see the doc from Java, e.g. StringBuilder, InputStream
@@ -30,11 +35,11 @@
   (add-hook 'cider-connected-hook #'mm/cider-connected-hook)
   (map! :map cider-mode-map
         :localleader
-        :n "k" #'custom-eval-user-go))
+        :n "k" #'custom-eval-user-go)
+  )
 
 
 ;; (defun exec-sexp ()
 ;;   (interactive)
 ;;   (execute-kbd-macro (read-kbd-macro "C-M-x")))
 
-;; (evil-global-set-key 'normal (kbd "RET") 'exec-sexp)
