@@ -82,6 +82,9 @@
 (when (eq system-type 'darwin)
   (setq-default mac-option-modifier 'super
                 mac-command-modifier 'meta)
+  ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383#issuecomment-4364362944
+  ;; NOTE: this requires coreutils installed in nix-home-manager 
+  (setq insert-directory-program "~/.nix-profile/bin/ls")
   ;; (bind-key "M-v" #'clipboard-yank)
   ;; NOTE: To not have conflict with Mac's Aerospace.
   (evil-define-key 'normal evil-normal-state-map
