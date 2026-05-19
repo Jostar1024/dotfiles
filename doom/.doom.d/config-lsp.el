@@ -14,6 +14,7 @@
   (lsp-enable-file-watchers nil)
   (lsp-enable-symbol-highlighting nil)
   (lsp-lens-enable nil)
+  (lsp-restart 'ignore)
   ;; (lsp-headerline-breadcrumb-enable nil)
   ;; (lsp-modeline-code-actions-enable nil)
   ;; (lsp-signature-auto-activate nil)

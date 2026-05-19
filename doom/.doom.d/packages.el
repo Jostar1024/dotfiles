@@ -117,7 +117,7 @@
 
 (package! grip-mode
   :recipe (:host github :repo "seagle0128/grip-mode" :branch "main" :depth 1)
-  :pin "26bdadf604b34e5a6b9628f3476bf7f5e88d2c3d")
+  :pin "3d23dd4768f91454cb72ff550a2182d788cd8653")
 
 (package! pi-coding-agent
   :recipe (:host github :repo "dnouri/pi-coding-agent" :branch "main" :depth 1)

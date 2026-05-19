@@ -48,4 +48,4 @@
           (bash-mode        . bash-ts-mode)
           (rust-mode        . rust-ts-mode)
           (elixir-mode      . elixir-ts-mode)
-          (clojure-mode      . clojure-ts-mode))))
+          (clojure-mode     . clojure-ts-mode))))
