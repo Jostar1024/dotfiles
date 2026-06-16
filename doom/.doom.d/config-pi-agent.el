@@ -9,7 +9,8 @@
   "Create a new named pi-coding-agent session in the 'pi' workspace.
 With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
   (interactive
-   (list (read-string "Session name: ")))
+   (list (read-string "Session name: "
+                       (format "%s-%s" (projectile-project-name) (format-time-string "%H%M%S")))))
   (my/pi-workspace)
   (let ((process-environment
          (if current-prefix-arg
