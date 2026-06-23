@@ -30,12 +30,28 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
                        (with-current-buffer buf
                          (derived-mode-p 'pi-coding-agent-chat-mode)))
                      (buffer-list)))
-         (names (mapcar (lambda (buf)
-                          (let ((name (buffer-name buf)))
-                            (if (string-match "<\\(.+\\)>\\*$" name)
-                                (cons (match-string 1 name) buf)
-                              (cons "default" buf))))
-                        chat-bufs)))
+         (raw-names (mapcar (lambda (buf)
+                              (let ((name (buffer-name buf)))
+                                (cons (if (string-match "<\\(.+\\)>\\*$" name)
+                                          (match-string 1 name)
+                                        "default")
+                                      buf)))
+                            chat-bufs))
+         ;; Disambiguate duplicate names by appending project dir
+         (name-counts (let ((ht (make-hash-table :test 'equal)))
+                        (dolist (entry raw-names ht)
+                          (puthash (car entry) (1+ (gethash (car entry) ht 0)) ht))))
+         (names (mapcar (lambda (entry)
+                          (let ((n (car entry))
+                                (buf (cdr entry)))
+                            (if (> (gethash n name-counts) 1)
+                                (cons (format "%s [%s]" n
+                                              (file-name-nondirectory
+                                               (directory-file-name
+                                                (buffer-local-value 'default-directory buf))))
+                                      buf)
+                              (cons n buf))))
+                        raw-names)))
     (if (null names)
         (user-error "No pi sessions active")
       (let* ((choice (completing-read "Pi session: " (mapcar #'car names) nil t))
@@ -44,6 +60,29 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
         (delete-other-windows)
         (pi-coding-agent--display-buffers buf input-buf)))))
 
+
+(defun my/pi-rename-session (new-name)
+  "Rename the current pi-coding-agent session."
+  (interactive
+   (let* ((buf-name (buffer-name))
+          (current-name (when (string-match "<\\(.+\\)>\\*$" buf-name)
+                          (match-string 1 buf-name))))
+     (list (read-string "New session name: " current-name))))
+  (let ((chat-buf (cond
+                   ((derived-mode-p 'pi-coding-agent-chat-mode)
+                    (current-buffer))
+                   ((derived-mode-p 'pi-coding-agent-input-mode)
+                    (buffer-local-value 'pi-coding-agent--chat-buffer (current-buffer)))
+                   (t (user-error "Not in a pi session buffer")))))
+    (unless (buffer-live-p chat-buf)
+      (user-error "No active pi session found"))
+    (with-current-buffer chat-buf
+      (rename-buffer (format "*pi-coding-agent<%s>*" new-name))
+      (let ((input-buf (bound-and-true-p pi-coding-agent--input-buffer)))
+        (when (buffer-live-p input-buf)
+          (with-current-buffer input-buf
+            (rename-buffer (format "*pi-coding-agent-input<%s>*" new-name)))))
+      (message "Pi session renamed to: %s" new-name))))
 
 (defun my/pi-copy-file-path-with-line-number ()
   (interactive)
@@ -129,7 +168,8 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
        :n "P" #'my/pi-workspace
        :n "n" #'my/pi-new-session
        :n "s" #'my/pi-switch-session
+       :n "r" #'my/pi-rename-session
        :n "t" #'pi-coding-agent-toggle
        :n "d" #'my/pi-dump-sessions
-       :n "r" #'my/pi-restore-sessions
+       :n "R" #'my/pi-restore-sessions
        :n "q" #'pi-coding-agent-quit))
