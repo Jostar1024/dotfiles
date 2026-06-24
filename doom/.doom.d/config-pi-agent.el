@@ -21,6 +21,70 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
     (delete-other-windows)
     (pi-coding-agent name)))
 
+(defvar my/pi-session--candidates nil
+  "Alist of (display-name . buffer) for current pi session completion.")
+
+(defun my/pi-session--relative-time (time)
+  "Format TIME as a relative time string."
+  (if time
+      (let* ((elapsed (float-time (time-subtract (current-time) time)))
+             (minutes (/ elapsed 60))
+             (hours (/ elapsed 3600))
+             (days (/ elapsed 86400)))
+        (cond
+         ((< minutes 1) "now")
+         ((< hours 1) (format "%dm" (floor minutes)))
+         ((< days 1) (format "%dh" (floor hours)))
+         ((< days 30) (format "%dd" (floor days)))
+         (t (format "%dmo" (floor (/ days 30))))))
+    "?"))
+
+(defun my/pi-session--start-time (session-file)
+  "Extract start time from SESSION-FILE path timestamp."
+  (when (and session-file
+             (string-match
+              "/\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}T[0-9]\\{2\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\)"
+              session-file))
+    (let* ((ts-str (match-string 1 session-file))
+           (iso-str (replace-regexp-in-string
+                     "T\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)"
+                     "T\\1:\\2:\\3"
+                     ts-str)))
+      (date-to-time (concat iso-str "+00:00")))))
+
+(defun my/pi-session-annotate (candidate)
+  "Marginalia annotator for pi-session completion candidates."
+  (when-let* ((buf (cdr (assoc candidate my/pi-session--candidates))))
+    (let* ((state (buffer-local-value 'pi-coding-agent--state buf))
+           (session-file (and state (plist-get state :session-file)))
+           (status (buffer-local-value 'pi-coding-agent--status buf))
+           (proc (buffer-local-value 'pi-coding-agent--process buf))
+           (alive (and proc (process-live-p proc)))
+           (dir (abbreviate-file-name (buffer-local-value 'default-directory buf)))
+           (start-time (my/pi-session--start-time session-file))
+           (last-msg-time (when (and session-file (file-exists-p session-file))
+                            (file-attribute-modification-time
+                             (file-attributes session-file))))
+           (status-str (cond
+                        ((not alive) "○dead")
+                        ((string= status "idle") "●idle")
+                        (t (format "●%s" status))))
+           (status-face (cond
+                         ((not alive) 'shadow)
+                         ((string= status "idle") 'success)
+                         (t 'warning))))
+      (marginalia--fields
+       (status-str :face status-face :width 12)
+       ((format "start:%s" (my/pi-session--relative-time start-time))
+        :face 'marginalia-date :width 12)
+       ((format "msg:%s" (my/pi-session--relative-time last-msg-time))
+        :face 'marginalia-date :width 10)
+       (dir :face 'marginalia-file-name)))))
+
+(after! marginalia
+  (add-to-list 'marginalia-annotators
+               '(pi-session my/pi-session-annotate builtin none)))
+
 (defun my/pi-switch-session ()
   "Switch to another pi-coding-agent session by name."
   (interactive)
@@ -54,11 +118,18 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
                         raw-names)))
     (if (null names)
         (user-error "No pi sessions active")
-      (let* ((choice (completing-read "Pi session: " (mapcar #'car names) nil t))
-             (buf (cdr (assoc choice names)))
-             (input-buf (buffer-local-value 'pi-coding-agent--input-buffer buf)))
-        (delete-other-windows)
-        (pi-coding-agent--display-buffers buf input-buf)))))
+      (let ((my/pi-session--candidates names))
+        (let* ((choice (completing-read "Pi session: "
+                                        (lambda (string pred action)
+                                          (if (eq action 'metadata)
+                                              '(metadata (category . pi-session))
+                                            (complete-with-action
+                                             action (mapcar #'car names) string pred)))
+                                        nil t))
+               (buf (cdr (assoc choice names)))
+               (input-buf (buffer-local-value 'pi-coding-agent--input-buffer buf)))
+          (delete-other-windows)
+          (pi-coding-agent--display-buffers buf input-buf))))))
 
 
 (defun my/pi-rename-session (new-name)
