@@ -17,13 +17,20 @@
   (provide 'smartparens-elixir)
   :hook (elixir-ts-mode . my/elixir-ts-map-keys-as-default)
   :config
+  (defface my-elixir-unused-variable
+    '((t :inherit shadow))
+    "Face for unused variables (prefixed with _) in Elixir."
+    :group 'elixir-ts)
   (defun my/elixir-ts-map-keys-as-default ()
     (when (treesit-ready-p 'elixir)
       (setq-local treesit-font-lock-feature-list
                   (let ((base (copy-sequence treesit-font-lock-feature-list)))
                     (setf (nth 0 base)
                           (append (nth 0 base)
-                                  '(my/map-key-default my/map-key-default-2 my/keyword-key-default)))
+                                  '(my/unused-var
+                                    my/map-key-default
+                                    my/map-key-default-2
+                                    my/keyword-key-default)))
                     base))
 
       (setq-local treesit-font-lock-level (max 4 (or treesit-font-lock-level 4)))
@@ -31,6 +38,13 @@
       (setq-local treesit-font-lock-settings
                   (append treesit-font-lock-settings
                           (treesit-font-lock-rules
+                           ;; _vars get shadow face instead
+                           :language 'elixir
+                           :feature 'my/unused-var
+                           :override t
+                           '(((identifier) @my-elixir-unused-variable
+                              (:match "^_[a-z]\\|^_$" @my-elixir-unused-variable)))
+
                            ;; 1) 关键词语法：%{a: b, c: d}
                            :language 'elixir
                            :feature 'my/map-key-default
@@ -54,8 +68,7 @@
                            :language 'elixir
                            :feature 'my/keyword-key-default
                            :override t
-                           '((keywords (pair key: (keyword) @default)
-                              )))))
+                           '((keywords (pair key: (keyword) @default))))))
       (treesit-font-lock-recompute-features)
       (font-lock-flush)))
 

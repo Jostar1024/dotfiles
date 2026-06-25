@@ -27,7 +27,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'stimmung-themes-light)
+;; (setq doom-theme 'stimmung-themes-light)
+(load! "config-modus-tonsky")
+(setq doom-theme 'modus-tonsky-light)
 
 ;; (setq doom-font (font-spec :family "JetBrains Mono" :size 10)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 9))
@@ -274,4 +276,4 @@
 ;;         :n "r" #'claude-code-transient
 ;;         :desc "Claude - AI"))
 
-(use-package! stimmung-themes)
+;; (use-package! stimmung-themes)

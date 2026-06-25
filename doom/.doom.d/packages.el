@@ -123,3 +123,5 @@
   :recipe (:host github :repo "dnouri/pi-coding-agent" :branch "main" :depth 1)
   :pin "907735488afa62ea708015a5f0f4494251800420")
 
+(package! modus-themes)
+
