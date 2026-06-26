@@ -78,33 +78,14 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq eldoc-idle-delay most-positive-fixnum)
-(global-set-key (kbd "C-c C-f") 'eldoc)
-
-(when (eq system-type 'darwin)
-  (setq-default mac-option-modifier 'super
-                mac-command-modifier 'meta)
-  ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383#issuecomment-4364362944
-  ;; NOTE: this requires coreutils installed in nix-home-manager 
-  (setq insert-directory-program "~/.nix-profile/bin/ls")
-  ;; (bind-key "M-v" #'clipboard-yank)
-  ;; NOTE: To not have conflict with Mac's Aerospace.
-  (evil-define-key 'normal evil-normal-state-map
-    (kbd "s-1") nil
-    (kbd "s-2") nil
-    (kbd "s-3") nil
-    (kbd "s-4") nil
-    (kbd "s-5") nil
-    (kbd "s-6") nil
-    (kbd "s-7") nil
-    (kbd "s-8") nil
-    (kbd "s-9") nil))
-
 (setq auto-save-default nil)
 (setq auto-save-interval 5000)
 (setq auto-save-timeout (* 10 60))
 
 ;; (load! "config-company")
+(when (eq system-type 'darwin)
+    (load! "config-darwin"))
+
 (load! "config-elixir")
 (load! "config-clojure")
 (load! "config-lsp")
