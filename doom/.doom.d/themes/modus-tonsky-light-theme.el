@@ -30,12 +30,12 @@
     (builtin fg-main)
     (type fg-main)
     (preprocessor fg-dim)
+    (variable fg-main)
 
     ;; Function definitions: warm/bright (gives file structure)
     (fnname yellow-warmer)
 
     ;; Variable declarations: subtle blue (where does this come from?)
-    (variable blue-cooler)
 
     ;; Strings: green with background (Tonsky's light-theme trick:
     ;; background colors make light themes work with vibrant color)
