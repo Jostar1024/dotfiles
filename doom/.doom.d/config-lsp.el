@@ -2,11 +2,10 @@
 
 (use-package lsp-mode
   :hook
-  ((elixir-ts-mode . lsp-deferred)
+  ;; (elixir-ts-mode . lsp-deferred)
    (nix-mode . lsp-deferred)
    (typescript-mode . lsp-deferred)
    (tsx-ts-mode . lsp-deferred)
-   )
   :commands
   (lsp lsp-deferred)
   :custom
@@ -52,11 +51,11 @@
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   )
 
-(use-package! lsp-ui
-  :custom
-  (lsp-ui-imenu-auto-refresh 't)
-  :hook
-  (lsp-ui-imenu-buffer-mode . lsp-ui-mode))
+;; (use-package! lsp-ui
+;;   :custom
+;;   (lsp-ui-imenu-auto-refresh 't)
+;;   :hook
+;;   (lsp-ui-imenu-buffer-mode . lsp-ui-mode))
 
 ;; (use-package eglot
 ;;   :bind

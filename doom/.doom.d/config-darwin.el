@@ -20,7 +20,10 @@
   (kbd "s-8") nil
   (kbd "s-9") nil)
 ;; Index macOS SDK man pages for gman so that section 3 pages (e.g. printf(3))
-;; appear in M-x man completion. A user-local man_db.conf adds a MANDB_MAP for
+;; appear in M-x man completion.
+(require 'xdg)
+
+;; A user-local man_db.conf adds a MANDB_MAP for
 ;; the SDK path, and a wrapper script makes man.el pass -C to gman.
 (let* ((sdk (string-trim
              (shell-command-to-string "xcrun --show-sdk-path")))

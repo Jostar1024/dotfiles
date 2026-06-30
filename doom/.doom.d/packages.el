@@ -124,4 +124,4 @@
   :pin "907735488afa62ea708015a5f0f4494251800420")
 
 (package! modus-themes)
-
+(package! citre)

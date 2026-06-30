@@ -82,9 +82,12 @@
 (setq auto-save-interval 5000)
 (setq auto-save-timeout (* 10 60))
 
+(after! hl-line
+  (global-hl-line-mode -1))
+
 ;; (load! "config-company")
 (when (eq system-type 'darwin)
-    (load! "config-darwin"))
+  (load! "config-darwin"))
 
 (load! "config-elixir")
 (load! "config-clojure")
@@ -98,6 +101,7 @@
 (load! "config-markdown")
 (load! "config-pi-agent")
 (load! "config-dart")
+(load! "config-citre")
 
 (use-package! rime
   :config
