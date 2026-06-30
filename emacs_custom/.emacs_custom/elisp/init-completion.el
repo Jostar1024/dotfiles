@@ -32,8 +32,6 @@
   :bind (("M-g TAB" . nil))
   )
 
-(use-package no-littering)
-
 (use-package orderless
   :custom
   ;; Configure a custom style dispatcher (see the Consult wiki)
