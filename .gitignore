@@ -5,3 +5,6 @@ tmp/
 
 
 emacs_custom/.emacs_custom/straight/
+emacs_custom/.emacs_custom/cache/
+emacs_custom/.emacs_custom/eln-cache/
+emacs_custom/.emacs_custom/tree-sitter/
