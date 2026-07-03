@@ -100,7 +100,6 @@
 (load! "config-treesit")
 (load! "config-markdown")
 (load! "config-pi-agent")
-(load! "config-dart")
 (load! "config-citre")
 
 (use-package! rime
