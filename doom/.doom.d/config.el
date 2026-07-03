@@ -3,7 +3,6 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Yucheng"
@@ -89,18 +88,20 @@
 (when (eq system-type 'darwin)
   (load! "config-darwin"))
 
+(load! "config-ai")
+(load! "config-pi-agent")
+(load! "config-key-binding")
+(load! "config-treesit")
+(load! "config-citre")
+(load! "config-org")
+
 (load! "config-elixir")
 (load! "config-clojure")
 (load! "config-lsp")
 (load! "config-ligature")
-(load! "config-key-binding")
-(load! "config-org")
 (load! "config-prolog")
 (load! "config-janet")
-(load! "config-treesit")
 (load! "config-markdown")
-(load! "config-pi-agent")
-(load! "config-citre")
 
 (use-package! rime
   :config
@@ -162,6 +163,7 @@
 
 (after! nix-mode
   (set-formatter! 'alejandra '("alejandra" "--quiet") :modes '(nix-mode)))
+
 (set-formatter! 'sql '("pg_format") :modes '(sql-mode))
 (set-formatter! 'protobuf '("clang-format" "-") :modes '(protobuf-mode))
 
@@ -170,50 +172,7 @@
   (setq prolog-system 'swi
         prolog-program-switches '((swi ("-G128M" "-T128M" "-L128M" "-O"))
                                   (t nil))
-        prolog-electric-if-then-else-flag t)
-  )
-
-(use-package! gptel
-  :config
-  (setq gptel-directives
-        '((default
-           . "You are a large language model living in Emacs and a helpful assistant. Respond concisely.")
-          (programming
-           . "You are a large language model and a careful programmer.
-        Write code that is simple and direct. Use the programming language directly.
-        If you need to change code outside current file, comment it with the prefix TODO:.
-        Provide code and only code as output without any additional text, prompt or note.")
-          (writing
-           . "You are a large language model and a writing assistant. Respond concisely.")
-          (chat
-           . "You are a large language model and a conversation partner. Respond concisely.")))
-  (gptel-make-deepseek "DeepSeek"
-    :stream t
-    :key (getenv "DEEPSEEK_APIKEY"))
-  ;; (gptel-make-openai "SiliconFlow"
-  ;;   :host "api.siliconflow.cn"
-  ;;   :endpoint "/v1/chat/completions"
-  ;;   :stream t
-  ;;   :key (getenv "SILICONFLOW_APIKEY")
-  ;;   :models '(deepseek-ai/DeepSeek-R1 deepseek-ai/DeepSeek-V3
-  ;;             Pro/deepseek-ai/DeepSeek-R1 Pro/deepseek-ai/DeepSeek-V3
-  ;;             ))
-  ;; TODO: test it
-  ;; (gptel-make-openai "OhMyGPT"
-  ;;   :host "cn2us02.opapi.win"
-  ;;   :endpoint "/v1/chat/completions"
-  ;;   :stream t
-  ;;   :key (getenv "OPENAI_APIKEY"))
-  (gptel-make-openai "tubi-open-ai"
-    :stream t
-    :key (getenv "TUBI_OPENAI_APIKEY")
-    :models '(gpt-5.1 gpt-5 gpt-5-mini gpt-5-nano gpt-4o o3 o3-mini))
-  ;; (setq gptel-backend (gptel-get-backend "tubi-open-ai"))
-  (map! :leader (:prefix ("e" . "GPTel - AI")
-                 :n "a" #'gptel :desc "GPTel buffer"
-                 :n "e" #'gptel-send :desc "GPTel Send"
-                 :n "s" #'gptel-menu :desc "GPTel Menu"
-                 :n "b" #'gptel-abort :desc "GPTel Abort" )))
+        prolog-electric-if-then-else-flag t))
 
 (use-package! smartparens
   :config
@@ -244,20 +203,3 @@
   ;; NOTE: elixir's mix format in pre-commit hook contains terminal's ANSI colors.
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
-
-;; (use-package! claude-code
-;;   :custom
-;;   ;; (claude-code-program "gemini")
-;;   ;; (claude-code-program "codex")
-;;   (claude-code-program "claude")
-;;   (claude-code-terminal-backend #'vterm)
-;;   :custom-face
-;;   (claude-code-repl-face ((t (:family "JuliaMono"))))
-;;   :config
-;;   ;; (map! :leader (:prefix ("r" . "Claude - AI")
-;;   ;;                :n "r" #'claude-code-transient :desc "Transient Menu"))
-;;   (map! :leader
-;;         :n "r" #'claude-code-transient
-;;         :desc "Claude - AI"))
-
-;; (use-package! stimmung-themes)
