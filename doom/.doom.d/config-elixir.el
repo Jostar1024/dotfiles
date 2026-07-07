@@ -15,7 +15,18 @@
   ;; Disable default smartparens config. There are too many pairs; we only want
   ;; a subset of them (defined below).
   (provide 'smartparens-elixir)
-  :hook (elixir-ts-mode . my/elixir-ts-map-keys-as-default)
+  :hook
+  (elixir-ts-mode . my/elixir-ts-map-keys-as-default)
+
+  ;; When press `g d` to jump to definition with ctags, for example Ecto.Query|, it wants me to select from a list of *.Query. 
+  ;; The issue is that Emacs's thing-at-point 'symbol doesn't include . - it treats it as punctuation. So when cursor is on Query, +lookup/definition only grabs Query.
+  ;; Fix: make . a symbol constituent in elixir-ts-mode. 
+  ;; "_" means "symbol constituent" (not word constituent), so:
+  ;; - thing-at-point 'symbol on Query in Ecto.Query → grabs Ecto.Query
+  ;; - gd works without selection
+  ;; - w/e/b word motions are unaffected (they use word class, not symbol)
+  ;; - */# search will match the full Ecto.Query
+  (elixir-ts-mode . (lambda () (modify-syntax-entry ?. "_")))
   :config
   (defface my-elixir-unused-variable
     '((t :inherit shadow))
@@ -71,7 +82,6 @@
                            '((keywords (pair key: (keyword) @default))))))
       (treesit-font-lock-recompute-features)
       (font-lock-flush)))
-
 
   ;; ...and only complete the basics
   (sp-with-modes 'elixir-ts-mode

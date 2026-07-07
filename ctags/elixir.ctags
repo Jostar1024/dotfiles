@@ -1,0 +1,18 @@
+# The built-in Elixir parser only indexes the last segment of module names
+# (e.g. `defmodule Ecto.Query` is tagged as `Query`). This makes it impossible
+# to jump to `Ecto.Query` as a symbol.
+#
+# It also only records the short module name in scope (e.g. `scope:module:Delivery`
+# instead of `scope:module:ContentAvail.Business.Delivery`), which breaks
+# citre's contextual completion when typing `Module.`.
+#
+# These regex rules override the built-in module/end handling to:
+# 1. Tag modules with their full qualified name
+# 2. Track full qualified module scope for functions
+#
+# Limitation: regex-based scope tracking can't distinguish `end` for a module
+# from `end` for a function/case/if. Only column-0 `end` is treated as module
+# close. This works reliably for the standard one-module-per-file convention
+# but may produce incorrect scope for files with nested modules (mostly in deps).
+--regex-Elixir=/^defmodule[ \t]+([A-Z][A-Za-z0-9.]*)/\1/m,module/{scope=push}{exclusive}
+--regex-Elixir=/^end[ \t]*$///{scope=pop}{exclusive}{placeholder}
