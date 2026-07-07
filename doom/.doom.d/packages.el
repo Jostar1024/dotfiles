@@ -125,3 +125,5 @@
 
 (package! modus-themes)
 (package! citre)
+
+(package! clojure-ts-mode)

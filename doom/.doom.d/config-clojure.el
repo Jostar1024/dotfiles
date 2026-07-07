@@ -1,45 +1,33 @@
 ;;; ../.dotfiles/doom/.doom.d/config-clojure.el -*- lexical-binding: t; -*-
 
-(use-package! clojure-mode
+(use-package! clojure-ts-mode
   :custom
   (clojure-toplevel-inside-comment-form t)
   :hook
   (clojure-mode . paredit-mode)
+  (clojure-ts-mode-local-vars-hook . cider-mode)
+  (clojure-ts-clojurescript-mode-local-vars-hook . cider-mode)
+
   :config
-  (add-hook 'clojure-mode-hook 'paredit-mode)
   (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point)
+  (+clojure-common-config '(clojure-ts-mode clojure-ts-clojurescript-mode))
   (map! :map clojure-mode-map
         :localleader
         :n "a" #'clojure-align
         ))
 
-(after! clojure-ts-mode
-  (set-keymap-parent clojure-ts-mode-map clojure-mode-map)
-  (add-hook 'clojure-ts-mode-hook 'paredit-mode)
-  (evil-define-key 'normal clojure-ts-mode-map (kbd "RET") 'cider-eval-defun-at-point))
-
-(use-package! cider
+(use-package! cider-mode
   :custom
   ;; NOTE: to see the doc from Java, e.g. StringBuilder, InputStream
   (cider-enrich-classpath t)
   :config
-  (cider-register-cljs-repl-type 'mynbb "(+ 1 2 3)")
-  (defun mm/cider-connected-hook ()
-    (when (eq 'nbb cider-cljs-repl-type)
-      (setq-local cider-show-error-buffer nil)
-      (cider-set-repl-type 'cljs)))
+
   (defun custom-eval-user-go ()
     (interactive)
     (save-buffer)
     (cider-interactive-eval (format "(integrant.repl/reset)" (cider-last-sexp))))
-  (add-hook 'cider-connected-hook #'mm/cider-connected-hook)
+
   (map! :map cider-mode-map
         :localleader
         :n "k" #'custom-eval-user-go)
   )
-
-
-;; (defun exec-sexp ()
-;;   (interactive)
-;;   (execute-kbd-macro (read-kbd-macro "C-M-x")))
-
