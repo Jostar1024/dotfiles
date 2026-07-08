@@ -1,11 +1,14 @@
 ;;; ../.dotfiles/doom/.doom.d/config-darwin.el -*- lexical-binding: t; -*-
-
 (setq-default mac-option-modifier 'super
               mac-command-modifier 'meta)
 
 ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383#issuecomment-4364362944
 ;; NOTE: this requires coreutils installed in nix-home-manager 
-(setq insert-directory-program "~/.nix-profile/bin/ls")
+(let* ((nix-home-manager-path (expand-file-name "~/.nix-profile/bin/ls"))
+       (nix-darwin-path "/etc/profiles/per-user/yucheng/bin/ls")
+       (final-ls-path (cond ((file-exists-p nix-home-manager-path) nix-home-manager-path)
+                            ((file-exists-p nix-darwin-path) nix-darwin-path))))
+  (setq insert-directory-program final-ls-path))
 
 ;; (bind-key "M-v" #'clipboard-yank)
 ;; NOTE: To not have conflict with Mac's Aerospace.
@@ -19,6 +22,7 @@
   (kbd "s-7") nil
   (kbd "s-8") nil
   (kbd "s-9") nil)
+
 ;; Index macOS SDK man pages for gman so that section 3 pages (e.g. printf(3))
 ;; appear in M-x man completion.
 (require 'xdg)
