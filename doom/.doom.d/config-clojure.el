@@ -3,6 +3,7 @@
 (use-package! clojure-ts-mode
   :custom
   (clojure-toplevel-inside-comment-form t)
+  (clojure-ts-align-forms-automatically t)
   :hook
   (clojure-mode . paredit-mode)
   (clojure-ts-mode-local-vars-hook . cider-mode)
@@ -13,15 +14,13 @@
   (+clojure-common-config '(clojure-ts-mode clojure-ts-clojurescript-mode))
   (map! :map clojure-mode-map
         :localleader
-        :n "a" #'clojure-align
-        ))
+        :n "a" #'clojure-align))
 
 (use-package! cider-mode
   :custom
   ;; NOTE: to see the doc from Java, e.g. StringBuilder, InputStream
   (cider-enrich-classpath t)
   :config
-
   (defun custom-eval-user-go ()
     (interactive)
     (save-buffer)
