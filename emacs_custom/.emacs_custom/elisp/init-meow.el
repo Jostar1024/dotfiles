@@ -25,6 +25,7 @@
    '("j" . meow-next)
    '("k" . meow-prev))
   (meow-leader-define-key
+   
    ;; SPC j/k will run the original command in MOTION state.
    '("j" . "H-j")
    '("k" . "H-k")
@@ -48,6 +49,10 @@
    ;; NOTE: use C-c p f instead
    ;; '("SPC" . projectile-find-file)
    '("RET" . bookmark-jump)
+   
+   ;; Magit
+   '("g" . (lambda () (interactive) (require 'magit) (magit-status)))
+
    )
   (meow-normal-define-key
    '("0" . meow-expand-0)
@@ -94,7 +99,7 @@
    '("o" . meow-block)
    '("O" . meow-to-block)
    '("p" . meow-yank)
-   '("q" . meow-quit)
+   ;; '("q" . meow-quit)
    '("Q" . meow-goto-line)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
@@ -121,8 +126,9 @@
 		  :repo "DogLooksGood/meow")
   :config
   (meow-setup)
+  (setq meow-keypad-ctrl-meta-prefix ?G)
+  (setq meow-keypad-meta-prefix ?M)
   (meow-global-mode 1)
-  (global-set-key (kbd "C-M-g") 'magit-status)
   
   :custom
   (meow-use-clipboard t)

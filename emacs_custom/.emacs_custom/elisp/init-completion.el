@@ -43,11 +43,6 @@
   (kind-icon-blend-background nil)  ; Use midpoint color between foreground and background colors ("blended")?
   (kind-icon-blend-frac 0.08)
 
-  ;; NOTE 2022-02-05: `kind-icon' depends `svg-lib' which creates a cache
-  ;; directory that defaults to the `user-emacs-directory'. Here, I change that
-  ;; directory to a location appropriate to `no-littering' conventions, a
-  ;; package which moves directories of other packages to sane locations.
-  (svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/")) ; Change cache dir
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter) ; Enable `kind-icon'
   (setq kind-icon-default-style '(:padding -1 :stroke 0 :margin 0 :radius 0 :height 0.4 :scale 1.0))
