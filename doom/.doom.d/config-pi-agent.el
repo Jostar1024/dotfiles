@@ -10,7 +10,7 @@
 With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
   (interactive
    (list (read-string "Session name: "
-                       (format "%s-%s" (projectile-project-name) (format-time-string "%H%M%S")))))
+                      (format "%s-%s" (projectile-project-name) (format-time-string "%H%M%S")))))
   (my/pi-workspace)
   (let ((process-environment
          (if current-prefix-arg
@@ -162,6 +162,58 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
     (message "Copy to clipboard: %s" file-path-with-line-number)
     ))
 
+(defun my/pi-copy-process-info ()
+  "Show pi process info and copy to kill ring + system clipboard."
+  (interactive)
+  (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
+         (proc (and chat-buf (buffer-local-value 'pi-coding-agent--process chat-buf)))
+         (state (and chat-buf (buffer-local-value 'pi-coding-agent--state chat-buf)))
+         (status (and chat-buf (buffer-local-value 'pi-coding-agent--status chat-buf)))
+         (session-file (and state (plist-get state :session-file)))
+         (info (cond
+                ((not chat-buf) "Pi: No session")
+                ((not proc)
+                 (format "Pi: No process (status: %s, session: %s)"
+                         status (or session-file "none")))
+                (t
+                 (format "Pi: PID %s, %s (status: %s, session: %s)"
+                         (process-id proc)
+                         (if (process-live-p proc) "alive" "dead")
+                         status
+                         (or session-file "none"))))))
+    (kill-new info)
+    (gui-set-selection 'CLIPBOARD info) ;; copy to system clipboard
+    (message "%s [copied]" info)))
+
+(defun my/pi-display-stderr ()
+  "Toggle stderr in the pi-chat window."
+  (interactive)
+  (if-let* ((chat-buf (pi-coding-agent--get-chat-buffer))
+            (proc (buffer-local-value 'pi-coding-agent--process chat-buf))
+            (stderr-buf (process-get proc 'pi-coding-agent-stderr-buf))
+            ((buffer-live-p stderr-buf))
+            (win (or (get-buffer-window chat-buf)
+                     (get-buffer-window stderr-buf))))
+      (if (eq (window-buffer win) stderr-buf)
+          (set-window-buffer win chat-buf)
+        (set-window-buffer win stderr-buf))
+    (message "Pi: No stderr buffer")))
+
+(defun my/pi-toggle-table-overlays ()
+  "Toggle table display overlays in the current pi-chat buffer.
+When removed, the raw markdown pipe table is exposed and navigable."
+  (interactive)
+  (unless (derived-mode-p 'pi-coding-agent-chat-mode)
+    (user-error "Not in a pi-chat buffer"))
+  (let ((inhibit-read-only t))
+    (if (seq-some (lambda (ov) (overlay-get ov 'pi-coding-agent-table-display))
+                  (overlays-in (point-min) (point-max)))
+        (progn
+          (pi-coding-agent--remove-table-overlays (point-min) (point-max))
+          (message "Table overlays removed"))
+      (pi-coding-agent--decorate-tables-in-region (point-min) (point-max))
+      (message "Table overlays restored"))))
+
 (defvar my/pi-session-dump-file
   (expand-file-name "pi-sessions.el" doom-cache-dir)
   "File to store active pi session metadata for restore.")
@@ -193,7 +245,8 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
       (message "Dumped %d pi session(s) to %s" (length entries) my/pi-session-dump-file))))
 
 (defun my/pi-restore-sessions ()
-  "Restore pi sessions from `my/pi-session-dump-file'."  (interactive)
+  "Restore pi sessions from `my/pi-session-dump-file'."
+  (interactive)
   (unless (file-exists-p my/pi-session-dump-file)
     (user-error "No dump file found at %s" my/pi-session-dump-file))
   (let ((entries (with-temp-buffer
@@ -203,35 +256,47 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
                    (read (current-buffer)))))
     (when (null entries)
       (user-error "Dump file is empty"))
-    (my/pi-workspace)
-    (dolist (entry entries)
-      (let* ((name (plist-get entry :name))
-             (dir (plist-get entry :dir))
-             (session-file (plist-get entry :session-file))
-             (default-directory dir))
-        (pi-coding-agent (or name nil))
-        (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
-               (proc (and chat-buf
-                          (buffer-local-value 'pi-coding-agent--process chat-buf))))
-          (when (and proc (process-live-p proc) chat-buf)
-            (pi-coding-agent--rpc-async
-             proc
-             (list :type "switch_session" :sessionPath session-file)
-             (lambda (response)
-               (let* ((data (plist-get response :data))
-                      (cancelled (plist-get data :cancelled)))
-                 (if (and (plist-get response :success)
-                          (pi-coding-agent--json-false-p cancelled))
-                     (progn
-                       (pi-coding-agent--refresh-session-state proc chat-buf session-file)
-                       (pi-coding-agent--load-session-history
-                        proc
-                        (lambda (count)
-                          (message "Pi: Restored session %s (%d messages)"
-                                   (or name "default") count))
-                        chat-buf))
-                   (message "Pi: Failed to restore session %s" (or name "default")))))))))))
-    (message "Restoring %d pi session(s)..." (length entries)))
+    (let* ((active-session-files
+            (cl-loop for buf in (buffer-list)
+                     when (with-current-buffer buf
+                            (derived-mode-p 'pi-coding-agent-chat-mode))
+                     collect (plist-get (buffer-local-value 'pi-coding-agent--state buf)
+                                        :session-file)))
+           (to-restore (cl-remove-if
+                        (lambda (entry)
+                          (member (plist-get entry :session-file) active-session-files))
+                        entries)))
+      (if (null to-restore)
+          (message "Pi: All sessions already active, nothing to restore.")
+        (my/pi-workspace)
+        (dolist (entry to-restore)
+          (let* ((name (plist-get entry :name))
+                 (dir (plist-get entry :dir))
+                 (session-file (plist-get entry :session-file))
+                 (default-directory dir))
+            (pi-coding-agent (or name nil))
+            (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
+                   (proc (and chat-buf
+                              (buffer-local-value 'pi-coding-agent--process chat-buf))))
+              (when (and proc (process-live-p proc) chat-buf)
+                (pi-coding-agent--rpc-async
+                 proc
+                 (list :type "switch_session" :sessionPath session-file)
+                 (lambda (response)
+                   (let* ((data (plist-get response :data))
+                          (cancelled (plist-get data :cancelled)))
+                     (if (and (plist-get response :success)
+                              (pi-coding-agent--json-false-p cancelled))
+                         (progn
+                           (pi-coding-agent--refresh-session-state proc chat-buf session-file)
+                           (pi-coding-agent--load-session-history
+                            proc
+                            (lambda (count)
+                              (message "Pi: Restored session %s (%d messages)"
+                                       (or name "default") count))
+                            chat-buf))
+                       (message "Pi: Failed to restore session %s" (or name "default")))))))))))
+      (message "Restoring %d pi session(s)..." (length to-restore)))))
 
 (map! :leader
       (:prefix ("j" . "Pi Agent")
@@ -240,7 +305,9 @@ With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
        :n "n" #'my/pi-new-session
        :n "s" #'my/pi-switch-session
        :n "r" #'my/pi-rename-session
-       :n "t" #'pi-coding-agent-toggle
+       :n "t" #'my/pi-toggle-table-overlays
        :n "d" #'my/pi-dump-sessions
        :n "R" #'my/pi-restore-sessions
-       :n "q" #'pi-coding-agent-quit))
+       :n "q" #'pi-coding-agent-quit
+       :n "i" #'my/pi-copy-process-info
+       :n "e" #'my/pi-display-stderr))
