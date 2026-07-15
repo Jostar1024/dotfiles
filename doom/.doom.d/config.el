@@ -102,6 +102,7 @@
 (load! "config-prolog")
 (load! "config-janet")
 (load! "config-markdown")
+(load! "config-ghostel")
 
 (use-package! rime
   :config

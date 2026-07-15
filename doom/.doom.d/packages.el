@@ -127,3 +127,5 @@
 (package! citre)
 
 (package! clojure-ts-mode)
+
+(package! ghostel)
