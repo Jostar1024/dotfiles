@@ -198,7 +198,9 @@
                                     forward-char
                                     backward-char
                                     previous-line
-                                    next-line)))
+                                    next-line
+                                    evil-previous-line
+                                    evil-next-line)))
 (use-package! magit
   :custom
   ;; NOTE: elixir's mix format in pre-commit hook contains terminal's ANSI colors.
