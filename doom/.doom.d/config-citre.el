@@ -75,5 +75,30 @@
   (setq citre-use-project-root-when-creating-tags t
         citre-auto-enable-citre-mode-modes '(elixir-ts-mode))
 
-  
-  )
+  ;; Elixir language support: cursor-position-aware symbol lookup.
+  ;; Cursor on uppercase segment (module) -> lookup full module path up to that segment.
+  ;; Cursor on lowercase segment (function) -> lookup just the function name.
+  ;; This works with `modify-syntax-entry ?. "_"` making . a symbol constituent.
+  (citre-tags-register-language-support
+   'elixir-ts-mode
+   (list :get-symbol (lambda ()
+                       (when-let* ((bounds (bounds-of-thing-at-point 'symbol)))
+                         (let* ((full (buffer-substring-no-properties (car bounds) (cdr bounds)))
+                                (pos-in-str (- (point) (car bounds)))
+                                (before-cursor (substring full 0 pos-in-str))
+                                (seg-start (if-let* ((last-dot (cl-position ?. before-cursor :from-end t)))
+                                               (1+ last-dot)
+                                             0))
+                                (seg-end (or (cl-position ?. full :start pos-in-str)
+                                             (length full)))
+                                (segment (substring full seg-start seg-end))
+                                (is-func (let ((c (aref segment 0)))
+                                           (or (<= ?a c ?z) (= c ?_))))
+                                (name (if is-func segment
+                                        (substring full 0 seg-end)))
+                                (new-beg (if is-func
+                                             (+ (car bounds) seg-start)
+                                           (car bounds)))
+                                (new-end (+ (car bounds) seg-end)))
+                           (citre-put-property name 'bounds (cons new-beg new-end))))))))
+
