@@ -3,6 +3,9 @@
 ;;;
 ;;; Code:
 
+
+(setq indent-tabs-mode nil)
+
 ;; https://www.rahuljuliato.com/posts/emacs-cache-paths
 (defcustom my/cache-directory
   (expand-file-name "cache/" user-emacs-directory)
@@ -24,26 +27,28 @@ Changes take effect after restarting Emacs."
 
 (defvar my/cache-paths
   '(;; Files:
-    (bookmark-file               . "bookmarks")
-    (ielm-history-file-name      . "ielm-history.eld")
-    (project-list-file           . "projects")
-    (recentf-save-file           . "recentf")
-    (savehist-file               . "history")
-    (save-place-file             . "saveplace")
-    (transient-history-file      . "transient/history.el")
-    (transient-levels-file       . "transient/levels.el")
-    (transient-values-file       . "transient/values.el")
-    (tramp-persistency-file-name . "tramp")
-    (nsm-settings-file           . "network-security.data")
+    (bookmark-file                  . "bookmarks")
+    (ielm-history-file-name         . "ielm-history.eld")
+    (project-list-file              . "projects")
+    (recentf-save-file              . "recentf")
+    (savehist-file                  . "history")
+    (save-place-file                . "saveplace")
+    (transient-history-file         . "transient/history.el")
+    (transient-levels-file          . "transient/levels.el")
+    (transient-values-file          . "transient/values.el")
+    (tramp-persistency-file-name    . "tramp")
+    (nsm-settings-file              . "network-security.data")
+    (projectile-cache-file          . "projectile/cache.el")
+    (projectile-known-projects-file . "projectile/known-projects.el")
     ;; Directories:
-    (auto-saves                  . "auto-saves/")
-    (auto-saves-sessions         . "auto-saves/sessions/")
-    (multisession-directory      . "multisession/")
-    (url-configuration-directory . "url/")
-    (image-dired-dir             . "image-dired/")
-    (erc-log-channels-directory  . "erc/logs/")
-    (erc-image-cache-directory   . "erc/images/")
-    (rcirc-log-directory         . "rcirc/logs/"))
+    (auto-saves                     . "auto-saves/")
+    (auto-saves-sessions            . "auto-saves/sessions/")
+    (multisession-directory         . "multisession/")
+    (url-configuration-directory    . "url/")
+    (image-dired-dir                . "image-dired/")
+    (erc-log-channels-directory     . "erc/logs/")
+    (erc-image-cache-directory      . "erc/images/")
+    (rcirc-log-directory            . "rcirc/logs/"))
   "Alist of (KEY . RELATIVE-PATH) for cache locations.
 RELATIVE-PATH is resolved against `my/cache-directory'.
 A trailing slash on RELATIVE-PATH marks the entry as a directory.")
@@ -116,6 +121,12 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
 	auto-save-file-name-transforms
 	`((".*" ,(my/cache--path 'auto-saves) t)))
   (setopt tramp-persistency-file-name (my/cache--path 'tramp-persistency-file-name))
+
+  ;; Align emacs-lisp's alist entries with dot when call M-x align
+  (add-to-list 'align-rules-list
+               '(dot-align
+                 (regexp . "\\(\\s-*\\)\\.")
+                 (modes  . '(emacs-lisp-mode))))
   :bind (("M-g TAB" . nil))
   )
 
