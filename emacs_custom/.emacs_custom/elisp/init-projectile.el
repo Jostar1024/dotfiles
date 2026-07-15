@@ -28,7 +28,7 @@
                                         projectile-root-local))
 
   (projectile-cache-file (my/cache--path 'projectile-cache-file))
-  (projectile-known-projects-file (my/cache--path 'projectile-know-projects-file))
+  (projectile-known-projects-file (my/cache--path 'projectile-known-projects-file))
 
   :config
   (add-to-list 'projectile-project-root-files ".projectile")

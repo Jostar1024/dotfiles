@@ -3,7 +3,6 @@
 ;;;
 ;;; Code:
 
-
 (setq indent-tabs-mode nil)
 
 ;; https://www.rahuljuliato.com/posts/emacs-cache-paths
@@ -48,7 +47,8 @@ Changes take effect after restarting Emacs."
     (image-dired-dir                . "image-dired/")
     (erc-log-channels-directory     . "erc/logs/")
     (erc-image-cache-directory      . "erc/images/")
-    (rcirc-log-directory            . "rcirc/logs/"))
+    (rcirc-log-directory            . "rcirc/logs/")
+    (svg-lib-icons-dir              . "svg-lib/"))
   "Alist of (KEY . RELATIVE-PATH) for cache locations.
 RELATIVE-PATH is resolved against `my/cache-directory'.
 A trailing slash on RELATIVE-PATH marks the entry as a directory.")
@@ -121,14 +121,71 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
 	auto-save-file-name-transforms
 	`((".*" ,(my/cache--path 'auto-saves) t)))
   (setopt tramp-persistency-file-name (my/cache--path 'tramp-persistency-file-name))
-
-  ;; Align emacs-lisp's alist entries with dot when call M-x align
-  (add-to-list 'align-rules-list
-               '(dot-align
-                 (regexp . "\\(\\s-*\\)\\.")
-                 (modes  . '(emacs-lisp-mode))))
   :bind (("M-g TAB" . nil))
   )
+
+;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+;; assume left-to-right text everywhere and skip the bidirectional parenthesis algorithm:
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;; stop fontifies (syntax-highlights) text even while you’re actively typing
+(setq redisplay-skip-fontification-on-input t)
+
+;; Increase Process Output Buffer for LSP
+(setq read-process-output-max (* 4 1024 1024)) ; 4MB
+
+;; Don’t Render Cursors in Non-Focused Windows
+(setq-default cursor-in-non-selected-windows nil)
+(setq highlight-nonselected-windows nil)
+
+;; save the system clipboard to kill ring before killing
+(setq save-interprogram-paste-before-kill t)
+(setq kill-do-not-save-duplicates t)
+
+;; Persist the Kill Ring Across Sessions
+(setq savehist-additional-variables
+      '(search-ring regexp-search-ring kill-ring))
+
+(add-hook 'savehist-save-hook
+          (lambda ()
+            (setq kill-ring
+                  (mapcar #'substring-no-properties
+                          (cl-remove-if-not #'stringp kill-ring)))))
+
+;; Auto-Chmod Scripts on Save
+(add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
+
+;; Sane Syntax in re-builder
+(setq reb-re-syntax 'string)
+
+;; Prevent ffap from Pinging Hostnames
+(setq ffap-machine-p-known 'reject)
+
+;; Proportional Window Resizing
+(setq window-combination-resize t)
+
+(winner-mode +1)
+
+(defun toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+
+(global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
+
+;; Recenter After save-place Restores Position
+(advice-add 'save-place-find-file-hook :after
+            (lambda (&rest _)
+              (when buffer-file-name (ignore-errors (recenter)))))
+
+;; Auto-Select Help Windows
+(setq help-window-select t)
 
 (require 'init-ui)
 (require 'init-straight)
@@ -138,6 +195,7 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
 (require 'init-completion)
 (require 'init-minibuffer)
 (require 'init-projectile)
+(require 'init-windows)
 (require 'init-elixir)
 (require 'init-prolog)
 (require 'init-clojure)
@@ -162,6 +220,14 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
   :bind
   (:map smartparens-mode-map
 	("]" . #'sp-up-sexp)))
+
+(use-package align
+  :config
+  ;; Align emacs-lisp's alist entries with dot when call M-x align
+  (add-to-list 'align-rules-list
+               '(dot-align
+                 (regexp . "\\(\\s-*\\)\\.")
+                 (modes  . '(emacs-lisp-mode)))))
 
 (use-package eros
   :ensure t
