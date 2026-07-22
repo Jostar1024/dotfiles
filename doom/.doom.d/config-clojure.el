@@ -8,7 +8,8 @@
   (clojure-mode . paredit-mode)
   (clojure-ts-mode-local-vars-hook . cider-mode)
   (clojure-ts-clojurescript-mode-local-vars-hook . cider-mode)
-
+  (clojure-ts-clojurescript-mode . (lambda ()
+                                     (setq-local indent-region-function #'clojure-ts-indent-region)))
   :config
   (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point)
   (+clojure-common-config '(clojure-ts-mode clojure-ts-clojurescript-mode))
