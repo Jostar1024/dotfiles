@@ -37,16 +37,39 @@
 
 (use-package! treesit-langs
   :config
-  (setq major-mode-remap-alist
-        '((python-mode        . python-ts-mode)
-          (c-mode             . c-ts-mode)
-          (js-mode            . js-ts-mode)
-          (typescript-mode    . typescript-ts-mode)
-          (css-mode           . css-ts-mode)
-          (json-mode          . json-ts-mode)
-          (yaml-mode          . yaml-ts-mode)
-          (bash-mode          . bash-ts-mode)
-          (rust-mode          . rust-ts-mode)
-          (elixir-mode        . elixir-ts-mode)
-          (clojurescript-mode . clojure-ts-clojurescript-mode)
-          (clojure-mode       . clojure-ts-mode))))
+  ;; Only use treesit-langs for grammar bundle management.
+  ;; Remapping is handled below, not via treesit-langs-major-mode-setup.
+  (treesit-langs-install-grammars :skip-if-installed))
+
+(use-package! treesit
+  :preface
+  (dolist (mapping
+           '((python-mode        . python-ts-mode)
+             (c-mode             . c-ts-mode)
+             (c++-mode           . c++-ts-mode)
+             (c-or-c++-mode      . c-or-c++-ts-mode)
+             (js-mode            . js-ts-mode)
+             (js2-mode           . js-ts-mode)
+             (typescript-mode    . typescript-ts-mode)
+             (css-mode           . css-ts-mode)
+             (json-mode          . json-ts-mode)
+             (js-json-mode       . json-ts-mode)
+             (yaml-mode          . yaml-ts-mode)
+             (sh-mode            . bash-ts-mode)
+             (sh-base-mode       . bash-ts-mode)
+             (rust-mode          . rust-ts-mode)
+             (elixir-mode        . elixir-ts-mode)
+             (clojure-mode       . clojure-ts-mode)
+             (clojurescript-mode . clojure-ts-clojurescript-mode)))
+    (add-to-list 'major-mode-remap-alist mapping))
+  :mode (;; javascript/typescript related
+         ("\\.tsx\\'"        . tsx-ts-mode)
+         ("\\.js\\'"         . typescript-ts-mode)
+         ("\\.mjs\\'"        . typescript-ts-mode)
+         ("\\.mts\\'"        . typescript-ts-mode)
+         ("\\.cjs\\'"        . typescript-ts-mode)
+         ("\\.ts\\'"         . typescript-ts-mode)
+         ("\\.jsx\\'"        . tsx-ts-mode)
+         ("\\.json\\'"       . json-ts-mode)
+         ("\\.Dockerfile\\'" . dockerfile-ts-mode)
+         ("\\.prisma\\'"     . prisma-ts-mode)))

@@ -96,6 +96,7 @@
 (load! "config-org")
 
 (load! "config-elixir")
+(load! "config-web")
 (load! "config-clojure")
 (load! "config-lsp")
 (load! "config-ligature")
@@ -111,23 +112,14 @@
   (map! :map rime-mode-map
         "C-`" #'rime-send-keybinding)
 
+  ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
+  ;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
+  
   :custom
   (default-input-method "rime")
   (rime-show-candidate 'minibuffer)
   (rime-librime-root "~/.nix-profile"))
 
-;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p))
-;; (setq rime-inline-predicates '(rime-predicate-space-after-cc-p))
-
-(use-package! web-mode
-  :custom
-  (web-mode-markup-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2)
-  (web-mode-style-padding 2)
-  (web-mode-script-padding 2)
-  (web-mode-enable-current-element-highlight t)
-  (web-mode-enable-current-column-highlight t))
 
 (use-package! evil-snipe
   :custom
