@@ -1,8 +1,9 @@
 ;; init-completion.el --- init of emacs -*- lexical-binding: t; -*-
-
+;; 
+;;; Commentary:
 ;; A few more useful configurations...
 
-
+;;; Code:
 (use-package orderless
   :custom
   ;; Configure a custom style dispatcher (see the Consult wiki)
