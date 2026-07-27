@@ -21,8 +21,6 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-
-
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
@@ -81,8 +79,8 @@
 (setq auto-save-interval 5000)
 (setq auto-save-timeout (* 10 60))
 
-(after! hl-line
-  (global-hl-line-mode -1))
+(after! doom-ui
+  (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode))
 
 ;; (load! "config-company")
 (when (eq system-type 'darwin)
