@@ -62,6 +62,7 @@
              (clojure-mode       . clojure-ts-mode)
              (clojurescript-mode . clojure-ts-clojurescript-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
+  ;; https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config
   :mode (;; javascript/typescript related
          ("\\.tsx\\'"        . tsx-ts-mode)
          ("\\.js\\'"         . typescript-ts-mode)
