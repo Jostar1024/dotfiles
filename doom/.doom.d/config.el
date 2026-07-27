@@ -92,6 +92,7 @@
 (load! "config-treesit")
 (load! "config-citre")
 (load! "config-org")
+(load! "config-completion")
 
 (load! "config-elixir")
 (load! "config-web")
