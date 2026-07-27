@@ -1,7 +1,7 @@
 ;;; ../.dotfiles/doom/.doom.d/config-ghostel.el -*- lexical-binding: t; -*-
 
 ;; Copy directly from the offical github
-(use-package ghostel
+(use-package! ghostel
   :bind (("C-x m" . ghostel)
          :map ghostel-semi-char-mode-map
          ("C-s"  . consult-line)
@@ -13,6 +13,8 @@
          :map project-prefix-map
          ("m" . ghostel-project)
          ("M" . ghostel-project-list-buffers))
+  :custom
+  (ghostel-compile-global-mode t)
   :config
   (defun my/ghostel-send-C-k-and-kill ()
     "Send `C-k' to ghostel.
