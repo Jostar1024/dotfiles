@@ -1,5 +1,16 @@
 ;;; config-pi-agent.el --- Pi coding agent workspace -*- lexical-binding: t; -*-
 
+(defgroup my/pi nil
+  "Personal pi-coding-agent workspace configuration."
+  :group 'tools)
+
+(defcustom my/pi-coding-agent-dir "~/.pi"
+  "Default directory for the PI_CODING_AGENT_DIR environment variable.
+Used by `my/pi-new-session' as the starting default when prompting
+for a session directory (with a prefix argument)."
+  :type 'directory
+  :group 'my/pi)
+
 (defun my/pi-workspace ()
   "Switch to the dedicated 'pi' workspace, creating it if needed."
   (interactive)
@@ -7,17 +18,18 @@
 
 (defun my/pi-new-session (name)
   "Create a new named pi-coding-agent session in the 'pi' workspace.
-With prefix arg, prompt for PI_CODING_AGENT_DIR before starting."
+Always sets PI_CODING_AGENT_DIR to `my/pi-coding-agent-dir'.
+With prefix arg, prompt for a directory to override it."
   (interactive
    (list (read-string "Session name: "
                       (format "%s-%s" (projectile-project-name) (format-time-string "%H%M%S")))))
   (my/pi-workspace)
-  (let ((process-environment
-         (if current-prefix-arg
-             (cons (format "PI_CODING_AGENT_DIR=%s"
-                           (read-directory-name "PI_CODING_AGENT_DIR: " "~/.pi-personal"))
-                   process-environment)
-           process-environment)))
+  (let* ((dir (if current-prefix-arg
+                 (read-directory-name "PI_CODING_AGENT_DIR: " my/pi-coding-agent-dir)
+               my/pi-coding-agent-dir))
+         (process-environment
+          (cons (format "PI_CODING_AGENT_DIR=%s" dir)
+                process-environment)))
     (delete-other-windows)
     (pi-coding-agent name)))
 
