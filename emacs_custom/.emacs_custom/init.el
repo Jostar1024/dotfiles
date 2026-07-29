@@ -289,6 +289,12 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
   :init
   (dashboard-setup-startup-hook))
 
-(use-package embark)
+(use-package embark
+  :bind
+  ;; https://emacsredux.com/blog/2026/07/25/cider-and-projectile-meet-embark/
+  ("C-." . embark-act)
+  ("M-." . embark-dwim)       ; optional: do the default action
+  ("C-h B" . embark-bindings) ; optional: show all key bindings
+  ) 
 
 (use-package embark-consult)
