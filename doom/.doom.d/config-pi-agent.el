@@ -310,6 +310,52 @@ When removed, the raw markdown pipe table is exposed and navigable."
                        (message "Pi: Failed to restore session %s" (or name "default")))))))))))
       (message "Restoring %d pi session(s)..." (length to-restore)))))
 
+(defun my/pi-respawn-session ()
+  "Respawn current pi session after upgrade breaks the running process."
+  (interactive)
+  (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
+         (state (and chat-buf (buffer-local-value 'pi-coding-agent--state chat-buf)))
+         (session-file (and state (plist-get state :session-file)))
+         (proc (and chat-buf (buffer-local-value 'pi-coding-agent--process chat-buf)))
+         (buf-name (and chat-buf (buffer-name chat-buf)))
+         (session-name (when (and buf-name (string-match "<\\(.+\\)>\\*$" buf-name))
+                         (match-string 1 buf-name)))
+         (dir (and chat-buf (buffer-local-value 'default-directory chat-buf))))
+    (unless chat-buf (user-error "Not in a pi session"))
+    (unless session-file (user-error "No session file found"))
+    (unless (yes-or-no-p "Respawn this pi session? ")
+      (user-error "Cancelled"))
+    ;; Kill broken process
+    (when (and proc (process-live-p proc))
+      (kill-process proc))
+    ;; Kill old buffers
+    (let ((input-buf (buffer-local-value 'pi-coding-agent--input-buffer chat-buf)))
+      (when (buffer-live-p input-buf) (kill-buffer input-buf)))
+    (kill-buffer chat-buf)
+    ;; Respawn
+    (delete-other-windows)
+    (let ((default-directory dir))
+      (pi-coding-agent (or session-name nil)))
+    (let* ((new-chat (pi-coding-agent--get-chat-buffer))
+           (new-proc (and new-chat (buffer-local-value 'pi-coding-agent--process new-chat))))
+      (when (and new-proc (process-live-p new-proc))
+        (pi-coding-agent--rpc-async
+         new-proc
+         (list :type "switch_session" :sessionPath session-file)
+         (lambda (response)
+           (let* ((data (plist-get response :data))
+                  (cancelled (plist-get data :cancelled)))
+             (if (and (plist-get response :success)
+                      (pi-coding-agent--json-false-p cancelled))
+                 (progn
+                   (pi-coding-agent--refresh-session-state new-proc new-chat session-file)
+                   (pi-coding-agent--load-session-history
+                    new-proc
+                    (lambda (_count)
+                      (message "Pi: Respawn successfully!"))
+                    new-chat))
+               (message "Pi: Respawn failed - switch_session rejected")))))))))
+
 (map! :leader
       (:prefix ("j" . "Pi Agent")
        :n "c" #'my/pi-copy-file-path-with-line-number
@@ -317,6 +363,7 @@ When removed, the raw markdown pipe table is exposed and navigable."
        :n "n" #'my/pi-new-session
        :n "s" #'my/pi-switch-session
        :n "r" #'my/pi-rename-session
+       :n "p" #'my/pi-respawn-session
        :n "t" #'my/pi-toggle-table-overlays
        :n "d" #'my/pi-dump-sessions
        :n "R" #'my/pi-restore-sessions
