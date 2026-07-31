@@ -116,6 +116,10 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
   (create-lockfiles            nil)
   (make-backup-files           nil)
   (auto-save-default           t)
+
+  ;; https://emacsredux.com/blog/2026/03/15/use-short-answers/
+  (use-short-answers t)
+  (use-dialog-box nil)
   :config
   (setq auto-save-list-file-prefix (my/cache--path 'auto-saves-sessions)
 	auto-save-file-name-transforms
@@ -298,3 +302,19 @@ A trailing slash on RELATIVE-PATH marks the entry as a directory.")
   ) 
 
 (use-package embark-consult)
+
+
+;; https://emacsredux.com/blog/2026/04/04/repeat-mode/
+(use-package repeat-mode
+  :ensure nil
+  :config
+  (repeat-mode 1)
+  (setq repeat-exit-timeout 5) ;; exit after 5 seconds of inactivity
+  )
+
+(use-package isearch
+  :straight (:type built-in)
+  :custom
+  (isearch-lazy-count t)
+  (lazy-count-prefix-format "(%s/%s) ")
+  (lazy-count-suffix-format nil))
