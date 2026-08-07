@@ -24,30 +24,69 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-;; (setq doom-theme 'stimmung-themes-light)
 (load! "config-modus-tonsky")
 (setq doom-theme 'modus-tonsky-light)
 
-;; (setq doom-font (font-spec :family "JetBrains Mono" :size 10)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 9))
-
-;; (setq +my-cnfont-size 26)
-;; (setq +my-ascii-size 22)
-
-;; for thinkpad's screen
-;; (setq +my-cnfont-size 44)
-;; (setq +my-ascii-size 36)
-
-(setq +my-cnfont-size 20)
-(setq +my-ascii-size 16)
+;; Font sizes are glyph HEIGHTS, not widths.  What decides whether markdown
+;; tables (e.g. in the pi-coding-agent chat buffer) line up is the drawn
+;; ADVANCE width of each glyph versus the number of columns Emacs reserves:
+;;
+;;   JetBrains Mono at 16px height -> 10px advance width (it is a 0.6em-wide font)
+;;   a CJK monospace font's advance == its height, so 20px -> 20px advance width
+;;
+;; How to measure the real drawn pixels?
+;; (string-pixel-width "M")  => 10
+;; (string-pixel-width "中") => 20   
+;; (frame-char-width) => 10 ; (the width of one grid cell)
+;; 
+;; (pp (font-info (face-attribute 'default :font)) 
+;; inspect the font at cursor C-u C-x = => what-cursor-position
+;; 
+(setq +my-cnfont-size 20) ;; height = 20px, width = 20px
+(setq +my-ascii-size 16)  ;; height = 16px, width = 10px for Jetbrains Mono
 (setq +my-ascii-font "Jetbrains Mono")
-(setq +my-cnfont "LXGW Wenkai Mono")
+(setq +my-cnfont "LXGW WenKai Mono")
 
 (setq doom-font                (font-spec :family +my-ascii-font :size +my-ascii-size)
       doom-variable-pitch-font (font-spec :family +my-ascii-font :size +my-ascii-size)
-      doom-symbol-font         (font-spec :family +my-cnfont :size +my-cnfont-size)
-      doom-serif-font          (font-spec :family +my-cnfont :size +my-cnfont-size)
+      ;; `doom-symbol-font' covers the `symbol' and `mathematical' charsets --
+      ;; box drawing, arrows, dingbats.
+      ;;
+      ;; It cannot be JetBrains Mono either.  JetBrains Mono has no glyph for
+      ;; some symbols (`\N{BLACK STAR}' U+2605 is missing -- check with
+      ;; `fc-list ":charset=2605"'. Menlo ships those glyphs itself at a uniform
+      ;; single-cell advance, so nothing falls back and nothing drifts.
+      doom-symbol-font         (font-spec :family "Menlo" :size +my-ascii-size)
+      ;; `doom-serif-font' is deliberately unset: it only styles the
+      ;; `fixed-pitch-serif' face, which no Doom module or installed package
+      ;; uses
       doom-big-font            (font-spec :family +my-ascii-font :size +my-ascii-size))
+
+;; Doom has no `doom-cjk-font'.  `doom-symbol-font' does not cover Han/kana, so
+;; without the explicit fontset entries below Chinese falls back to a macOS
+;; system font sized to the DEFAULT font height (16px -> 16px advance), i.e. 4px
+;; short of the 2 columns Emacs reserved.  That is what misaligns tables.
+(defun +my/set-cjk-font ()
+  "Render CJK glyphs at exactly twice the ASCII advance so tables align."
+  (when (display-graphic-p)
+    (dolist (charset '(han cjk-misc kana bopomofo))
+      (set-fontset-font t charset
+                        (font-spec :family +my-cnfont :size +my-cnfont-size)))))
+
+;; Why `after-setting-font-hook' and not plain top-level call:
+;;
+;; - What must happen first is the APPLICATION of the fonts to the frame.  Doom
+;;   does that in `doom-init-fonts-h', hooked at priority -100 onto
+;;   `after-init-hook' (or `server-after-make-frame-hook' under a daemon), and
+;;   that same function installs Doom's own `set-fontset-font' entries for the
+;;   `symbol', `mathematical', `emoji' and Nerd Font ranges before ending with
+;;   `(run-hooks 'after-setting-font-hook)'.
+;; - Running after that hook therefore guarantees our CJK entries are not
+;;   clobbered by Doom's, and they are re-applied on `doom/reload-font'.
+;; - Under a daemon it fires when the first graphical frame exists, so
+;;   `set-fontset-font' is never called from a frameless init.  The
+;;   `display-graphic-p' guard keeps it a no-op in terminal/`-nox' sessions.
+(add-hook 'after-setting-font-hook #'+my/set-cjk-font)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
