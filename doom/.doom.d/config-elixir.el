@@ -91,7 +91,7 @@
                    :post-handlers '("||\n[i]"))
     (sp-local-pair "do " " end" :unless '(sp-in-comment-p sp-in-string-p))
     (sp-local-pair "fn " " end" :unless '(sp-in-comment-p sp-in-string-p)))
-  (evil-define-key '(normal visual) elixir-ts-mode-map (kbd "RET") 'inf-iex-eval)
+  (evil-define-key '(normal visual) elixir-ts-mode-map (kbd "RET") '+iex-eval-overlay)
   ;; (defun +drop-db ()
   ;;   (interactive)
   ;;   (let*
@@ -106,7 +106,10 @@
         :n "f" #'elixir-format
         :n "g" #'+update-deps
         :n "d" #'lsp-ui-doc-glance
+        :n "D" #'+iex-doc
         :n "c c" #'inf-iex-eval
+        :n "c e" #'+iex-eval-overlay
+        :n "c i" #'+iex-inspect-last-result
         :n "c v" #'inf-iex-toggle-send-target
         :n "i" #'lsp-ui-imenu)
   )
@@ -116,6 +119,143 @@
   (elixir-ts-mode . inf-iex-minor-mode)
   :init
   (evil-set-initial-state 'inf-iex-tracer-mode 'motion))
+
+;;; IEx eval with inline overlay (eros-style)
+
+(defvar +iex-last-result nil
+  "The last evaluation result string from IEx.")
+
+(defvar +iex--eval-proc nil)
+(defvar +iex--eval-src-buf nil)
+(defvar +iex--eval-end-pos nil)
+(defvar +iex--eval-output "")
+(defvar +iex--eval-orig-filter nil)
+(defvar +iex--eval-timeout-timer nil)
+
+(defun +iex--eval-cleanup ()
+  "Restore process filter and clear eval capture state."
+  (when +iex--eval-timeout-timer
+    (cancel-timer +iex--eval-timeout-timer)
+    (setq +iex--eval-timeout-timer nil))
+  (when (and +iex--eval-proc
+             (process-live-p +iex--eval-proc)
+             +iex--eval-orig-filter)
+    (set-process-filter +iex--eval-proc +iex--eval-orig-filter))
+  (setq +iex--eval-proc nil
+        +iex--eval-src-buf nil
+        +iex--eval-end-pos nil
+        +iex--eval-output ""
+        +iex--eval-orig-filter nil))
+
+(defun +iex--strip-ansi (str)
+  "Strip all ANSI escape sequences from STR."
+  (replace-regexp-in-string "\033\\[[0-9;]*[a-zA-Z]" "" str))
+
+(defun +iex--eval-process-filter (proc output)
+  "Capture IEx output, pass to comint, show overlay on prompt."
+  (when +iex--eval-orig-filter
+    (funcall +iex--eval-orig-filter proc output))
+  (setq +iex--eval-output (concat +iex--eval-output output))
+  (let ((clean (+iex--strip-ansi +iex--eval-output)))
+    (when (string-match "\niex([0-9]+)>[ \t]*\\'" clean)
+      (let* ((without-prompt (substring clean 0 (match-beginning 0)))
+             ;; Strip echoed input (first line) and \r
+             (result (if (string-match "\\`[^\n]*\n" without-prompt)
+                         (substring without-prompt (match-end 0))
+                       without-prompt))
+             (result (string-trim (replace-regexp-in-string "\r" "" result))))
+        (setq +iex-last-result result)
+        (when (and (buffer-live-p +iex--eval-src-buf)
+                   (not (string-empty-p result)))
+          (with-current-buffer +iex--eval-src-buf
+            (let ((this-command '+iex-eval-overlay))
+              (eros--make-result-overlay result
+                :where +iex--eval-end-pos
+                :duration eros-eval-result-duration))))
+        (message "%s" result))
+      (+iex--eval-cleanup))))
+
+(defun +iex-eval-overlay ()
+  "Eval region or current line in IEx and show result as inline overlay."
+  (interactive)
+  (unless (inf-iex--get-process)
+    (user-error "No IEx process running for this project"))
+  (+iex--eval-cleanup)
+  (let* ((raw (inf-iex--get-code-to-eval))
+         (code (inf-iex--format-eval-code raw))
+         (proc (inf-iex--get-process)))
+    (setq +iex--eval-proc proc
+          +iex--eval-src-buf (current-buffer)
+          +iex--eval-end-pos (if (region-active-p) (region-end) (line-end-position))
+          +iex--eval-output ""
+          +iex--eval-orig-filter (process-filter proc))
+    (set-process-filter proc #'+iex--eval-process-filter)
+    (setq +iex--eval-timeout-timer
+          (run-at-time 5 nil (lambda ()
+                               (message "IEx eval timed out")
+                               (+iex--eval-cleanup))))
+    (comint-send-string proc (format "%s\n" code))))
+
+(defun +iex-inspect-last-result ()
+  "Show the last IEx eval result in a dedicated buffer."
+  (interactive)
+  (unless +iex-last-result
+    (user-error "No IEx result to inspect"))
+  (let ((buf (get-buffer-create "*IEx Result*")))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert +iex-last-result)
+        (goto-char (point-min)))
+      (special-mode)
+      (setq-local face-remapping-alist '((default . fixed-pitch))))
+    (pop-to-buffer buf)))
+
+(defun +iex-doc (symbol)
+  "Fetch docs for SYMBOL from the running IEx REPL and display in a buffer."
+  (interactive
+   (list (let ((default (thing-at-point 'symbol)))
+           (read-string (format "IEx doc (default %s): " default) nil nil default))))
+  (unless (inf-iex--get-process)
+    (user-error "No IEx process running for this project"))
+  (let* ((cmd (format "h %s" symbol))
+         (output (inf-iex--send-string-async cmd))
+         (buf (get-buffer-create "*IEx Doc*")))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert (string-trim output))
+        (goto-char (point-min)))
+      (special-mode))
+    (pop-to-buffer buf)))
+
+(defun +iex-doc-lookup (identifier)
+  "Lookup docs via IEx REPL for K binding. Returns non-nil if handled."
+  (when (inf-iex--get-process)
+    (+iex-doc identifier)
+    t))
+
+(add-hook 'elixir-ts-mode-hook
+          (lambda () (add-hook '+lookup-documentation-functions #'+iex-doc-lookup -10 t)))
+
+;; Embark integration
+(defun +iex-embark-doc (sym)
+  (interactive "sElixir symbol: ")
+  (+iex-doc sym))
+
+(defun +iex-embark-target ()
+  (when (derived-mode-p 'elixir-ts-mode)
+    (when-let ((bounds (bounds-of-thing-at-point 'symbol))
+               (sym (thing-at-point 'symbol)))
+      `(iex-elixir-symbol ,sym . ,bounds))))
+
+(after! embark
+  (add-to-list 'embark-target-finders #'+iex-embark-target)
+  (defvar +iex-embark-symbol-map
+    (let ((map (make-composed-keymap nil embark-identifier-map)))
+      (define-key map "d" #'+iex-embark-doc)
+      map))
+  (add-to-list 'embark-keymap-alist '(iex-elixir-symbol . +iex-embark-symbol-map)))
 
 (defun +copy-file-name ()
   (interactive)
