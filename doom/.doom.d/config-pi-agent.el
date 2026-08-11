@@ -4,11 +4,35 @@
   "Personal pi-coding-agent workspace configuration."
   :group 'tools)
 
-(defcustom my/pi-coding-agent-dir (expand-file-name "~/.pi")
-  "Default directory for the PI_CODING_AGENT_DIR environment variable.
-Used by `my/pi-new-session' as the starting default when prompting
-for a session directory (with a prefix argument)."
+;; PI_CODING_AGENT_DIR selects pi's config/profile directory (default
+;; ~/.pi/agent).  We publish it to Emacs' GLOBAL environment via a :set
+;; function instead of a dynamic `let' inside `my/pi-new-session':
+;; envrc-mode gives every buffer a buffer-local `process-environment'
+;; (composed from `default-value' of that variable + the project's
+;; .envrc), and a `let' only mutates the default binding, so it is
+;; invisible to buffers envrc has already localised -- meaning a spawned
+;; `pi' would fall back to ~/.pi/agent in any project with a .envrc
+;; (e.g. CL_03).  Publishing globally makes envrc fold it into every
+;; buffer's local env, so all launch paths (my/pi-new-session,
+;; my/pi-respawn-session, my/pi-restore-sessions, M-x pi-coding-agent)
+;; inherit it.  The :set also fires at startup when a saved customize
+;; value is loaded.  Per-project overrides go in that project's .envrc:
+;;     export PI_CODING_AGENT_DIR=$HOME/.some-other-dir
+(defun my/pi-coding-agent-dir--set (sym value)
+  "Setter for `my/pi-coding-agent-dir'.
+Store VALUE and publish it to the global `PI_CODING_AGENT_DIR'
+environment so envrc-built buffer-local environments stay in sync."
+  (set-default sym value)
+  (setenv "PI_CODING_AGENT_DIR" (expand-file-name value)))
+
+(defcustom my/pi-coding-agent-dir (expand-file-name "~/.pi-personal")
+  "Directory published to PI_CODING_AGENT_DIR for every pi session.
+Setting this (or loading a saved customize value) updates the global
+environment immediately via `my/pi-coding-agent-dir--set', so all pi
+features pick it up via envrc.  Per-project overrides go in the
+project's .envrc."
   :type 'directory
+  :set #'my/pi-coding-agent-dir--set
   :group 'my/pi)
 
 (defun my/pi-workspace ()
@@ -18,21 +42,15 @@ for a session directory (with a prefix argument)."
 
 (defun my/pi-new-session (name)
   "Create a new named pi-coding-agent session in the `pi' workspace.
-Always sets PI_CODING_AGENT_DIR to `my/pi-coding-agent-dir'.
-With prefix arg, prompt for a directory to override it."
+PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
+(see its docstring); per-project overrides live in .envrc."
   (interactive
    (list (read-string "Session name: "
                       (format "%s-%s" (projectile-project-name) (format-time-string "%H%M%S")))))
   (my/pi-workspace)
-  (let* ((dir (if current-prefix-arg
-                  (read-directory-name "PI_CODING_AGENT_DIR: " my/pi-coding-agent-dir)
-                (expand-file-name my/pi-coding-agent-dir)))
-         (process-environment
-          (cons (format "PI_CODING_AGENT_DIR=%s" dir)
-                process-environment)))
-    (message "CODING-AGENT-DIR:%s..." my/pi-coding-agent-dir)
-    (delete-other-windows)
-    (pi-coding-agent name)))
+  (message "CODING-AGENT-DIR:%s..." my/pi-coding-agent-dir)
+  (delete-other-windows)
+  (pi-coding-agent name))
 
 (defvar my/pi-session--candidates nil
   "Alist of (display-name . buffer) for current pi session completion.")
