@@ -262,7 +262,16 @@
   (kill-new (buffer-file-name)))
 
 (use-package! exunit
-  :hook (elixir-ts-mode . exunit-mode)
+  :hook
+  (elixir-ts-mode . exunit-mode)
+
+  ;; NOTE: to solve an issue of ghostel-compile cannot show the diff color. 
+  ;; ghostel-compile-view-mode (used by normal M-x compile) has this critical line:
+  ;; (setq-local font-lock-unfontify-region-function #'ignore)
+  ;; This prevents font-lock from stripping the face text properties that ghostel's VT terminal wrote for ANSI colors.
+  ;; But when exunit runs, ghostel uses exunit-compilation-mode as the finished mode (via ghostel-compile--view-mode-override).
+  ;; That mode does NOT neutralize the unfontify function, so when font-lock initializes, it wipes all the VT-applied face properties - killing the colors.
+  (exunit-compilation-mode-hook . (lambda () (setq-local font-lock-unfontify-region-function #'ignore)))
   :init
   (map! :after elixir-ts-mode
         :localleader
