@@ -60,7 +60,8 @@
              (rust-mode          . rust-ts-mode)
              (elixir-mode        . elixir-ts-mode)
              (clojure-mode       . clojure-ts-mode)
-             (clojurescript-mode . clojure-ts-clojurescript-mode)))
+             (clojurescript-mode . clojure-ts-clojurescript-mode)
+             (kotlin-mode        . kotlin-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   ;; https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config
   :mode (;; javascript/typescript related

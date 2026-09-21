@@ -129,3 +129,5 @@
 (package! clojure-ts-mode)
 
 (package! ghostel)
+
+(package! kotlin-mode)
