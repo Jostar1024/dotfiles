@@ -207,6 +207,7 @@
 
 (use-package! smartparens
   :config
+  (smartparens-global-strict-mode 1)
   (map! :map smartparens-mode-map
         :leader (:prefix ("l" . "Lisps")
                  :nvie "f" #'sp-slurp-hybrid-sexp
@@ -236,3 +237,12 @@
   ;; NOTE: elixir's mix format in pre-commit hook contains terminal's ANSI colors.
   ;; use this to pretty print
   (magit-process-apply-ansi-colors 't))
+
+(use-package! evil
+  :config
+  (map! :map evil-insert-state-map
+        "DEL"    #'sp-backward-delete-char
+        "C-h"    #'sp-backward-delete-char   ; terminal backspace
+        [delete] #'sp-delete-char)           ; forward Delete key
+  (map! :map evil-replace-state-map
+        "DEL" #'sp-backward-delete-char))
