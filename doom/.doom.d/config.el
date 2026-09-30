@@ -205,9 +205,19 @@
                                   (t nil))
         prolog-electric-if-then-else-flag t))
 
+(use-package! repeat
+  :config
+  (repeat-mode 1))
+
 (use-package! smartparens
+  :bind
+  (:repeat-map my/sp-slurp-repeat-map
+               ("f" . sp-slurp-hybrid-sexp))
   :config
   (smartparens-global-strict-mode 1)
+
+  (map! :map smartparens-mode-map
+        :i "]" #'sp-up-sexp)
   (map! :map smartparens-mode-map
         :leader (:prefix ("l" . "Lisps")
                  :nvie "f" #'sp-slurp-hybrid-sexp
