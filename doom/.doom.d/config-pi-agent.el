@@ -1,7 +1,7 @@
 ;;; config-pi-agent.el --- Pi coding agent workspace -*- lexical-binding: t; -*-
 
 (defgroup my/pi nil
-  "Personal pi-coding-agent workspace configuration."
+  "Personal pilish workspace configuration."
   :group 'tools)
 
 ;; PI_CODING_AGENT_DIR selects pi's config/profile directory (default
@@ -14,7 +14,7 @@
 ;; `pi' would fall back to ~/.pi/agent in any project with a .envrc
 ;; (e.g. CL_03).  Publishing globally makes envrc fold it into every
 ;; buffer's local env, so all launch paths (my/pi-new-session,
-;; my/pi-respawn-session, my/pi-restore-sessions, M-x pi-coding-agent)
+;; my/pi-respawn-session, my/pi-restore-sessions, M-x pilish)
 ;; inherit it.  The :set also fires at startup when a saved customize
 ;; value is loaded.  Per-project overrides go in that project's .envrc:
 ;;     export PI_CODING_AGENT_DIR=$HOME/.some-other-dir
@@ -41,7 +41,7 @@ project's .envrc."
   (+workspace/switch-to "pi"))
 
 (defun my/pi-new-session (name)
-  "Create a new named pi-coding-agent session in the `pi' workspace.
+  "Create a new named pilish session in the `pi' workspace.
 PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
 (see its docstring); per-project overrides live in .envrc."
   (interactive
@@ -50,7 +50,7 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
   (my/pi-workspace)
   (message "CODING-AGENT-DIR:%s..." my/pi-coding-agent-dir)
   (delete-other-windows)
-  (pi-coding-agent name))
+  (pilish name))
 
 (defvar my/pi-session--candidates nil
   "Alist of (display-name . buffer) for current pi session completion.")
@@ -86,10 +86,10 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
 (defun my/pi-session-annotate (candidate)
   "Marginalia annotator for pi-session completion candidates."
   (when-let* ((buf (cdr (assoc candidate my/pi-session--candidates))))
-    (let* ((state (buffer-local-value 'pi-coding-agent--state buf))
+    (let* ((state (buffer-local-value 'pilish--state buf))
            (session-file (and state (plist-get state :session-file)))
-           (status (buffer-local-value 'pi-coding-agent--status buf))
-           (proc (buffer-local-value 'pi-coding-agent--process buf))
+           (status (buffer-local-value 'pilish--status buf))
+           (proc (buffer-local-value 'pilish--process buf))
            (alive (and proc (process-live-p proc)))
            (dir (abbreviate-file-name (buffer-local-value 'default-directory buf)))
            (start-time (my/pi-session--start-time session-file))
@@ -117,13 +117,13 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
                '(pi-session my/pi-session-annotate builtin none)))
 
 (defun my/pi-switch-session ()
-  "Switch to another pi-coding-agent session by name."
+  "Switch to another pilish session by name."
   (interactive)
   (my/pi-workspace)
   (let* ((chat-bufs (cl-remove-if-not
                      (lambda (buf)
                        (with-current-buffer buf
-                         (derived-mode-p 'pi-coding-agent-chat-mode)))
+                         (derived-mode-p 'pilish-chat-mode)))
                      (buffer-list)))
          (raw-names (mapcar (lambda (buf)
                               (let ((name (buffer-name buf)))
@@ -158,32 +158,38 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
                                              action (mapcar #'car names) string pred)))
                                         nil t))
                (buf (cdr (assoc choice names)))
-               (input-buf (buffer-local-value 'pi-coding-agent--input-buffer buf)))
+               (input-buf (buffer-local-value 'pilish--input-buffer buf)))
           (delete-other-windows)
-          (pi-coding-agent--display-buffers buf input-buf))))))
+          (pilish--display-buffers buf input-buf))))))
 
 
 (defun my/pi-rename-session (new-name)
-  "Rename the current pi-coding-agent session."
+  "Rename the current pilish session."
   (interactive
    (let* ((buf-name (buffer-name))
           (current-name (when (string-match "<\\(.+\\)>\\*$" buf-name)
                           (match-string 1 buf-name))))
      (list (read-string "New session name: " current-name))))
   (let ((chat-buf (cond
-                   ((derived-mode-p 'pi-coding-agent-chat-mode)
+                   ((derived-mode-p 'pilish-chat-mode)
                     (current-buffer))
-                   ((derived-mode-p 'pi-coding-agent-input-mode)
-                    (buffer-local-value 'pi-coding-agent--chat-buffer (current-buffer)))
+                   ((derived-mode-p 'pilish-input-mode)
+                    (buffer-local-value 'pilish--chat-buffer (current-buffer)))
                    (t (user-error "Not in a pi session buffer")))))
     (unless (buffer-live-p chat-buf)
       (user-error "No active pi session found"))
     (with-current-buffer chat-buf
-      (rename-buffer (format "*pi-coding-agent<%s>*" new-name))
-      (let ((input-buf (bound-and-true-p pi-coding-agent--input-buffer)))
+      (rename-buffer
+       (format "*pilish-chat:%s<%s>*"
+               (abbreviate-file-name default-directory)
+               new-name))
+      (let ((input-buf (bound-and-true-p pilish--input-buffer)))
         (when (buffer-live-p input-buf)
           (with-current-buffer input-buf
-            (rename-buffer (format "*pi-coding-agent-input<%s>*" new-name)))))
+            (rename-buffer
+             (format "*pilish-input:%s<%s>*"
+                     (abbreviate-file-name default-directory)
+                     new-name)))))
       (message "Pi session renamed to: %s" new-name))))
 
 (defun my/pi-copy-file-path-with-line-number ()
@@ -196,10 +202,10 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
 (defun my/pi-copy-process-info ()
   "Show pi process info and copy to kill ring + system clipboard."
   (interactive)
-  (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
-         (proc (and chat-buf (buffer-local-value 'pi-coding-agent--process chat-buf)))
-         (state (and chat-buf (buffer-local-value 'pi-coding-agent--state chat-buf)))
-         (status (and chat-buf (buffer-local-value 'pi-coding-agent--status chat-buf)))
+  (let* ((chat-buf (pilish--get-chat-buffer))
+         (proc (and chat-buf (buffer-local-value 'pilish--process chat-buf)))
+         (state (and chat-buf (buffer-local-value 'pilish--state chat-buf)))
+         (status (and chat-buf (buffer-local-value 'pilish--status chat-buf)))
          (session-file (and state (plist-get state :session-file)))
          (info (cond
                 ((not chat-buf) "Pi: No session")
@@ -219,9 +225,9 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
 (defun my/pi-display-stderr ()
   "Toggle stderr in the pi-chat window."
   (interactive)
-  (if-let* ((chat-buf (pi-coding-agent--get-chat-buffer))
-            (proc (buffer-local-value 'pi-coding-agent--process chat-buf))
-            (stderr-buf (process-get proc 'pi-coding-agent-stderr-buf))
+  (if-let* ((chat-buf (pilish--get-chat-buffer))
+            (proc (buffer-local-value 'pilish--process chat-buf))
+            (stderr-buf (process-get proc 'pilish-stderr-buf))
             ((buffer-live-p stderr-buf))
             (win (or (get-buffer-window chat-buf)
                      (get-buffer-window stderr-buf))))
@@ -234,15 +240,15 @@ PI_CODING_AGENT_DIR is published globally by `my/pi-coding-agent-dir'
   "Toggle table display overlays in the current pi-chat buffer.
 When removed, the raw markdown pipe table is exposed and navigable."
   (interactive)
-  (unless (derived-mode-p 'pi-coding-agent-chat-mode)
+  (unless (derived-mode-p 'pilish-chat-mode)
     (user-error "Not in a pi-chat buffer"))
   (let ((inhibit-read-only t))
-    (if (seq-some (lambda (ov) (overlay-get ov 'pi-coding-agent-table-display))
+    (if (seq-some (lambda (ov) (overlay-get ov 'pilish-table-display))
                   (overlays-in (point-min) (point-max)))
         (progn
-          (pi-coding-agent--remove-table-overlays (point-min) (point-max))
+          (pilish--remove-table-overlays (point-min) (point-max))
           (message "Table overlays removed"))
-      (pi-coding-agent--decorate-tables-in-region (point-min) (point-max))
+      (pilish--decorate-tables-in-region (point-min) (point-max))
       (message "Table overlays restored"))))
 
 (defvar my/pi-session-dump-file
@@ -254,8 +260,8 @@ When removed, the raw markdown pipe table is exposed and navigable."
   (let (entries)
     (dolist (buf (buffer-list))
       (with-current-buffer buf
-        (when (derived-mode-p 'pi-coding-agent-chat-mode)
-          (let* ((state pi-coding-agent--state)
+        (when (derived-mode-p 'pilish-chat-mode)
+          (let* ((state pilish--state)
                  (session-file (and state (plist-get state :session-file)))
                  (dir default-directory)
                  (buf-name (buffer-name))
@@ -290,8 +296,8 @@ When removed, the raw markdown pipe table is exposed and navigable."
     (let* ((active-session-files
             (cl-loop for buf in (buffer-list)
                      when (with-current-buffer buf
-                            (derived-mode-p 'pi-coding-agent-chat-mode))
-                     collect (plist-get (buffer-local-value 'pi-coding-agent--state buf)
+                            (derived-mode-p 'pilish-chat-mode))
+                     collect (plist-get (buffer-local-value 'pilish--state buf)
                                         :session-file)))
            (to-restore (cl-remove-if
                         (lambda (entry)
@@ -305,22 +311,22 @@ When removed, the raw markdown pipe table is exposed and navigable."
                  (dir (plist-get entry :dir))
                  (session-file (plist-get entry :session-file))
                  (default-directory dir))
-            (pi-coding-agent (or name nil))
-            (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
+            (pilish (or name nil))
+            (let* ((chat-buf (pilish--get-chat-buffer))
                    (proc (and chat-buf
-                              (buffer-local-value 'pi-coding-agent--process chat-buf))))
+                              (buffer-local-value 'pilish--process chat-buf))))
               (when (and proc (process-live-p proc) chat-buf)
-                (pi-coding-agent--rpc-async
+                (pilish--rpc-async
                  proc
                  (list :type "switch_session" :sessionPath session-file)
                  (lambda (response)
                    (let* ((data (plist-get response :data))
                           (cancelled (plist-get data :cancelled)))
                      (if (and (plist-get response :success)
-                              (pi-coding-agent--json-false-p cancelled))
+                              (pilish--json-false-p cancelled))
                          (progn
-                           (pi-coding-agent--refresh-session-state proc chat-buf session-file)
-                           (pi-coding-agent--load-session-history
+                           (pilish--refresh-session-state proc chat-buf session-file)
+                           (pilish--load-session-history
                             proc
                             (lambda (count)
                               (message "Pi: Restored session %s (%d messages)"
@@ -332,10 +338,10 @@ When removed, the raw markdown pipe table is exposed and navigable."
 (defun my/pi-respawn-session ()
   "Respawn current pi session after upgrade breaks the running process."
   (interactive)
-  (let* ((chat-buf (pi-coding-agent--get-chat-buffer))
-         (state (and chat-buf (buffer-local-value 'pi-coding-agent--state chat-buf)))
+  (let* ((chat-buf (pilish--get-chat-buffer))
+         (state (and chat-buf (buffer-local-value 'pilish--state chat-buf)))
          (session-file (and state (plist-get state :session-file)))
-         (proc (and chat-buf (buffer-local-value 'pi-coding-agent--process chat-buf)))
+         (proc (and chat-buf (buffer-local-value 'pilish--process chat-buf)))
          (buf-name (and chat-buf (buffer-name chat-buf)))
          (session-name (when (and buf-name (string-match "<\\(.+\\)>\\*$" buf-name))
                          (match-string 1 buf-name)))
@@ -348,32 +354,57 @@ When removed, the raw markdown pipe table is exposed and navigable."
     (when (and proc (process-live-p proc))
       (kill-process proc))
     ;; Kill old buffers
-    (let ((input-buf (buffer-local-value 'pi-coding-agent--input-buffer chat-buf)))
+    (let ((input-buf (buffer-local-value 'pilish--input-buffer chat-buf)))
       (when (buffer-live-p input-buf) (kill-buffer input-buf)))
     (kill-buffer chat-buf)
     ;; Respawn
     (delete-other-windows)
     (let ((default-directory dir))
-      (pi-coding-agent (or session-name nil)))
-    (let* ((new-chat (pi-coding-agent--get-chat-buffer))
-           (new-proc (and new-chat (buffer-local-value 'pi-coding-agent--process new-chat))))
+      (pilish (or session-name nil)))
+    (let* ((new-chat (pilish--get-chat-buffer))
+           (new-proc (and new-chat (buffer-local-value 'pilish--process new-chat))))
       (when (and new-proc (process-live-p new-proc))
-        (pi-coding-agent--rpc-async
+        (pilish--rpc-async
          new-proc
          (list :type "switch_session" :sessionPath session-file)
          (lambda (response)
            (let* ((data (plist-get response :data))
                   (cancelled (plist-get data :cancelled)))
              (if (and (plist-get response :success)
-                      (pi-coding-agent--json-false-p cancelled))
+                      (pilish--json-false-p cancelled))
                  (progn
-                   (pi-coding-agent--refresh-session-state new-proc new-chat session-file)
-                   (pi-coding-agent--load-session-history
+                   (pilish--refresh-session-state new-proc new-chat session-file)
+                   (pilish--load-session-history
                     new-proc
                     (lambda (_count)
                       (message "Pi: Respawn successfully!"))
                     new-chat))
                (message "Pi: Respawn failed - switch_session rejected")))))))))
+
+;; (defun my/pi-session-fork-in-other-projects ()
+;;   "Fork the current session from previous project dir to a new proejct dir, to leverage the project's skill"
+;;   (interactive)
+;;   (let* ((chat-buf (pilish--get-chat-buffer))
+;;          (dir (buffer-local-value 'default-directory chat-buf)) ;; get the current directory of the pi session
+;;          (new-project (projectile-completing-read "Select new project: " (projectile-relevant-known-projects))) ;; prompt the user for selecting a new project, then y-o-n confirmation
+;;          _ (when (y-or-n-p (format "switch to proejct %s? " (abbreviate-file-name new-project))))
+
+;;          )
+
+;;     ;; (projectile-switch-project-by-name new-project)
+;;     (message "%s" new-project))
+
+;;   ;; call pi rpc fork for a new session
+;;   ;; cleanup: remove the current pi session and buffers
+
+;;   )
+
+
+;; (comment
+;;  (with-current-buffer
+;;      "*pilish-input:~/.dotfiles<.dotfiles-pi-switch-project>*"
+;;    (call-interactively #'my/pi-session-fork-in-other-projects))
+;;  )
 
 (map! :leader
       (:prefix ("j" . "Pi Agent")
@@ -383,9 +414,9 @@ When removed, the raw markdown pipe table is exposed and navigable."
        :n "s" #'my/pi-switch-session
        :n "r" #'my/pi-rename-session
        :n "p" #'my/pi-respawn-session
-       :n "t" #'my/pi-toggle-table-overlays
+       :n "t" #'pilish-toggle-table-pretty
        :n "d" #'my/pi-dump-sessions
        :n "R" #'my/pi-restore-sessions
-       :n "q" #'pi-coding-agent-quit
+       :n "q" #'pilish-quit
        :n "i" #'my/pi-copy-process-info
        :n "e" #'my/pi-display-stderr))

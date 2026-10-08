@@ -119,9 +119,9 @@
   :recipe (:host github :repo "seagle0128/grip-mode" :branch "main" :depth 1)
   :pin "3d23dd4768f91454cb72ff550a2182d788cd8653")
 
-(package! pi-coding-agent
-  :recipe (:host github :repo "dnouri/pi-coding-agent" :branch "main" :depth 1)
-  :pin "907735488afa62ea708015a5f0f4494251800420")
+(package! pilish
+  :recipe (:host github :repo "dnouri/pilish" :branch "main" :depth 1)
+  :pin "b8ab7fcdb2f7e177133200acbcd9c85b03f1c052")
 
 (package! modus-themes)
 (package! citre)
