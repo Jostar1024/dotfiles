@@ -41,6 +41,8 @@
   ;; Remapping is handled below, not via treesit-langs-major-mode-setup.
   (treesit-langs-install-grammars :skip-if-installed))
 
+(set-indent-vars! '(c-ts-mode c++-ts-mode) 'c-ts-indent-offset)
+
 (use-package! treesit
   :preface
   (dolist (mapping
@@ -59,8 +61,6 @@
              (sh-base-mode       . bash-ts-mode)
              (rust-mode          . rust-ts-mode)
              (elixir-mode        . elixir-ts-mode)
-             (clojure-mode       . clojure-ts-mode)
-             (clojurescript-mode . clojure-ts-clojurescript-mode)
              (kotlin-mode        . kotlin-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   ;; https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config

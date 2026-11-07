@@ -143,6 +143,15 @@
 (load! "config-markdown")
 (load! "config-ghostel")
 
+;; NOTE: why this config to rg?
+;; filename.ext:line-number in emacs M-x compilation is easy to press ENTER and direct to the file + line-number
+;; the file contains only --no-heading.
+(after! compile
+  (let ((rg-config (expand-file-name "~/.dotfiles/ripgrep/emacs-compile.conf")))
+    (when (file-exists-p rg-config)
+      (add-to-list 'compilation-environment
+                   (concat "RIPGREP_CONFIG_PATH=" rg-config)))))
+
 (use-package! rime
   :config
   (when (eq system-type 'darwin)
@@ -216,6 +225,13 @@
   :config
   (smartparens-global-strict-mode 1)
 
+  ;; Doom's +smartparens adds `sp-point-before-word-p' to the :unless list of
+  ;; "(" "{" "[", so an opening brace right before a word char is not paired:
+  ;; `(k' stays `(k'.  Drop that rule for lisp modes, so `(' becomes `()' with
+  ;; point inside, even when followed by a symbol: `(k' -> `()k'.
+  (dolist (brace '("(" "{" "["))
+    (sp-pair brace nil :unless '(:rem sp-point-before-word-p)))
+
   (map! :map smartparens-mode-map
         :i "]" #'sp-up-sexp)
   (map! :map smartparens-mode-map
@@ -256,3 +272,6 @@
         [delete] #'sp-delete-char)           ; forward Delete key
   (map! :map evil-replace-state-map
         "DEL" #'sp-backward-delete-char))
+
+(use-package! jai-mode
+  :mode ("\\.jai\\'" . jai-mode))

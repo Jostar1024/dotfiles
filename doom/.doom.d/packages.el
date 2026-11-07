@@ -96,6 +96,9 @@
 
 (package! gptel :recipe (:nonrecursive t))
 
+(package! jai-mode
+  :recipe (:host github :repo "elp-revive/jai-mode"))
+
 ;; Janet
 (package! janet-ts-mode
   :recipe (:host github :repo "sogaiu/janet-ts-mode"))
@@ -125,8 +128,6 @@
 
 (package! modus-themes)
 (package! citre)
-
-(package! clojure-ts-mode)
 
 (package! ghostel)
 

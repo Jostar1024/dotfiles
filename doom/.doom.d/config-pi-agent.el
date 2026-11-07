@@ -4,6 +4,12 @@
   "Personal pilish workspace configuration."
   :group 'tools)
 
+(use-package! pilish
+  :config
+  (after! pilish-evil
+    (evil-define-key* 'motion pilish-chat-mode-map
+      "!" #'pilish-shell-command-at-point)))
+
 ;; PI_CODING_AGENT_DIR selects pi's config/profile directory (default
 ;; ~/.pi/agent).  We publish it to Emacs' GLOBAL environment via a :set
 ;; function instead of a dynamic `let' inside `my/pi-new-session':

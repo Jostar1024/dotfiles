@@ -1,18 +1,11 @@
 ;;; ../.dotfiles/doom/.doom.d/config-clojure.el -*- lexical-binding: t; -*-
 
-(use-package! clojure-ts-mode
+(use-package! clojure-mode
   :custom
   (clojure-toplevel-inside-comment-form t)
-  (clojure-ts-align-forms-automatically t)
-  :hook
-  (clojure-mode . paredit-mode)
-  (clojure-ts-mode-local-vars-hook . cider-mode)
-  (clojure-ts-clojurescript-mode-local-vars-hook . cider-mode)
-  (clojure-ts-clojurescript-mode . (lambda ()
-                                     (setq-local indent-region-function #'clojure-ts-indent-region)))
+  (clojure-align-forms-automatically t)
   :config
   (evil-define-key 'normal clojure-mode-map (kbd "RET") 'cider-eval-defun-at-point)
-  (+clojure-common-config '(clojure-ts-mode clojure-ts-clojurescript-mode))
   (map! :map clojure-mode-map
         :localleader
         :n "a" #'clojure-align))
@@ -31,6 +24,64 @@
         :localleader
         :n "k" #'custom-eval-user-go)
   )
+
+(use-package! cider
+  :defer t
+  :init
+  ;; `:config' and `after!' bodies are not byte-compiled, so define it here.
+  (defun my-cider-save-load-run-ns-tests ()
+    "Save the buffer, reload its namespace, then run its ns tests.
+
+     ClojureScript only.  `cider-load-buffer' does not load a namespace in a
+     cljs REPL.  The call chain is:
+
+       `cider-load-buffer' sends an nREPL `load-file' request.
+       piggieback gives the cljs session's `load-file' to `do-load-file'.
+       `do-load-file' calls `load-source'.
+       `load-source' calls `cljs.repl/load-stream'.
+       `load-stream' evaluates the file's forms one by one with
+       `evaluate-form', and never loads their dependencies.
+
+     So `(ns cl-03.event-test (:require [reagent.core ...]))' only compiles
+     into `goog.require' calls.  Those modules never entered the runtime, so
+     each call fails with \"goog.require could not find: ...\".  A `require'
+     loads the whole dependency chain instead.
+
+     The namespace alone is reloaded by default.  With a prefix argument its
+     dependencies are reloaded too.  Use that after you edit a source
+     namespace."
+    (interactive)
+    ;; Two requests on one session.  nREPL runs a session's requests in order,
+    ;; so the tests see the code that was just reloaded.
+    (save-buffer)
+    (cider-interactive-eval
+     (format "(require '%s :%s)"
+             (cider-current-ns)
+             (if current-prefix-arg "reload-all" "reload")))
+    (cider-test-run-ns-tests nil))
+
+  (defun my-cider-test-rect-newline (fn &rest args)
+    "Call FN with `insert-rectangle' adding a trailing newline."
+    (let ((orig (symbol-function 'insert-rectangle)))
+      (cl-letf (((symbol-function 'insert-rectangle)
+                 (lambda (&rest rect-args)
+                   (prog1 (apply orig rect-args)
+                     (insert "\n")))))
+        (apply fn args))))
+  :config
+  ;; CIDER's test report puts expected/actual on one line. The local `insert-rect'
+  ;; in `cider-test-render-assertion' ends with `(beginning-of-line)', so the next
+  ;; label lands before the value it follows. Upstream bug, present since 2018.
+  ;; Drop the advice once CIDER fixes it.
+  (require 'rect)                       ; `insert-rectangle' is an autoload
+  (advice-add 'cider-test-render-report :around #'my-cider-test-rect-newline)
+  (map! :map cider-mode-map
+        :localleader
+        :desc "Save, load, run ns tests"
+        ;; Multi-key form on purpose. A `(:prefix ("t" . "test") ...)' group
+        ;; rebinds the whole "t" prefix in this keymap and drops Doom's own
+        ;; SPC m t {a,l,n,p,r,s,t} bindings.
+        "t e" #'my-cider-save-load-run-ns-tests))
 
 ;; NOTE: https://emacsredux.com/blog/2026/07/25/cider-and-projectile-meet-embark/
 (defun my-cider-embark-doc (sym)
